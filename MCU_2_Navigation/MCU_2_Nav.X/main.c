@@ -69,8 +69,21 @@
 #pragma config TSEQ = 0xFFFF            // Boot Flash True Sequence Number (Enter Hexadecimal value)
 #pragma config CSEQ = 0xFFFF            // Boot Flash Complement Sequence Number (Enter Hexadecimal value)
 
-#include <xc.h>
+// #pragma config statements should precede project file includes.
+// Use project enums instead of #define for ON and OFF.
+
+#include "config.h"
+
+void setup()
+{
+    Config_Init();
+}
 
 void main(void) {
+    setup();
+    while (1)
+    {
+        
+    }
     return;
 }
