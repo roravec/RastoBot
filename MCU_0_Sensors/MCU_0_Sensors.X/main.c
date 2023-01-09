@@ -39,16 +39,20 @@
 // Use project enums instead of #define for ON and OFF.
 
 #include "config.h"
+#include "RastoBot_MCU0.h"
+
 void setup()
 {
     Config_Init();
+    MCU0_Init();
 }
 
 void main(void) {
     setup();
     while (1)
     {
-        
+        Delay_ms(1);
+        MCU0_Loop();
     }
     return;
 }

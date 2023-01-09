@@ -6,6 +6,8 @@
                    projectFiles="true">
       <itemPath>config.h</itemPath>
       <itemPath>hwinterface.h</itemPath>
+      <itemPath>RastoBot.h</itemPath>
+      <itemPath>RastoBot_MCU0.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -17,6 +19,8 @@
       <itemPath>main.c</itemPath>
       <itemPath>hwinterface.c</itemPath>
       <itemPath>config.c</itemPath>
+      <itemPath>RastoBot.c</itemPath>
+      <itemPath>RastoBot_MCU0.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -180,6 +184,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1fff7"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X/debug/default/MCU_0_Sensors_ptg"/>
         <property key="programmerToGoImageName" value="MCU_0_Sensors_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>

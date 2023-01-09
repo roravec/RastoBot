@@ -67,10 +67,12 @@ void InitInterrupts(void)
 
 void InitGPIOs()
 {
-    FAN_0_LAT = 1;
-    FAN_1_LAT = 1;
-    FAN_2_LAT = 1;
-    FAN_3_LAT = 1;
+    ANCON1 = 15; // disable analog on Tilt sensor (set 1 to disable)
+    
+    POWER_OUTPUT_0_LAT = 1;
+    POWER_OUTPUT_1_LAT = 1;
+    POWER_OUTPUT_2_LAT = 1;
+    POWER_OUTPUT_3_LAT = 1;
     LED_0_LAT = 1;
     LED_1_LAT = 1;
     LED_2_LAT = 1;

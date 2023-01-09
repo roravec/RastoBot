@@ -15,15 +15,17 @@
 #define UART_TX_TRIS        TRISCbits.TRISC6
 /******************************************/ 
 
-/* FANS ***********************************/
-#define FAN_0_TRIS          TRISDbits.TRISD4
-#define FAN_0_LAT           LATDbits.LATD4
-#define FAN_1_TRIS          TRISDbits.TRISD5
-#define FAN_1_LAT           LATDbits.LATD5
-#define FAN_2_TRIS          TRISDbits.TRISD6
-#define FAN_2_LAT           LATDbits.LATD6
-#define FAN_3_TRIS          TRISDbits.TRISD7
-#define FAN_3_LAT           LATDbits.LATD7
+/* Power outputs **************************/
+#define POWER_OUTPUT_0_TRIS TRISDbits.TRISD4
+#define POWER_OUTPUT_0_LAT  LATDbits.LATD4
+#define POWER_OUTPUT_1_TRIS TRISDbits.TRISD5
+#define POWER_OUTPUT_1_LAT  LATDbits.LATD5
+#define POWER_OUTPUT_2_TRIS TRISDbits.TRISD6
+#define POWER_OUTPUT_2_LAT  LATDbits.LATD6
+#define POWER_OUTPUT_3_TRIS TRISDbits.TRISD7
+#define POWER_OUTPUT_3_LAT  LATDbits.LATD7
+#define POWER_OUTPUT_4_TRIS TRISCbits.TRISC0
+#define POWER_OUTPUT_4_LAT  LATCbits.LATC0
 /******************************************/
 
 /* LEDS ***********************************/
@@ -36,8 +38,6 @@
 /******************************************/
 
 /* OTHER OUTPUTS **************************/
-#define LIGHT_0_TRIS        TRISCbits.TRISC0
-#define LIGHT_0_LAT         LATCbits.LATC0
 #define BUZZER_TRIS         TRISCbits.TRISC1
 #define BUZZER_LAT          LATCbits.LATC1
 /******************************************/
