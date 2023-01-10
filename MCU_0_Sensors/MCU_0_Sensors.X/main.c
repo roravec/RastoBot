@@ -51,7 +51,7 @@ void main(void) {
     setup();
     while (1)
     {
-        Delay_ms(1);
+        __delay_ms(1);
         MCU0_Loop();
     }
     return;

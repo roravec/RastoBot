@@ -20,6 +20,7 @@ typedef struct
     int32_t		batteryVoltage;
 	int32_t		externalVoltage;
 	int32_t		temperatures[4];
+    int32_t		humidities[4];
 	int32_t		currentSensors[4];
 	_Bool		powerOutputs[5];
 	_Bool		buzzer;

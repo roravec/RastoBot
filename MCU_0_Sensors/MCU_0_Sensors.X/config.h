@@ -21,9 +21,9 @@
 
 /* Function prototypes */
 void Config_Init(void);
-void Delay_us(unsigned long us);
-void Delay_ms(unsigned int ms);
-void Delay(unsigned int del);
+//void Delay_us(unsigned long us);
+//void Delay_ms(unsigned int ms);
+//void Delay(unsigned int del);
 void InitOscillator(void);
 void InitInterrupts(void);
 void InitGPIOs(void);

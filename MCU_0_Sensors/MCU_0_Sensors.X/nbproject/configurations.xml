@@ -8,6 +8,7 @@
       <itemPath>hwinterface.h</itemPath>
       <itemPath>RastoBot.h</itemPath>
       <itemPath>RastoBot_MCU0.h</itemPath>
+      <itemPath>dht11.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -21,6 +22,7 @@
       <itemPath>config.c</itemPath>
       <itemPath>RastoBot.c</itemPath>
       <itemPath>RastoBot_MCU0.c</itemPath>
+      <itemPath>dht11.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
