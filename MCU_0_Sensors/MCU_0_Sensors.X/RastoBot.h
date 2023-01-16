@@ -19,6 +19,7 @@ typedef struct
 {
     int32_t		batteryVoltage;
 	int32_t		externalVoltage;
+    _Bool       externalInputDetected;
 	int32_t		temperatures[4];
     int32_t		humidities[4];
 	int32_t		currentSensors[4];

@@ -14,9 +14,27 @@
 #define	RASTOBOT_MCU0_H
 
 #define MCU0_READ_TEMPERATURE_EVERY     1000 // loop ticks
+#define MCU0_READ_ANALOG_PINS_EVERY     1000
+#define MCU0_READ_TILT_SENSOR_EVERY     10
+
 #define MCU0_DHT11_SENSORS_COUNT        4
+#define MCU0_FANS_COUNT                 4
 
 #define MCU0_FAN0_TEMP_THRESHOLD        25
+#define MCU0_FAN1_TEMP_THRESHOLD        25
+#define MCU0_FAN2_TEMP_THRESHOLD        25
+#define MCU0_FAN3_TEMP_THRESHOLD        25
+
+#define MCU0_FAN0_THERMOMETERS          0b1111
+#define MCU0_FAN1_THERMOMETERS          0b0001
+#define MCU0_FAN2_THERMOMETERS          0b0010
+#define MCU0_FAN3_THERMOMETERS          0b0100
+
+#define MCU0_FAN_LATCH0_FANINDEX        0       // binds power output latch to fan
+#define MCU0_FAN_LATCH1_FANINDEX        1       // binds power output latch to fan
+#define MCU0_FAN_LATCH2_FANINDEX        2       // binds power output latch to fan
+#define MCU0_FAN_LATCH3_FANINDEX        3       // binds power output latch to fan
+
 
 #ifdef	__cplusplus
 extern "C" {
@@ -32,13 +50,25 @@ extern "C" {
 
 /* Function prototypes */
     void MCU0_Init(void);
+    
+    // Main loop. Should be called every 1ms
     void MCU0_Loop(void);
-    _Bool MCU0_Read_TiltSensor(void);
+    
+    /* Sensors */
+    void MCU0_ReadTiltSensor(void);
     void MCU0_ReadDHT11(void);
-    void MCU0_FanControl(void);
+    void MCU0_ReadAnalogPins(void);
+    uint16_t MCU0_AnalogReadValue(uint8_t channel);
     
+    /* Getters */
+    _Bool MCU0_GetExternalInputDetected(void);
     
-
+    /* Setters */
+    void MCU0_SetBuzzer(uint32_t ticks);
+    void MCU0_SetChargingEnable(_Bool pinStatus);
+    void MCU0_SetEmergencyLight(_Bool pinStatus);
+    void MCU0_SetLED(uint8_t led, _Bool status);
+    
 #ifdef	__cplusplus
 }
 #endif
