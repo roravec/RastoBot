@@ -9,6 +9,9 @@
       <itemPath>RastoBot.h</itemPath>
       <itemPath>RastoBot_MCU0.h</itemPath>
       <itemPath>dht11.h</itemPath>
+      <itemPath>pic18_uart.h</itemPath>
+      <itemPath>rarray.h</itemPath>
+      <itemPath>ermaCommProtocol.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -23,6 +26,9 @@
       <itemPath>RastoBot.c</itemPath>
       <itemPath>RastoBot_MCU0.c</itemPath>
       <itemPath>dht11.c</itemPath>
+      <itemPath>pic18_uart.c</itemPath>
+      <itemPath>rarray.c</itemPath>
+      <itemPath>ermaCommProtocol.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

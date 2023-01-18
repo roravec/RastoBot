@@ -39,8 +39,8 @@ typedef struct
     uint8_t     DHT11_GetData       (uint8_t module);
     void        DHT11_ChangeDirection(uint8_t module, _Bool direction);
     void        DHT11_SetLatch      (uint8_t module, _Bool latVal);
-    _Bool       DHT11_ReadSensorData(uint8_t module, uint8_t * dataOut);
-    _Bool        DHT11_GetSensorData (uint8_t module, DHT11_SensorData * dataOut);
+    _Bool       DHT11_ReadSensorData(uint8_t module, int8_t * dataOut);
+    _Bool       DHT11_GetSensorData (uint8_t module, DHT11_SensorData * dataOut);
 
 #ifdef	__cplusplus
 }

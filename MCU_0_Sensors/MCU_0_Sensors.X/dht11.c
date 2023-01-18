@@ -79,7 +79,7 @@ void DHT11_SetLatch(uint8_t module, _Bool latVal)
     }
 }
 
-_Bool DHT11_ReadSensorData(uint8_t module, uint8_t * dataOut)
+_Bool DHT11_ReadSensorData(uint8_t module, int8_t * dataOut)
 {
     *dataOut = 0;
     for (uint8_t i = 0; i < 8; i++)
@@ -109,7 +109,7 @@ _Bool DHT11_ReadSensorData(uint8_t module, uint8_t * dataOut)
 
 _Bool DHT11_GetSensorData(uint8_t module, DHT11_SensorData * dataOut)
 {
-    uint8_t T_Byte1=0, T_Byte2=0, RH_Byte1=0, RH_Byte2=0, CheckSum=0;
+    int8_t T_Byte1=0, T_Byte2=0, RH_Byte1=0, RH_Byte2=0, CheckSum=0;
     DHT11_Start(module);
     if (DHT11_CheckResponse(module))
     {

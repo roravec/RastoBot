@@ -63,11 +63,8 @@ void InitOscillator(void)
 
 void InitInterrupts(void)
 {
-    PEIE = 1;
-    GIE = 1;
-    RCIF = 0;
-    RCIE = 1;
-    TXIE = 0;
+    PEIE = 1;   // Peripheral Interrupt Enable bit
+    GIE = 1;    // Global Interrupt Enable bit
     TMR0IE = 1;
 }
 

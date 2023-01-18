@@ -44,6 +44,7 @@ extern "C" {
 #include "RastoBot.h"
 #include "hwinterface.h"
 #include "dht11.h"
+#include "pic18_uart.h"
 
 /* Globals */
     extern MCU_0_Sensors sensors;
