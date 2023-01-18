@@ -6,11 +6,15 @@
  * Description: PIC32 UART communication library
  */ 
 #include "pic18_uart.h"
+
+Rarray uartBuffer;
+_Bool uartNewDataFlag = 0;
 /*
  * Initializes UART on predefined registers
  */
 void UART_Init(void)
 {
+    RarrayCreate(&uartBuffer, RARRAY_SIZE_MAX);
     U1TX_TRIS = 0;
     U1RX_TRIS = 1;
     //Baud rate set to 9600
@@ -104,5 +108,7 @@ __interrupt() void ISR(void)
     {
         recvByte=RCREG1;//Receiving data
         RC1IF = 0;          // clear flag
+        RarrayUnshift(&uartBuffer, recvByte);
+        uartNewDataFlag = 1;
     }      
 }

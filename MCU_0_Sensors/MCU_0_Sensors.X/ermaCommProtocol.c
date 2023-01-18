@@ -3,9 +3,10 @@
 static void        RarrayLock(Rarray * buf);
 static void        RarrayUnlock(Rarray * buf);
 
-ECP_Message * ECP_CreateMessage(ECP_Message * messOut, uint16_t command, uint8_t * data, uint8_t dlc)
+ECP_Message * ECP_CreateMessage(ECP_Message * messOut, uint8_t command, uint8_t subCommand, uint8_t * data, uint8_t dlc)
 {
     messOut->command = command;
+    messOut->subCommand = subCommand;
     for (uint8_t i=0;i<dlc;i++)
         messOut->data[i] = data[i];
     messOut->dlc = dlc;
@@ -13,9 +14,10 @@ ECP_Message * ECP_CreateMessage(ECP_Message * messOut, uint16_t command, uint8_t
     return messOut;
 }
 
-ECP_Message * ECP_CreateMessageCommand(ECP_Message * messOut, uint16_t command)
+ECP_Message * ECP_CreateMessageCommand(ECP_Message * messOut, uint8_t command, uint8_t subCommand)
 {
     messOut->command = command;
+    messOut->subCommand = subCommand;
     messOut->dlc = 0;
     messOut->msgType = ECP_COMMAND;
     return messOut;
@@ -25,7 +27,8 @@ ECP_Message * ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRa
 {
     if (ecpRawLen < ECP_MIN_PACKET_LEN) // invalid length
         return 0;
-    messOut->command = ecpRaw[3] | (ecpRaw[1] << 8);
+    messOut->command = ecpRaw[1];
+    messOut->subCommand = ecpRaw[3];
     messOut->dlc = ecpRaw[5];
     messOut->msgType = messOut->dlc > 0 ? ECP_COMDATA : ECP_COMMAND;
     if (messOut->dlc > 0 && ecpRawLen == ECP_MIN_PACKET_LEN + messOut->dlc)
@@ -46,10 +49,10 @@ Rarray * ECP_Encode(ECP_Message * message, Rarray * out)
     out->size = message->dlc + ECP_MIN_PACKET_LEN;
     uint16_t currentIndex = 0;
     out->data[currentIndex++] = ECP_FIRST_BYTE;
-    out->data[currentIndex++] = (uint8_t)(message->command >> 8);
-    out->data[currentIndex++] = ~out->data[currentIndex-1];
-    out->data[currentIndex++] = (uint8_t)(message->command);
-    out->data[currentIndex++] = ~out->data[currentIndex-1];
+    out->data[currentIndex++] = message->command;
+    out->data[currentIndex++] = ~out->data[(currentIndex-1)];
+    out->data[currentIndex++] = message->subCommand;
+    out->data[currentIndex++] = ~out->data[(currentIndex-1)];
     out->data[currentIndex++] = message->dlc;
     for (uint16_t i=0,j=currentIndex;i<message->dlc;i++)
         out->data[currentIndex++] = message->data[i];
@@ -62,10 +65,11 @@ Rarray * ECP_Encode(ECP_Message * message, Rarray * out)
     return out;
 }
 
-Rarray * ECP_FindECPPacket(Rarray * in, Rarray * out)
+int8_t ECP_FindECPPacket(Rarray * in, Rarray * out)
 {
     if (in->size > ECP_MIN_PACKET_LEN) // input array is too short to contain whole ECP packet
-        return 0;
+        return -1;
+    int8_t successCode = -1;
     RarrayLock(in);             // lock array
     for (uint16_t i=0;i<in->size-ECP_MIN_PACKET_LEN;i++)
     {
@@ -93,12 +97,13 @@ Rarray * ECP_FindECPPacket(Rarray * in, Rarray * out)
                     uint16_t packetLen = ECP_MIN_PACKET_LEN + dlc;
                     RarrayRemoveRangeLO(in, i, packetLen, out, 1);
                     out->size = packetLen;
+                    successCode = 0;
                 }
             }
         }
     }
     RarrayUnlock(in);           // unlock array
-    return out;
+    return successCode;
 }
 
 static void RarrayLock(Rarray * buf)

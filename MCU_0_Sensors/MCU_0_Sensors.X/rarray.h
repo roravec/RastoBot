@@ -9,7 +9,7 @@
  *  Return value -1 means fail or no match.
  * 
  * How to use:
- * 1. Create Rarray instance and call RarrayCreate on it.
+ * 1. Create Rarray instance and call RarrayCreate on it with your internal size limit.
  * 2. Use preferably RarrayPush, RarrayPop, RarrayShift, RarrayUnshift
  */
 
@@ -22,7 +22,7 @@ extern "C" {
 
 #include <stdint.h>
     
-#define RARRAY_SIZE_MAX 5000
+#define RARRAY_SIZE_MAX 200
    
 typedef struct
 {
@@ -40,8 +40,8 @@ void        RarraySetValueAtIndex(Rarray * buf, uint32_t index, uint8_t data);
 void        RarrayRemoveRange(Rarray * buf, uint32_t startIndex, uint32_t endIndex, Rarray * removedRangeOut);
 void        RarrayRemoveRangeLO(Rarray * buf, uint32_t startIndex, uint32_t endIndex, Rarray * removedRangeOut, _Bool supressLock);
 void        RarrayCopyRange(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination);
-void        RarrayPush(Rarray * buf, uint8_t data);
-uint8_t     RarrayPop(Rarray * buf);
+void        RarrayPush(Rarray * buf, uint8_t data); // add element to end
+uint8_t     RarrayPop(Rarray * buf);                // removes and returns element from end
 uint8_t     RarrayShift(Rarray * buf);              // calls RarrayRemoveFirst
 void        RarrayUnshift(Rarray * buf, uint8_t data); // calls RarrayAddFront
 uint8_t     RarrayRemoveFirst(Rarray * buf);

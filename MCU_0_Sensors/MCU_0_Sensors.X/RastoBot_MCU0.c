@@ -5,6 +5,7 @@ uint32_t buzzerTick = 0;
 
 /* STATIC FUNCTIONS ***********************************************************/
 static void MCU0_DoTasks(void);
+static void MCU0_DoMessageAction(ECP_Message * msg);
 
 /* Fan control */
 static void MCU0_FanControl(void);
@@ -14,6 +15,8 @@ static void MCU0_FanPowerControl(void);
 // This function should run all tasks
 static void MCU0_TaskBuzzerBuzz(void);
 static void MCU0_TaskLogPowerOutputs(void);
+static void MCU0_TaskSendSensorsData(void);
+static void MCU0_TaskCheckForNewReceivedData(void);
 /******************************************************************************/
 
 
@@ -47,15 +50,19 @@ void MCU0_Init(void)
     for (uint8_t i=0;i<MCU0_FANS_COUNT;i++)
         fansActive[i] = 0;
 }
-
+uint32_t loopCounter = 0;
 static void MCU0_DoTasks(void)
 {
-    MCU0_FanControl();
+    if (loopCounter % MCU0_FAN_CONTROL_EVERY == 0)
+        MCU0_FanControl();
     MCU0_TaskBuzzerBuzz();
+    if (loopCounter % MCU0_SEND_SENSORS_DATA_EVERY == 0)
+        MCU0_TaskSendSensorsData();
+    if (loopCounter % MCU0_CHECK_FOR_RECV_DATA_EVERY == 0)
+        MCU0_TaskCheckForNewReceivedData();
 }
 
 // Main MCU0 loop - should be called every 1ms
-uint32_t loopCounter = 0;
 void MCU0_Loop(void)
 {
     if (loopCounter % MCU0_READ_ANALOG_PINS_EVERY == 0)
@@ -118,6 +125,8 @@ uint16_t MCU0_AnalogReadValue(uint8_t channel)
 /* FANS ***********************************************************************/
 static void MCU0_FanControl(void)
 {
+    if (sensors.fanManualControl)
+        return;
     uint8_t fansActivePoints[MCU0_FANS_COUNT];
     // reset fans
     for (uint8_t i=0;i<MCU0_FANS_COUNT;i++)
@@ -220,4 +229,62 @@ static void MCU0_TaskLogPowerOutputs(void)
     sensors.powerOutputs[2] = POWER_OUTPUT_2_PORT;
     sensors.powerOutputs[3] = POWER_OUTPUT_3_PORT;
     sensors.powerOutputs[4] = POWER_OUTPUT_4_PORT;
+}
+
+static void MCU0_TaskSendSensorsData(void)
+{
+    ECP_Message sensorsMessage;
+    Rarray packet;
+    RastoBot_Encode_Sensors(&sensorsMessage, &sensors);
+    ECP_Encode(&sensorsMessage, &packet);
+    UART_WriteData(packet.data, packet.size);
+}
+
+static void MCU0_TaskCheckForNewReceivedData(void)
+{
+    if (!uartNewDataFlag) // proceed only if new data was received
+        return;
+    Rarray packet;
+    ECP_Message recvMessage;
+    if (ECP_FindECPPacket(&uartBuffer, &packet) == 0) // packet found
+    {
+        ECP_DecodeRarray(&recvMessage, &packet);
+        MCU0_DoMessageAction(&recvMessage);
+    }
+}
+
+static void MCU0_DoMessageAction(ECP_Message * msg)
+{
+    if (msg->command == ECP_COMMAND_SENSORS_SET)
+    {
+        switch (msg->subCommand)
+        {
+            case 0: sensors.fanManualControl = 0; break;
+            case 1: sensors.fanManualControl = 1; break;
+            case 10: POWER_OUTPUT_0_LAT = 1; break;
+            case 11: POWER_OUTPUT_1_LAT = 1; break;
+            case 12: POWER_OUTPUT_2_LAT = 1; break;
+            case 13: POWER_OUTPUT_3_LAT = 1; break;
+            case 14: MCU0_SetEmergencyLight(1); break;
+            case 20: POWER_OUTPUT_0_LAT = 0; break;
+            case 21: POWER_OUTPUT_1_LAT = 0; break;
+            case 22: POWER_OUTPUT_2_LAT = 0; break;
+            case 23: POWER_OUTPUT_3_LAT = 0; break;
+            case 24: MCU0_SetEmergencyLight(0); break;
+            case 30: MCU0_SetLED(0,1); break;
+            case 31: MCU0_SetLED(1,1); break;
+            case 32: MCU0_SetLED(2,1); break;
+            case 40: MCU0_SetLED(0,0); break;
+            case 41: MCU0_SetLED(1,0); break;
+            case 42: MCU0_SetLED(2,0); break;
+            case 50: MCU0_SetChargingEnable(0); break;
+            case 51: MCU0_SetChargingEnable(1); break;
+            case 100: MCU0_SetBuzzer(200); break;
+            case 101: MCU0_SetBuzzer(400); break;
+            case 102: MCU0_SetBuzzer(600); break;
+            case 103: MCU0_SetBuzzer(800); break;
+            case 104: MCU0_SetBuzzer(1000); break;
+            case 105: MCU0_SetBuzzer(1500); break;
+        }
+    }
 }

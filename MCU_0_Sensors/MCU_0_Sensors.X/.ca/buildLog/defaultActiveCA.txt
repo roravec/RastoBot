@@ -1,0 +1,132 @@
+make -f nbproject/Makefile-defaultActiveCA.mk SUBPROJECTS= .clean-conf
+make[1]: Entering directory 'C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X'
+rm -f  -r .ca/build/defaultActiveCA/production
+rm -f  -r .ca/dist/defaultActiveCA/production
+make[1]: Leaving directory 'C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X'
+[32mCLEAN SUCCESSFUL (total time: 562ms)[0m
+make -f nbproject/Makefile-defaultActiveCA.mk SUBPROJECTS= .build-conf
+make[1]: Entering directory 'C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X'
+make  -f nbproject/Makefile-defaultActiveCA.mk .ca/dist/defaultActiveCA/production/MCU_0_Sensors.X.production.hex
+make[2]: Entering directory 'C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X'
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/hwinterface.p1 hwinterface.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/config.p1 config.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/main.p1 main.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/RastoBot.p1 RastoBot.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/pic18_uart.p1 pic18_uart.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/RastoBot_MCU0.p1 RastoBot_MCU0.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/ermaCommProtocol.p1 ermaCommProtocol.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/rarray.p1 rarray.c 
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -c   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_defaultActiveCA=defaultActiveCA  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits   -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o .ca/build/defaultActiveCA/production/dht11.p1 dht11.c 
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+ermaCommProtocol.c:53:27: warning: unsequenced modification and access to 'currentIndex' [-Wunsequenced]
+    out->data[currentIndex++] = ~out->data[(currentIndex-1)];
+                          ^                 ~~~~~~~~~~~~
+ermaCommProtocol.c:55:27: warning: unsequenced modification and access to 'currentIndex' [-Wunsequenced]
+    out->data[currentIndex++] = ~out->data[(currentIndex-1)];
+                          ^                 ~~~~~~~~~~~~
+2 warnings generated.
+pic18_uart.c:48:57: warning: implicit conversion loses integer precision: 'unsigned long' to 'uint8_t' (aka 'unsigned char') [-Wconversion]
+    uint8_t spbrg = ((PER_FREQ / desiredBaudrate) / 64) - 1;
+            ~~~~~   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+1 warning generated.
+RastoBot_MCU0.c:90:55: warning: implicit conversion changes signedness: 'int8_t' (aka 'signed char') to 'uint8_t' (aka 'unsigned char') [-Wsign-conversion]
+            sensors.humidities[sensor] =    dht11data.humidity;
+                                       ~    ~~~~~~~~~~^~~~~~~~
+RastoBot_MCU0.c:98:33: warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'int16_t' (aka 'short') [-Wsign-conversion]
+    sensors.currentSensors[0] = MCU0_AnalogReadValue(CURRENT_SENSOR_0_ANCH);
+                              ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RastoBot_MCU0.c:99:33: warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'int16_t' (aka 'short') [-Wsign-conversion]
+    sensors.currentSensors[1] = MCU0_AnalogReadValue(CURRENT_SENSOR_1_ANCH);
+                              ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RastoBot_MCU0.c:100:33: warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'int16_t' (aka 'short') [-Wsign-conversion]
+    sensors.currentSensors[2] = MCU0_AnalogReadValue(CURRENT_SENSOR_2_ANCH);
+                              ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RastoBot_MCU0.c:101:33: warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'int16_t' (aka 'short') [-Wsign-conversion]
+    sensors.currentSensors[3] = MCU0_AnalogReadValue(CURRENT_SENSOR_3_ANCH);
+                              ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RastoBot_MCU0.c:104:33: warning: implicit conversion changes signedness: 'uint16_t' (aka 'unsigned short') to 'int16_t' (aka 'short') [-Wsign-conversion]
+    sensors.batteryVoltage =    MCU0_AnalogReadValue(BATTERY_STATUS_ANCH);
+                           ~    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+6 warnings generated.
+RastoBot.c:36:45: warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wconversion]
+            (sensors->powerOutputs[3] << 3) |
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+RastoBot.c:42:40: warning: implicit conversion loses integer precision: 'int' to 'uint8_t' (aka 'unsigned char') [-Wconversion]
+            (sensors->tiltSensor << 2) |
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+RastoBot.c:52:35: warning: implicit conversion changes signedness: 'uint8_t' (aka 'unsigned char') to 'int8_t' (aka 'signed char') [-Wsign-conversion]
+    sensorsOut->temperatures[0] = in->data[4];
+                                ~ ^~~~~~~~~~~
+RastoBot.c:53:35: warning: implicit conversion changes signedness: 'uint8_t' (aka 'unsigned char') to 'int8_t' (aka 'signed char') [-Wsign-conversion]
+    sensorsOut->temperatures[1] = in->data[5];
+                                ~ ^~~~~~~~~~~
+RastoBot.c:54:35: warning: implicit conversion changes signedness: 'uint8_t' (aka 'unsigned char') to 'int8_t' (aka 'signed char') [-Wsign-conversion]
+    sensorsOut->temperatures[2] = in->data[6];
+                                ~ ^~~~~~~~~~~
+RastoBot.c:55:35: warning: implicit conversion changes signedness: 'uint8_t' (aka 'unsigned char') to 'int8_t' (aka 'signed char') [-Wsign-conversion]
+    sensorsOut->temperatures[3] = in->data[7];
+                                ~ ^~~~~~~~~~~
+RastoBot.c:66:43: warning: implicit conversion changes signedness: 'int' to 'uint16_t' (aka 'unsigned short') [-Wsign-conversion]
+    sensorsOut->rainSensor = in->data[21] | (in->data[20] << 8);
+                           ~ ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+RastoBot.c:67:44: warning: implicit conversion changes signedness: 'int' to 'uint16_t' (aka 'unsigned short') [-Wsign-conversion]
+    sensorsOut->lightSensor = in->data[23] | (in->data[22] << 8);
+                            ~ ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+8 warnings generated.
+"C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"  -mcpu=18F47J13 -Wl,-Map=.ca/dist/defaultActiveCA/production/MCU_0_Sensors.X.production.map  -DXPRJ_defaultActiveCA=defaultActiveCA  -Wl,--defsym=__MPLAB_BUILD=1   -mdfp="C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC18F-J_DFP/1.5.44/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto      -Wl,--memorysummary,.ca/dist/defaultActiveCA/production/memoryfile.xml -o .ca/dist/defaultActiveCA/production/MCU_0_Sensors.X.production.elf  .ca/build/defaultActiveCA/production/main.p1 .ca/build/defaultActiveCA/production/hwinterface.p1 .ca/build/defaultActiveCA/production/config.p1 .ca/build/defaultActiveCA/production/RastoBot.p1 .ca/build/defaultActiveCA/production/RastoBot_MCU0.p1 .ca/build/defaultActiveCA/production/dht11.p1 .ca/build/defaultActiveCA/production/pic18_uart.p1 .ca/build/defaultActiveCA/production/rarray.p1 .ca/build/defaultActiveCA/production/ermaCommProtocol.p1     
+::: advisory: (2051) the current license does not permit the selected optimization level, using optimization level 2
+config.c:24:: warning: (520) function "_Delay_ticks" is never called
+RastoBot.c:48:: warning: (520) function "_RastoBot_Decode_Sensors" is never called
+RastoBot_MCU0.c:161:: warning: (520) function "_MCU0_GetExternalInputDetected" is never called
+RastoBot_MCU0.c:168:: warning: (520) function "_MCU0_SetBuzzer" is never called
+RastoBot_MCU0.c:173:: warning: (520) function "_MCU0_SetChargingEnable" is never called
+RastoBot_MCU0.c:179:: warning: (520) function "_MCU0_SetEmergencyLight" is never called
+RastoBot_MCU0.c:184:: warning: (520) function "_MCU0_SetLED" is never called
+RastoBot_MCU0.c:219:: warning: (520) function "_MCU0_TaskLogPowerOutputs" is never called
+pic18_uart.c:12:: warning: (520) function "_UART_Init" is never called
+pic18_uart.c:46:: warning: (520) function "_UART_CalculateSPBRG" is never called
+pic18_uart.c:59:: warning: (520) function "_UART_WriteString" is never called
+pic18_uart.c:82:: warning: (520) function "_UART_SendBreak" is never called
+pic18_uart.c:88:: warning: (520) function "_UART_InitInterrupts" is never called
+pic18_uart.c:95:: warning: (520) function "_UART_DisableInterrupts" is never called
+rarray.c:6:: warning: (520) function "_RarrayCreate" is never called
+rarray.c:15:: warning: (520) function "_RarrayReset" is never called
+rarray.c:24:: warning: (520) function "_RarrayGetValueAtIndex" is never called
+rarray.c:33:: warning: (520) function "_RarraySetValueAtIndex" is never called
+rarray.c:43:: warning: (520) function "_RarrayRemoveRange" is never called
+rarray.c:47:: warning: (520) function "_RarrayRemoveRangeLO" is never called
+rarray.c:69:: warning: (520) function "_RarrayCopyRange" is never called
+rarray.c:87:: warning: (520) function "_RarrayPush" is never called
+rarray.c:95:: warning: (520) function "_RarrayPop" is never called
+rarray.c:105:: warning: (520) function "_RarrayShift" is never called
+rarray.c:109:: warning: (520) function "_RarrayRemoveFirst" is never called
+rarray.c:119:: warning: (520) function "_RarrayUnshift" is never called
+rarray.c:123:: warning: (520) function "_RarrayAddFront" is never called
+rarray.c:141:: warning: (520) function "_RarrayFindFirst" is never called
+rarray.c:156:: warning: (520) function "_RarrayFindLast" is never called
+rarray.c:172:: warning: (520) function "_RarrayLock" is never called
+rarray.c:177:: warning: (520) function "_RarrayUnlock" is never called
+ermaCommProtocol.c:6:: warning: (520) function "_ECP_CreateMessage" is never called
+ermaCommProtocol.c:17:: warning: (520) function "_ECP_CreateMessageCommand" is never called
+ermaCommProtocol.c:26:: warning: (520) function "_ECP_Decode" is never called
+ermaCommProtocol.c:42:: warning: (520) function "_ECP_DecodeRarray" is never called
+ermaCommProtocol.c:68:: warning: (520) function "_ECP_FindECPPacket" is never called
+ermaCommProtocol.c:107:: warning: (520) function "_RarrayLock@ermaCommProtocol$F1891" is never called
+ermaCommProtocol.c:112:: warning: (520) function "_RarrayUnlock@ermaCommProtocol$F1897" is never called
+
+Memory Summary:
+    Program space        used   E86h (  3718) of 1FFF8h bytes   (  2.8%)
+    Data space           used   145h (   325) of   EB0h bytes   (  8.6%)
+    Configuration bits   used     4h (     4) of     4h words   (100.0%)
+
+make[2]: Leaving directory 'C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X'
+make[1]: Leaving directory 'C:/Users/orras/Documents/GitHub/RastoBot/MCU_0_Sensors/MCU_0_Sensors.X'
+[32mBUILD SUCCESSFUL (total time: 7s)[0m

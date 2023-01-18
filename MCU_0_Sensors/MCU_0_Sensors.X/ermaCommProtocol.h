@@ -14,7 +14,7 @@ extern "C" {
 
 #include "rarray.h"
     
-#define ECP_MAX_DATA_BYTES  255
+#define ECP_MAX_DATA_BYTES  50
 #define ECP_FIRST_BYTE      0x01
 #define ECP_LAST_BYTE       0x04
 #define ECP_COMMAND_LEN     4
@@ -32,18 +32,19 @@ typedef enum
 
 typedef struct
 {
-    uint16_t        command;
+    uint8_t         command;
+    uint8_t         subCommand;
     uint8_t         dlc;
     uint8_t         data[ECP_MAX_DATA_BYTES];
     ECP_MessageType msgType;
 } ECP_Message;
 
-ECP_Message * ECP_CreateMessage(ECP_Message * messOut, uint16_t command, uint8_t * data, uint8_t dlc);
-ECP_Message * ECP_CreateMessageCommand(ECP_Message * messOut, uint16_t command);
-ECP_Message * ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
-ECP_Message * ECP_DecodeRarray(ECP_Message * messOut, Rarray * ecpRaw); // calls ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
-Rarray * ECP_Encode(ECP_Message * message, Rarray * out);
-Rarray * ECP_FindECPPacket(Rarray * in, Rarray * out);
+ECP_Message *   ECP_CreateMessage(ECP_Message * messOut, uint8_t command, uint8_t subCommand, uint8_t * data, uint8_t dlc);
+ECP_Message *   ECP_CreateMessageCommand(ECP_Message * messOut, uint8_t command, uint8_t subCommand);
+ECP_Message *   ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
+ECP_Message *   ECP_DecodeRarray(ECP_Message * messOut, Rarray * ecpRaw); // calls ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
+Rarray *        ECP_Encode(ECP_Message * message, Rarray * out);
+int8_t          ECP_FindECPPacket(Rarray * in, Rarray * out);
 
 #ifdef	__cplusplus
 }
