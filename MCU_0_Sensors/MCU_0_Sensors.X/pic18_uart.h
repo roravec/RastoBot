@@ -32,7 +32,7 @@ extern Rarray uartBuffer;
 extern _Bool uartNewDataFlag;
 
 #define PER_FREQ                FCY         // CPU peripheral frequency
-#define UART_BAUDRATE           19200       // UART baudrate
+#define UART_BAUDRATE           9600//19200       // UART baudrate
 
 // Constants for easier work with UART register bits
 #define U1TX_TRIS    UART_TX_TRIS
@@ -41,7 +41,7 @@ extern _Bool uartNewDataFlag;
 //-----------[ Functions' Prototypes ]--------------
 
 void UART_Init(void);           // first time init
-uint8_t UART_CalculateSPBRG(uint16_t desiredBaudrate);
+uint8_t UART_CalculateSPBRG(uint32_t desiredBaudrate);
 void UART_Write(uint8_t); // writes individual char
 void UART_Write_String(uint8_t*);  // writes string of chars
 void UART_WriteData(uint8_t* buf, uint16_t len);    // writes string of chars

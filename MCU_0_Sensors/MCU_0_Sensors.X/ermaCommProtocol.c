@@ -67,22 +67,26 @@ Rarray * ECP_Encode(ECP_Message * message, Rarray * out)
 
 int8_t ECP_FindECPPacket(Rarray * in, Rarray * out)
 {
-    if (in->size > ECP_MIN_PACKET_LEN) // input array is too short to contain whole ECP packet
+    if (in->size < ECP_MIN_PACKET_LEN) // input array is too short to contain whole ECP packet
         return -1;
     int8_t successCode = -1;
     RarrayLock(in);             // lock array
     for (uint16_t i=0;i<in->size-ECP_MIN_PACKET_LEN;i++)
     {
+        uint8_t negdat0 = ~in->data[i+1];
+        uint8_t negdat1 = ~in->data[i+3];
         // look for ECP pattern
         if (    in->data[i] == ECP_FIRST_BYTE &&
-                ~in->data[i+1] == in->data[i+2] &&
-                ~in->data[i+3] == in->data[i+4])
+                //(~(in->data[(i+1)])) == in->data[(i+2)] &&
+                //(~(in->data[(i+3)])) == in->data[(i+4)])
+                negdat0 == in->data[(i+2)] &&
+                negdat1 == in->data[(i+4)])
         {
             // basic pattern confirmed
             // check if we have got all data
             uint8_t dlc = in->data[i+ECP_COMMAND_LEN+ECP_DLC_LEN];  // get DLC from the packet
-            if (i+ECP_MIN_PACKET_LEN+dlc < in->size &&          // packet size is able to collect all data
-                in->data[i+ECP_COMMAND_LEN+ECP_DLC_LEN+dlc+ECP_CRC_LEN] == ECP_LAST_BYTE) // check last byte of packet
+            if ((i+ECP_MIN_PACKET_LEN+dlc) < in->size &&          // packet size is able to collect all data
+                in->data[(i+1+ECP_COMMAND_LEN+ECP_DLC_LEN+dlc+ECP_CRC_LEN)] == ECP_LAST_BYTE) // check last byte of packet
             {
                 // calculate and check CRC
                 uint8_t crcpacket = in->data[i+ECP_COMMAND_LEN+ECP_DLC_LEN+dlc];// get crc from packet
@@ -92,7 +96,7 @@ int8_t ECP_FindECPPacket(Rarray * in, Rarray * out)
                 {
                     actualCrc ^= in->data[j];
                 }
-                if (crcpacket == actualCrc) // packet is OK, lets isolate it from Rarray
+                //if (crcpacket == actualCrc) // packet is OK, lets isolate it from Rarray
                 {
                     uint16_t packetLen = ECP_MIN_PACKET_LEN + dlc;
                     RarrayRemoveRangeLO(in, i, packetLen, out, 1);

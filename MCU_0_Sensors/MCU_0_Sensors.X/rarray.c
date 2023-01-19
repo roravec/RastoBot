@@ -50,7 +50,7 @@ void RarrayRemoveRangeLO(Rarray * buf, uint32_t startIndex, uint32_t endIndex, R
         return;
     uint32_t dif = endIndex - startIndex;   // get difference
     if (removedRangeOut != 0)   // copy range only if it is requested
-        RarrayCopyRange(buf, startIndex, endIndex, removedRangeOut); // copy range before removal
+        RarrayCopyRangeLO(buf, startIndex, endIndex, removedRangeOut,supressLock); // copy range before removal
     if (!supressLock)
         RarrayLock(buf);                        // lock buffer for writing
     for (uint32_t i = startIndex ;i<buf->size-dif; i++)
@@ -65,22 +65,31 @@ void RarrayRemoveRangeLO(Rarray * buf, uint32_t startIndex, uint32_t endIndex, R
     if (!supressLock)
         RarrayUnlock(buf);                      // unlock buffer
 }
-
 void RarrayCopyRange(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination)
+{
+    RarrayCopyRangeLO(from, startIndex, endIndex, destination, 0);
+}
+void RarrayCopyRangeLO(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination, _Bool supressLock)
 {
     if (from == 0 || destination == 0)      // invalid array pointers
         return;
     uint32_t dif = endIndex - startIndex;   // get difference
     if (dif > destination->size) // destination array is smaller than requested range to copy
         return;
-    RarrayLock(from);                       // lock
-    RarrayLock(destination);                // lock
+    if (!supressLock)
+    {
+        RarrayLock(from);                       // lock
+        RarrayLock(destination);                // lock
+    }
     for (uint32_t i = startIndex, j=0;i<from->size-dif; i++, j++)
     {
-        destination->data[j] = from->data[i+dif];    // copy data from endIndex to startIndex
+        destination->data[j] = from->data[i];    // copy data from endIndex to startIndex
     }
-    RarrayUnlock(destination);                      // unlock buffer
-    RarrayUnlock(from);                             // unlock buffer
+    if (!supressLock)
+    {
+        RarrayUnlock(destination);                      // unlock buffer
+        RarrayUnlock(from);                             // unlock buffer
+    }
 }
 
 // adds value to the end of the array

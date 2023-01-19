@@ -22,7 +22,7 @@ extern "C" {
 
 #include <stdint.h>
     
-#define RARRAY_SIZE_MAX 200
+#define RARRAY_SIZE_MAX 30
    
 typedef struct
 {
@@ -40,6 +40,7 @@ void        RarraySetValueAtIndex(Rarray * buf, uint32_t index, uint8_t data);
 void        RarrayRemoveRange(Rarray * buf, uint32_t startIndex, uint32_t endIndex, Rarray * removedRangeOut);
 void        RarrayRemoveRangeLO(Rarray * buf, uint32_t startIndex, uint32_t endIndex, Rarray * removedRangeOut, _Bool supressLock);
 void        RarrayCopyRange(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination);
+void        RarrayCopyRangeLO(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination, _Bool supressLock);
 void        RarrayPush(Rarray * buf, uint8_t data); // add element to end
 uint8_t     RarrayPop(Rarray * buf);                // removes and returns element from end
 uint8_t     RarrayShift(Rarray * buf);              // calls RarrayRemoveFirst

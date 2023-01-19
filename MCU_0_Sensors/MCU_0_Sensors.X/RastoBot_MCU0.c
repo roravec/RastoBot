@@ -49,6 +49,7 @@ void MCU0_Init(void)
     // reset fans
     for (uint8_t i=0;i<MCU0_FANS_COUNT;i++)
         fansActive[i] = 0;
+    UART_Init();
 }
 uint32_t loopCounter = 0;
 static void MCU0_DoTasks(void)
@@ -251,6 +252,7 @@ static void MCU0_TaskCheckForNewReceivedData(void)
         ECP_DecodeRarray(&recvMessage, &packet);
         MCU0_DoMessageAction(&recvMessage);
     }
+    uartNewDataFlag = 0;
 }
 
 static void MCU0_DoMessageAction(ECP_Message * msg)

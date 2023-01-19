@@ -47,9 +47,11 @@ void UART_Init(void)
     UART_InitInterrupts();
 }
 
-uint8_t UART_CalculateSPBRG(uint16_t desiredBaudrate)
+uint8_t UART_CalculateSPBRG(uint32_t desiredBaudrate)
 {
-    uint8_t spbrg = ((PER_FREQ / desiredBaudrate) / 64) - 1;
+    float spb1 = PER_FREQ / desiredBaudrate;
+    spb1 = spb1 / 16;
+    uint8_t spbrg = spb1 - 1;
     return spbrg;
 }
 
@@ -93,7 +95,7 @@ void UART_InitInterrupts(void)
 {
     RC1IF = 0; // reset interrupt flag
     RC1IE = 1;
-    RC1IP = 0; // low priority
+    RC1IP = 1; // high priority
 }
 
 void UART_DisableInterrupts()
@@ -108,7 +110,9 @@ __interrupt() void ISR(void)
     {
         recvByte=RCREG1;//Receiving data
         RC1IF = 0;          // clear flag
-        RarrayUnshift(&uartBuffer, recvByte);
-        uartNewDataFlag = 1;
+        //RarrayUnshift(&uartBuffer, recvByte);
+        RarrayPush(&uartBuffer, recvByte);
+        if (recvByte == 0x04)
+            uartNewDataFlag = 1;
     }      
 }
