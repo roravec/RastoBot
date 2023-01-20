@@ -96,12 +96,13 @@ int8_t ECP_FindECPPacket(Rarray * in, Rarray * out)
                 {
                     actualCrc ^= in->data[j];
                 }
-                //if (crcpacket == actualCrc) // packet is OK, lets isolate it from Rarray
+                if (ECP_AVOID_CRC_CHECK_ON_RCV || crcpacket == actualCrc) // packet is OK, lets isolate it from Rarray
                 {
                     uint16_t packetLen = ECP_MIN_PACKET_LEN + dlc;
                     RarrayRemoveRangeLO(in, i, packetLen, out, 1);
                     out->size = packetLen;
                     successCode = 0;
+                    break;
                 }
             }
         }

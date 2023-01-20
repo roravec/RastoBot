@@ -13,8 +13,14 @@ extern "C" {
 #endif
 
 #include "rarray.h"
+#define ECP_MAX_DATA_BYTES  500
+#ifdef PIC18F47J13         // PIC18F47J13
+    #undef ECP_MAX_DATA_BYTES
+    #define ECP_MAX_DATA_BYTES  30
+//#else
+//    #define ECP_MAX_DATA_BYTES  500//500
+#endif
     
-#define ECP_MAX_DATA_BYTES  50
 #define ECP_FIRST_BYTE      0x01
 #define ECP_LAST_BYTE       0x04
 #define ECP_COMMAND_LEN     4
@@ -23,6 +29,8 @@ extern "C" {
 #define ECP_MIN_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN
     
 #define ECP_CRC_START_VALUE 0x55
+    
+#define ECP_AVOID_CRC_CHECK_ON_RCV    1
     
 typedef enum
 {

@@ -38,6 +38,7 @@ void Config_Init()
 
 void InitOscillator(void)
 {
+    PLLEN = 1;
     //internal oscillator setup - 8 MHz
     IRCF2 = 1;
     IRCF1 = 1;

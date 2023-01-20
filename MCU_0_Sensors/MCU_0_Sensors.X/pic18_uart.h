@@ -26,13 +26,13 @@ extern "C" {
 
 #include <xc.h>
 #include "config.h"
-#include "rarray.h"
+#include "../../SW/libs/rarray.h"
     
 extern Rarray uartBuffer;
 extern _Bool uartNewDataFlag;
 
 #define PER_FREQ                FCY         // CPU peripheral frequency
-#define UART_BAUDRATE           9600//19200       // UART baudrate
+#define UART_BAUDRATE           19200//9600       // UART baudrate
 
 // Constants for easier work with UART register bits
 #define U1TX_TRIS    UART_TX_TRIS

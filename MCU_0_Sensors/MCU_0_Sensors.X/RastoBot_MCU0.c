@@ -1,7 +1,13 @@
 #include "RastoBot_MCU0.h"
 /* GLOBALS */
 MCU_0_Sensors sensors;
-uint32_t buzzerTick = 0;
+uint16_t buzzerTick = 0;
+
+ECP_Message sensorsMessage;
+Rarray sendPacket;
+
+Rarray recvPacket;
+ECP_Message recvMessage;
 
 /* STATIC FUNCTIONS ***********************************************************/
 static void MCU0_DoTasks(void);
@@ -46,12 +52,15 @@ void MCU0_Init(void)
     ADCON1bits.ADFM = 1;
     ADCON0bits.ADON = 1;
     
+    RarrayCreate(&sendPacket, RARRAY_SIZE_MAX);
+    RarrayCreate(&recvPacket, RARRAY_SIZE_MAX);
+    
     // reset fans
     for (uint8_t i=0;i<MCU0_FANS_COUNT;i++)
         fansActive[i] = 0;
     UART_Init();
 }
-uint32_t loopCounter = 0;
+uint16_t loopCounter = 0;
 static void MCU0_DoTasks(void)
 {
     if (loopCounter % MCU0_FAN_CONTROL_EVERY == 0)
@@ -64,6 +73,7 @@ static void MCU0_DoTasks(void)
 }
 
 // Main MCU0 loop - should be called every 1ms
+uint8_t led1 = 0;
 void MCU0_Loop(void)
 {
     if (loopCounter % MCU0_READ_ANALOG_PINS_EVERY == 0)
@@ -75,6 +85,9 @@ void MCU0_Loop(void)
     
     MCU0_DoTasks();
     loopCounter++;
+    MCU0_SetLED(1, led1);
+    if (loopCounter % 10 == 0)
+        led1 = ~led1;
 }
 
 /* SENSORS ********************************************************************/
@@ -172,7 +185,7 @@ _Bool MCU0_GetExternalInputDetected(void)
 }
 
 // Tun on buzzer for TICKS cycles of loop
-void MCU0_SetBuzzer(uint32_t ticks)
+void MCU0_SetBuzzer(uint16_t ticks)
 {
     buzzerTick = ticks;
 }
@@ -211,9 +224,9 @@ static void MCU0_TaskBuzzerBuzz(void)
 {
     if (buzzerTick > 0)
     {
-        buzzerTick--;
         BUZZER_LAT = 1;
         sensors.buzzer = 1;
+        buzzerTick--;
     }
     else
     {
@@ -234,22 +247,18 @@ static void MCU0_TaskLogPowerOutputs(void)
 
 static void MCU0_TaskSendSensorsData(void)
 {
-    ECP_Message sensorsMessage;
-    Rarray packet;
     RastoBot_Encode_Sensors(&sensorsMessage, &sensors);
-    ECP_Encode(&sensorsMessage, &packet);
-    UART_WriteData(packet.data, packet.size);
+    ECP_Encode(&sensorsMessage, &sendPacket);
+    UART_WriteData(sendPacket.data, sendPacket.size);
 }
 
 static void MCU0_TaskCheckForNewReceivedData(void)
 {
     if (!uartNewDataFlag) // proceed only if new data was received
         return;
-    Rarray packet;
-    ECP_Message recvMessage;
-    if (ECP_FindECPPacket(&uartBuffer, &packet) == 0) // packet found
+    if (ECP_FindECPPacket(&uartBuffer, &recvPacket) == 0) // packet found
     {
-        ECP_DecodeRarray(&recvMessage, &packet);
+        ECP_DecodeRarray(&recvMessage, &recvPacket);
         MCU0_DoMessageAction(&recvMessage);
     }
     uartNewDataFlag = 0;
@@ -281,12 +290,13 @@ static void MCU0_DoMessageAction(ECP_Message * msg)
             case 42: MCU0_SetLED(2,0); break;
             case 50: MCU0_SetChargingEnable(0); break;
             case 51: MCU0_SetChargingEnable(1); break;
-            case 100: MCU0_SetBuzzer(200); break;
-            case 101: MCU0_SetBuzzer(400); break;
-            case 102: MCU0_SetBuzzer(600); break;
-            case 103: MCU0_SetBuzzer(800); break;
-            case 104: MCU0_SetBuzzer(1000); break;
-            case 105: MCU0_SetBuzzer(1500); break;
+            case 100: MCU0_SetBuzzer(20); break;
+            case 101: MCU0_SetBuzzer(40); break;
+            case 102: MCU0_SetBuzzer(60); break;
+            case 103: MCU0_SetBuzzer(80); break;
+            case 104: MCU0_SetBuzzer(100); break;
+            case 105: MCU0_SetBuzzer(150); break;
+            default: break;
         }
     }
 }

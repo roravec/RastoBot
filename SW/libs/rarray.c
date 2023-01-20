@@ -21,7 +21,7 @@ void RarrayReset(Rarray * buf)
     RarrayUnlock(buf);      // unlock buffer
 }
 
-uint8_t RarrayGetValueAtIndex(Rarray * buf, uint32_t index)
+uint8_t RarrayGetValueAtIndex(Rarray * buf, uint16_t index)
 {
     uint8_t retVal = 0;
     RarrayLock(buf);        // lock buffer for reading
@@ -30,7 +30,7 @@ uint8_t RarrayGetValueAtIndex(Rarray * buf, uint32_t index)
     RarrayUnlock(buf);      // unlock buffer
     return retVal;
 }
-void RarraySetValueAtIndex(Rarray * buf, uint32_t index, uint8_t data)
+void RarraySetValueAtIndex(Rarray * buf, uint16_t index, uint8_t data)
 {
     if (index >= buf->size)
         return;
@@ -40,24 +40,24 @@ void RarraySetValueAtIndex(Rarray * buf, uint32_t index, uint8_t data)
 }
 
 /* Start at startIndex, stops before endIndex */
-void RarrayRemoveRange(Rarray * buf, uint32_t startIndex, uint32_t endIndex, Rarray * removedRangeOut)
+void RarrayRemoveRange(Rarray * buf, uint16_t startIndex, uint16_t endIndex, Rarray * removedRangeOut)
 {
     RarrayRemoveRangeLO(buf, startIndex, endIndex, removedRangeOut, 0);
 }
-void RarrayRemoveRangeLO(Rarray * buf, uint32_t startIndex, uint32_t endIndex, Rarray * removedRangeOut, _Bool supressLock)
+void RarrayRemoveRangeLO(Rarray * buf, uint16_t startIndex, uint16_t endIndex, Rarray * removedRangeOut, _Bool supressLock)
 {
     if (startIndex >= endIndex || endIndex > buf->currentIndex)             // fail condition
         return;
-    uint32_t dif = endIndex - startIndex;   // get difference
+    uint16_t dif = endIndex - startIndex;   // get difference
     if (removedRangeOut != 0)   // copy range only if it is requested
         RarrayCopyRangeLO(buf, startIndex, endIndex, removedRangeOut,supressLock); // copy range before removal
     if (!supressLock)
         RarrayLock(buf);                        // lock buffer for writing
-    for (uint32_t i = startIndex ;i<buf->size-dif; i++)
+    for (uint16_t i = startIndex ;i<buf->size-dif; i++)
     {
         buf->data[i] = buf->data[i+dif];    // copy data from endIndex to startIndex
     }
-    for (uint32_t i = buf->size-dif ;i<buf->size; i++)
+    for (uint16_t i = buf->size-dif ;i<buf->size; i++)
     {
         buf->data[i] = 0x00;                //  rewrite all copied data with 0x00
     }
@@ -65,15 +65,15 @@ void RarrayRemoveRangeLO(Rarray * buf, uint32_t startIndex, uint32_t endIndex, R
     if (!supressLock)
         RarrayUnlock(buf);                      // unlock buffer
 }
-void RarrayCopyRange(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination)
+void RarrayCopyRange(Rarray * from, uint16_t startIndex, uint16_t endIndex, Rarray * destination)
 {
     RarrayCopyRangeLO(from, startIndex, endIndex, destination, 0);
 }
-void RarrayCopyRangeLO(Rarray * from, uint32_t startIndex, uint32_t endIndex, Rarray * destination, _Bool supressLock)
+void RarrayCopyRangeLO(Rarray * from, uint16_t startIndex, uint16_t endIndex, Rarray * destination, _Bool supressLock)
 {
     if (from == 0 || destination == 0)      // invalid array pointers
         return;
-    uint32_t dif = endIndex - startIndex;   // get difference
+    uint16_t dif = endIndex - startIndex;   // get difference
     if (dif > destination->size) // destination array is smaller than requested range to copy
         return;
     if (!supressLock)
@@ -81,7 +81,7 @@ void RarrayCopyRangeLO(Rarray * from, uint32_t startIndex, uint32_t endIndex, Ra
         RarrayLock(from);                       // lock
         RarrayLock(destination);                // lock
     }
-    for (uint32_t i = startIndex, j=0;i<from->size-dif; i++, j++)
+    for (uint16_t i = startIndex, j=0;i<from->size-dif; i++, j++)
     {
         destination->data[j] = from->data[i];    // copy data from endIndex to startIndex
     }
@@ -135,10 +135,10 @@ void RarrayAddFront(Rarray * buf, uint8_t data)
         return;     // invalid array
     // skip last index and start from last-1
     RarrayLock(buf);       // lock buffer
-    for (uint32_t i=buf->size-1; i>0;i--)
+    for (uint16_t i=buf->size-1; i>0;i--)
     {
-        uint32_t indexFrom = i-1;
-        uint32_t indexTo = i;
+        uint16_t indexFrom = i-1;
+        uint16_t indexTo = i;
         buf->data[indexTo] = buf->data[indexFrom];
     }
     if (buf->currentIndex < buf->size)

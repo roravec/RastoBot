@@ -13,12 +13,12 @@
 #ifndef RASTOBOT_MCU0_H
 #define	RASTOBOT_MCU0_H
 
-#define MCU0_READ_TEMPERATURE_EVERY     1000 // loop ticks
-#define MCU0_READ_ANALOG_PINS_EVERY     1000
-#define MCU0_READ_TILT_SENSOR_EVERY     10
-#define MCU0_FAN_CONTROL_EVERY          100
-#define MCU0_SEND_SENSORS_DATA_EVERY    2000
-#define MCU0_CHECK_FOR_RECV_DATA_EVERY  100
+#define MCU0_READ_TEMPERATURE_EVERY     400 // loop ticks
+#define MCU0_READ_ANALOG_PINS_EVERY     350
+#define MCU0_READ_TILT_SENSOR_EVERY     1
+#define MCU0_FAN_CONTROL_EVERY          10
+#define MCU0_SEND_SENSORS_DATA_EVERY    300
+#define MCU0_CHECK_FOR_RECV_DATA_EVERY  1
 
 #define MCU0_DHT11_SENSORS_COUNT        4
 #define MCU0_FANS_COUNT                 4
@@ -44,7 +44,7 @@ extern "C" {
 #endif
     
 /* Includes */
-#include "RastoBot.h"
+#include "../../SW/libs/RastoBot.h"
 #include "hwinterface.h"
 #include "dht11.h"
 #include "pic18_uart.h"
@@ -68,7 +68,7 @@ extern "C" {
     _Bool MCU0_GetExternalInputDetected(void);
     
     /* Setters */
-    void MCU0_SetBuzzer(uint32_t ticks);
+    void MCU0_SetBuzzer(uint16_t ticks);
     void MCU0_SetChargingEnable(_Bool pinStatus);
     void MCU0_SetEmergencyLight(_Bool pinStatus);
     void MCU0_SetLED(uint8_t led, _Bool status);

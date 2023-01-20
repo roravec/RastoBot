@@ -12,9 +12,12 @@
 #include "hwinterface.h"
 #include <p32xxxx.h>
 
-#define FCY         64000000UL // CPU frequency
-#define PCLK        16000000UL // peripheral frequency
-#define REFCLK      4000000UL   // output to PWM
+#define SYS_LOCK { SYSKEY = 0x00000000; }
+#define SYS_UNLOCK { SYSKEY = 0x00000000; SYSKEY = 0xAA996655; SYSKEY = 0x556699AA; SYSKEY = 1;}
+
+#define FCY         24000000UL // CPU frequency
+#define PCLK        24000000UL // peripheral frequency
+#define REFCLK      24000000UL   // output to PWM
 #define SYS_FREQ    PCLK
 
 /* Function prototypes */

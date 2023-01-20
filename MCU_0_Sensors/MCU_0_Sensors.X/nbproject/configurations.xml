@@ -6,12 +6,17 @@
                    projectFiles="true">
       <itemPath>config.h</itemPath>
       <itemPath>hwinterface.h</itemPath>
-      <itemPath>RastoBot.h</itemPath>
       <itemPath>RastoBot_MCU0.h</itemPath>
       <itemPath>dht11.h</itemPath>
       <itemPath>pic18_uart.h</itemPath>
-      <itemPath>rarray.h</itemPath>
-      <itemPath>ermaCommProtocol.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="libs" displayName="libs" projectFiles="true">
+      <itemPath>../../SW/libs/ermaCommProtocol.c</itemPath>
+      <itemPath>../../SW/libs/rarray.c</itemPath>
+      <itemPath>../../SW/libs/RastoBot.c</itemPath>
+      <itemPath>../../SW/libs/ermaCommProtocol.h</itemPath>
+      <itemPath>../../SW/libs/rarray.h</itemPath>
+      <itemPath>../../SW/libs/RastoBot.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -23,12 +28,9 @@
       <itemPath>main.c</itemPath>
       <itemPath>hwinterface.c</itemPath>
       <itemPath>config.c</itemPath>
-      <itemPath>RastoBot.c</itemPath>
       <itemPath>RastoBot_MCU0.c</itemPath>
       <itemPath>dht11.c</itemPath>
       <itemPath>pic18_uart.c</itemPath>
-      <itemPath>rarray.c</itemPath>
-      <itemPath>ermaCommProtocol.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -36,6 +38,10 @@
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>.</Elem>
+    <Elem>../../SW/libs</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
@@ -85,7 +91,7 @@
         <property key="call-prologues" value="false"/>
         <property key="default-bitfield-type" value="true"/>
         <property key="default-char-type" value="true"/>
-        <property key="define-macros" value=""/>
+        <property key="define-macros" value="PIC18F47J13"/>
         <property key="disable-optimizations" value="false"/>
         <property key="extra-include-directories" value=""/>
         <property key="favor-optimization-for" value="-speed,+space"/>
@@ -93,14 +99,14 @@
         <property key="garbage-collect-functions" value="true"/>
         <property key="identifier-length" value="255"/>
         <property key="local-generation" value="false"/>
-        <property key="operation-mode" value="pro"/>
+        <property key="operation-mode" value="std"/>
         <property key="opt-xc8-compiler-strict_ansi" value="false"/>
         <property key="optimization-assembler" value="true"/>
         <property key="optimization-assembler-files" value="true"/>
         <property key="optimization-debug" value="false"/>
         <property key="optimization-invariant-enable" value="false"/>
         <property key="optimization-invariant-value" value="16"/>
-        <property key="optimization-level" value="-O3"/>
+        <property key="optimization-level" value="-O2"/>
         <property key="optimization-speed" value="true"/>
         <property key="optimization-stable-enable" value="false"/>
         <property key="preprocess-assembler" value="true"/>
@@ -176,7 +182,7 @@
         <property key="debugoptions.debug-startup" value="Use system settings"/>
         <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="debugoptions.useswbreakpoints" value="true"/>
         <property key="freeze.timers" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

@@ -17,7 +17,6 @@ void UART_Init(void)
     RarrayCreate(&uartBuffer, RARRAY_SIZE_MAX);
     U1TX_TRIS = 0;
     U1RX_TRIS = 1;
-    //Baud rate set to 9600
     SPBRGH1 = 0; // SPBRG high byte
     SPBRG1 = UART_CalculateSPBRG(UART_BAUDRATE);
     //serial port enable
@@ -28,8 +27,6 @@ void UART_Init(void)
     TXSTA1bits.TXEN = 1;
     //asynchronous mode
     TXSTA1bits.SYNC = 0;
-    //high baud rate disabled
-    TXSTA1bits.BRGH = 0;
     //enable receiver
     RCSTA1bits.CREN = 1;
     //disable address detection
@@ -39,7 +36,9 @@ void UART_Init(void)
     //clear overrun error flag
     RCSTA1bits.OERR = 0;
     //16-bit baud rate generator enabled
-    BAUDCON1bits.BRG16 = 1; // use table 21-3 to calculate BRG
+    BAUDCON1bits.BRG16 = 0; // use table 21-3 to calculate BRG
+    //high baud rate disabled
+    TXSTA1bits.BRGH = 0;
     //receiver polarity not inverted
     BAUDCON1bits.RXDTP = 0;
     //transmitter polarity not inverted
@@ -50,7 +49,7 @@ void UART_Init(void)
 uint8_t UART_CalculateSPBRG(uint32_t desiredBaudrate)
 {
     float spb1 = PER_FREQ / desiredBaudrate;
-    spb1 = spb1 / 16;
+    spb1 = spb1 / 64;
     uint8_t spbrg = spb1 - 1;
     return spbrg;
 }
@@ -110,9 +109,8 @@ __interrupt() void ISR(void)
     {
         recvByte=RCREG1;//Receiving data
         RC1IF = 0;          // clear flag
-        //RarrayUnshift(&uartBuffer, recvByte);
         RarrayPush(&uartBuffer, recvByte);
-        if (recvByte == 0x04)
+        if (recvByte == 0x04) // end of packet
             uartNewDataFlag = 1;
     }      
 }
