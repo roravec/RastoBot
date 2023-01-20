@@ -10,6 +10,7 @@
       <itemPath>RastoBot_MCU1.h</itemPath>
       <itemPath>StepperDriver.h</itemPath>
       <itemPath>pwm.h</itemPath>
+      <itemPath>pic32mm_uart.h</itemPath>
     </logicalFolder>
     <logicalFolder name="libs" displayName="libs" projectFiles="true">
       <itemPath>../../SW/libs/ermaCommProtocol.c</itemPath>
@@ -33,6 +34,7 @@
       <itemPath>RastoBot_MCU1.c</itemPath>
       <itemPath>StepperDriver.c</itemPath>
       <itemPath>pwm.c</itemPath>
+      <itemPath>pic32mm_uart.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

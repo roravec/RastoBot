@@ -52,9 +52,9 @@ void InitOscillator(void)
     
     
     // SETUP PERIPRHERALS
-    RPINR9bits.U2RXR = 15;  // U2RX
-    RPOR3bits.RP14R = 1;    // U2TX
-    RPOR2bits.RP9R = 6;     // OCM3, SCCP2 Output Compare
+    RPINR9bits.U2RXR = 10;  // U2RX RP10
+    RPOR2bits.RP9R = 1;    // U2TX  RP9
+    RPOR1bits.RP8R = 6;     // OCM3, SCCP2 Output Compare
     // **********************************
 
     OSCCON = OSCCON | 0x00000101;    //NOSC = SPLL, initiate clock switch (OSWEN = 1)

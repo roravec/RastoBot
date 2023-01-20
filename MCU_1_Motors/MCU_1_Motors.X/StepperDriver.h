@@ -17,14 +17,6 @@ extern "C" {
 #define STEPPER_ENABLE 0
 #define STEPPER_DISABLE 1
 
-#define STEPPER_NUMBER_OF_STEPPERS  3
-typedef enum
-{
-    STEPPER_LEFT_WHEEL = 0,    
-    STEPPER_RIGHT_WHEEL = 1,
-    STEPPER_LEVELING = 2
-} StepperMotor;
-
 typedef enum
 {
     STEPPER_CW = 0,    
@@ -39,12 +31,24 @@ typedef enum
     STEPPER_EIGHTH_STEP = 3
 } StepperStepMode;
 
-    void Stepper_Init(StepperMotor, StepperStepMode, StepperDirection);
-    void Stepper_Step(StepperMotor);
-    void Stepper_ChangeDirection(StepperMotor, StepperDirection);
-    void Stepper_ChangeStepMode(StepperMotor, StepperStepMode);
-    void Stepper_Enable(StepperMotor);
-    void Stepper_Disable(StepperMotor);
+typedef struct
+{
+    uint8_t             hwId;
+    StepperDirection    direction;
+    StepperStepMode     stepMode;
+    uint16_t            speed;
+    _Bool               enabled;
+    uint32_t            position;
+    uint16_t            stepsPerCM;
+} Stepper;
+
+void Stepper_Init(Stepper*, uint8_t hwId, StepperStepMode, StepperDirection);
+void Stepper_Step(Stepper*);
+void Stepper_ChangeSpeed(Stepper*, uint16_t);
+void Stepper_ChangeDirection(Stepper*, StepperDirection);
+void Stepper_ChangeStepMode(Stepper*, StepperStepMode);
+void Stepper_Enable(Stepper*);
+void Stepper_Disable(Stepper*);
 
 
 #ifdef	__cplusplus

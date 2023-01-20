@@ -102,9 +102,9 @@ void UART_DisableInterrupts()
     RC1IE = 0;
 }
  /* INTERRUPT HANDLERS */
+uint8_t recvByte;
 __interrupt() void ISR(void)
 {
-    uint8_t recvByte;
     if(RC1IE == 1 && RC1IF==1)  //Polling for reception interrupt
     {
         recvByte=RCREG1;//Receiving data

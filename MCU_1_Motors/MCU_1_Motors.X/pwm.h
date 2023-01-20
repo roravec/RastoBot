@@ -17,7 +17,7 @@ extern "C" {
 #include <stdint.h>
 #include "config.h"
 
-#define PWM_CLOCK_FREQ      SYSCLK
+#define PWM_CLOCK_FREQ      8000000UL
 
 #define PWM_STATIC_FREQ     100
 
@@ -25,6 +25,7 @@ typedef enum { BOTH=0, RISING, FALLING, BOTH2, RISING4TH=4, FALLING4TH} PwmEdgeC
 
 void PWM_Init(void);
 void PWM_Set(float pwmFreq, uint8_t dutyPercent);
+void PWM_SetDuty(uint8_t dutyPercent);
 void PWM_SetDirect(uint32_t period, uint32_t duty);
 
 

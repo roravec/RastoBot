@@ -37,6 +37,22 @@ typedef struct
     _Bool       fanManualControl;
 } MCU_0_Sensors;
 
+/* MCU1 */
+#define MCU1_STEPPERS   3
+typedef struct
+{
+    uint8_t     mainMotorSpeed; // percent
+    _Bool       stepperEnabled[MCU1_STEPPERS];
+    _Bool       stepperDirection[MCU1_STEPPERS];
+    uint8_t     stepperStepMode[MCU1_STEPPERS];
+    uint16_t    stepperSpeed[MCU1_STEPPERS];
+    uint16_t    levelingPosition;
+    _Bool       limitSwitchUP;
+    _Bool       limitSwitchDOWN;
+} MCU_1_Motors;
+
+#define ECP_COMMAND_MOTORS_SET        211
+
 ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * sensors);
 MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message * in);
 
