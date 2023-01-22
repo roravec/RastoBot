@@ -3,11 +3,22 @@
 static void        RarrayLock(Rarray * buf);
 static void        RarrayUnlock(Rarray * buf);
 
-Rarray * RarrayCreate(Rarray * bufOut, uint16_t size)
+//Rarray * RarrayCreate(Rarray * bufOut, uint16_t size)
+//{
+//    bufOut->size = (size<=RARRAY_SIZE_MAX) ? size : RARRAY_SIZE_MAX;
+//    bufOut->lockActive = 0;
+//    bufOut->lockCode = 0;
+//    RarrayReset(bufOut);
+//    return bufOut;
+//}
+
+Rarray *    RarrayCreate(Rarray * bufOut, uint8_t * data, uint16_t size)
 {
     bufOut->size = (size<=RARRAY_SIZE_MAX) ? size : RARRAY_SIZE_MAX;
+    bufOut->data = data;
     bufOut->lockActive = 0;
     bufOut->lockCode = 0;
+    bufOut->created = 1; // array was successfully
     RarrayReset(bufOut);
     return bufOut;
 }

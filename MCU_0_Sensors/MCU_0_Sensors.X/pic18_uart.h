@@ -26,7 +26,7 @@ extern "C" {
 
 #include <xc.h>
 #include "config.h"
-#include "../../SW/libs/rarray.h"
+#include "../../SW/libs/ermaCommProtocol.h"
     
 extern Rarray uartBuffer;
 extern _Bool uartNewDataFlag;

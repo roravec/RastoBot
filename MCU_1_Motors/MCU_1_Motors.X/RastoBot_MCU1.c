@@ -1,11 +1,11 @@
 #include "RastoBot_MCU1.h"
 /* GLOBALS */
 
-ECP_Message motorsMessage;
-Rarray sendPacket;
-
-Rarray recvPacket;
-ECP_Message recvMessage;
+//ECP_Message motorsMessage;
+//Rarray sendPacket;
+//
+//Rarray recvPacket;
+//ECP_Message recvMessage;
 
 static Stepper steppers[MCU1_STEPPERS];
 
@@ -26,8 +26,6 @@ static void MCU1_TaskMotorControl(void);
 /* Init function */
 void MCU1_Init(void)
 {
-    RarrayCreate(&sendPacket, RARRAY_SIZE_MAX);
-    RarrayCreate(&recvPacket, RARRAY_SIZE_MAX);
     PWM_Init();
     UART_Init();
     Stepper_Init(&steppers[0], STEPPER_RIGHT_WHEEL, STEPPER_FULL_STEP, STEPPER_CW);
@@ -102,14 +100,14 @@ _Bool MCU1_GetLimitSwitchDOWN(void)
 
 static void MCU1_TaskCheckForNewReceivedData(void)
 {
-    if (!uartNewDataFlag) // proceed only if new data was received
-        return;
-    if (ECP_FindECPPacket(&uartBuffer, &recvPacket) == 0) // packet found
-    {
-        ECP_DecodeRarray(&recvMessage, &recvPacket);
-        MCU1_DoMessageAction(&recvMessage);
-    }
-    uartNewDataFlag = 0;
+//    if (!uartNewDataFlag) // proceed only if new data was received
+//        return;
+//    if (ECP_FindECPPacket(&uartBuffer, &recvPacket) == 0) // packet found
+//    {
+//        ECP_DecodeRarray(&recvMessage, &recvPacket);
+//        MCU1_DoMessageAction(&recvMessage);
+//    }
+//    uartNewDataFlag = 0;
 }
 
 static void MCU1_TaskMotorControl(void)

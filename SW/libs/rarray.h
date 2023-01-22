@@ -35,12 +35,15 @@ typedef struct
 {
     uint16_t    size;
     uint16_t    currentIndex;
-    uint8_t     data[RARRAY_SIZE_MAX];
+    uint8_t *   data;  
+    //uint8_t     data[RARRAY_SIZE_MAX];
     _Bool       lockActive;
     uint8_t     lockCode;
+    _Bool       created;
 } Rarray;
 
-Rarray *    RarrayCreate(Rarray * bufOut, uint16_t size);
+Rarray *    RarrayCreate(Rarray * bufOut, uint8_t * data, uint16_t size);
+//Rarray *    RarrayCreate(Rarray * bufOut, uint16_t size);
 void        RarrayReset(Rarray * buf);
 uint8_t     RarrayGetValueAtIndex(Rarray * buf, uint16_t index);
 void        RarraySetValueAtIndex(Rarray * buf, uint16_t index, uint8_t data);

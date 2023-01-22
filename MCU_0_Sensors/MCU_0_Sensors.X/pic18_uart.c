@@ -14,7 +14,8 @@ _Bool uartNewDataFlag = 0;
  */
 void UART_Init(void)
 {
-    RarrayCreate(&uartBuffer, RARRAY_SIZE_MAX);
+    ECP_RecvBufferInit(); // enable ECP for receiving
+    
     U1TX_TRIS = 0;
     U1RX_TRIS = 1;
     SPBRGH1 = 0; // SPBRG high byte
@@ -108,8 +109,9 @@ __interrupt() void ISR(void)
     if(RC1IE == 1 && RC1IF==1)  //Polling for reception interrupt
     {
         recvByte=RCREG1;//Receiving data
+        ECP_ReceivedByte(recvByte);
         RC1IF = 0;          // clear flag
-        RarrayPush(&uartBuffer, recvByte);
+//        RarrayPush(&uartBuffer, recvByte);
         if (recvByte == 0x04) // end of packet
             uartNewDataFlag = 1;
     }      
