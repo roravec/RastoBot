@@ -15,6 +15,7 @@
 
 #define MCU1_CHECK_NEW_MESSAGES_EVERY   1
 #define MCU1_MOTOR_CONTROL_EVERY        1
+#define MCU1_SEND_STATUS_DATA_EVERY     2000
 
 #ifdef	__cplusplus
 extern "C" {

@@ -80,3 +80,27 @@ MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message 
     sensorsOut->fanManualControl = (_Bool)(in->data[25] >> 4);
     return sensorsOut;
 }
+
+ECP_Message *   RastoBot_Encode_Motors(ECP_Message * out, MCU_1_Motors * motors)
+{
+    out->command = ECP_COMMAND_MOTORS_STATUS;
+    out->subCommand = 0;
+    
+    out->dlc = ECP_COMMAND_MOTORS_STATUS_DLC;
+    return out;
+}
+MCU_1_Motors * RastoBot_Decode_Motors(MCU_1_Motors * motorsOut, ECP_Message * in)
+{
+    return motorsOut;
+}
+
+/*
+     uint8_t     mainMotorSpeed; // percent
+    _Bool       stepperEnabled[MCU1_STEPPERS];
+    _Bool       stepperDirection[MCU1_STEPPERS];
+    uint8_t     stepperStepMode[MCU1_STEPPERS];
+    uint16_t    stepperSpeed[MCU1_STEPPERS];
+    uint16_t    levelingPosition;
+    _Bool       limitSwitchUP;
+    _Bool       limitSwitchDOWN;
+ */

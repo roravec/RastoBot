@@ -5,16 +5,21 @@ void Stepper_Init(Stepper* stepper, uint8_t hwId, StepperStepMode mode, StepperD
     stepper->hwId = hwId;
     Stepper_ChangeDirection(stepper, dir);
     Stepper_ChangeStepMode(stepper, mode);
-    Stepper_ChangeSpeed(stepper, 0);
+    Stepper_ChangeSpeed(stepper, 1023);
     Stepper_Enable(stepper);
+    stepper->steps = 0;
 }
 void Stepper_Step(Stepper* stepper)
 {
-    MP6500_Step(stepper->hwId);
+    if ((stepper->steps % (STEPPER_MAX_SPEED - stepper->speed)) == 0)
+        MP6500_Step(stepper->hwId);
+    stepper->steps++;
 }
 void Stepper_ChangeSpeed(Stepper* stepper, uint16_t speed)
 {
     stepper->speed = speed;
+    stepper->steps = 0;
+    
 }
 void Stepper_ChangeDirection(Stepper* stepper, StepperDirection dir)
 {

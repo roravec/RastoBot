@@ -3,6 +3,47 @@
  * Author: orras
  *
  * Created on January 18, 2023, 1:13 PM
+ * 
+ * How to receive and decode ECP packets:
+ * 1. Just call "void ECP_RecvBufferInit()"
+ * 2. Then each received byte should pre send to "void ECP_ReceivedByte(uint8_t data);"
+ *  This function checks whether app received correct ECP packet or not.
+ *  If app received complete ECP packet it will then add it to queue to process it by some other process.
+ * 3. So in the other process (eg. main loop) we have to dequeue decoded ECP Message with function:
+ *  ECP_Message *   ECP_MessageDequeue(void);
+ Code example:
+static void MCU0_TaskCheckForNewReceivedData(void)
+{
+    ECP_Message * msg;  // pointer to message to process
+    while ((msg = ECP_MessageDequeue()) != 0) // check if we have some message to process in queue
+    {
+        // a new message was received and decoded. Let's process it...
+        MCU0_DoMessageAction(msg);      // do requested action
+        ECP_MarkMessageAsComplete(msg); // mark message as processed. It will free up space in queue.
+    }
+}
+ * 
+ * MCU0_TaskCheckForNewReceivedData is called continously from main loop so we will not miss any message to process.
+ * 4. After the message was processed we have to flag it as Complete with function:
+ * void ECP_MarkMessageAsComplete(msg);
+ * 
+ * That's it.
+ * 
+ * 
+ * How to send ECP packets:
+ * 1. We need to have Rarray object prepored to store raw message data so let's create it:
+ * Rarray rawPacket; // create Rarray object
+ * uint8_t rawPacketArr[ECP_MAX_PACKET_LEN]; // we also have to create dummy array to store data. 
+ * // It is not necessary but by this way we will use just required memory space 
+ * // (this avoids creating of internal array which size is RARRAY_SIZE_MAX and that can me too much for some MCUs).
+ * RarrayCreate(&rawPacket, rawPacketArr, ECP_MAX_PACKET_LEN); // call RarrayCreate function to properly setup our Rarray object
+ * 2. Prepare yout ECP_Message, fill it with data.
+ * ECP_Message message;
+ * 3. Now just call Rarray * ECP_Encode(&message, &rawPacket);
+ * It will create ECP raw packet and store it in rawPacket.
+ * 4. At this point we have to just send rawPacket data with UART or some other peripheral of our choice.
+ * rawPacket stores data and data size.
+ * 
  */
 
 #ifndef ERMACOMMPROTOCOL_H

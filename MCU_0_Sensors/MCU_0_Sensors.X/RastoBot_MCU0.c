@@ -4,7 +4,7 @@ MCU_0_Sensors sensors;
 uint16_t buzzerTick = 0;
 
 ECP_Message sensorsMessage;
-uint8_t sensorDataArr[RARRAY_SIZE_MAX];
+uint8_t sensorDataArr[ECP_MAX_PACKET_LEN];
 Rarray sendPacket;
 
 //Rarray recvPacket;
@@ -53,8 +53,7 @@ void MCU0_Init(void)
     ADCON1bits.ADFM = 1;
     ADCON0bits.ADON = 1;
     
-    RarrayCreate(&sendPacket, sensorDataArr, RARRAY_SIZE_MAX);
-//    RarrayCreate(&recvPacket, RARRAY_SIZE_MAX);
+    RarrayCreate(&sendPacket, sensorDataArr, ECP_MAX_PACKET_LEN);
     
     // reset fans
     for (uint8_t i=0;i<MCU0_FANS_COUNT;i++)
@@ -255,22 +254,12 @@ static void MCU0_TaskSendSensorsData(void)
 
 static void MCU0_TaskCheckForNewReceivedData(void)
 {
-//    if (!uartNewDataFlag) // proceed only if new data was received
-//        return;
-//    if (ECP_FindECPPacket(&uartBuffer, &recvPacket) == 0) // packet found
-//    {
-//        ECP_DecodeRarray(&recvMessage, &recvPacket);
-//        MCU0_DoMessageAction(&recvMessage);
-//    }
-//    uartNewDataFlag = 0;
-    ECP_Message * msg;
-    while (msg = ECP_MessageDequeue() != 0)
+    ECP_Message * msg;  // pointer to message to process
+    while ((msg = ECP_MessageDequeue()) != 0) // check if we have some message to process in queue
     {
-        ECP_Message * msg = ECP_MessageDequeue();
-        if (msg == 0) // proceed only if new data was received
-            return;
-        MCU0_DoMessageAction(msg);
-        ECP_MarkMessageAsComplete(msg);
+        // a new message has been received and decoded. Let's process it...
+        MCU0_DoMessageAction(msg);      // do requested action
+        ECP_MarkMessageAsComplete(msg); // mark message as processed. It will free up space in queue.
     }
 }
 

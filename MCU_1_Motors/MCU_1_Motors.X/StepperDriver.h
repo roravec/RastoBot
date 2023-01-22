@@ -10,6 +10,8 @@
 
 #include "MP6500.h"
 
+#define	STEPPER_MAX_SPEED   1024
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
@@ -36,8 +38,9 @@ typedef struct
     uint8_t             hwId;
     StepperDirection    direction;
     StepperStepMode     stepMode;
-    uint16_t            speed;
+    uint16_t            speed;      // 1024 maximum
     _Bool               enabled;
+    uint32_t            steps;
     uint32_t            position;
     uint16_t            stepsPerCM;
 } Stepper;
