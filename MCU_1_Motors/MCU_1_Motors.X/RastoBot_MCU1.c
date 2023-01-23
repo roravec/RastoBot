@@ -30,9 +30,9 @@ void MCU1_Init(void)
     RarrayCreate(&sendPacket, sendPacketArr, ECP_MAX_PACKET_LEN);
     PWM_Init();
     UART_Init();
-    Stepper_Init(&steppers[0], STEPPER_RIGHT_WHEEL,     STEPPER_FULL_STEP, STEPPER_CW);
-    Stepper_Init(&steppers[1], STEPPER_LEFT_WHEEL,      STEPPER_FULL_STEP, STEPPER_CCW);
-    Stepper_Init(&steppers[2], STEPPER_LEVELING,        STEPPER_FULL_STEP, STEPPER_CW);
+    Stepper_Init(&steppers[0], STEPPER_RIGHT_WHEEL,     STEPPER_QUARTER_STEP, STEPPER_CW);
+    Stepper_Init(&steppers[1], STEPPER_LEFT_WHEEL,      STEPPER_QUARTER_STEP, STEPPER_CCW);
+    Stepper_Init(&steppers[2], STEPPER_LEVELING,        STEPPER_QUARTER_STEP, STEPPER_CW);
 }
 uint16_t loopCounter = 0;
 static void MCU1_DoTasks(void)
@@ -104,8 +104,10 @@ _Bool MCU1_GetLimitSwitchDOWN(void)
 
 static void MCU1_TaskMotorControl(void)
 {
-    Stepper_Step(MCU1_GetStepperByHwId(STEPPER_RIGHT_WHEEL));
-    Stepper_Step(MCU1_GetStepperByHwId(STEPPER_LEFT_WHEEL));
+    //Stepper_Step(&steppers[0]);
+    Stepper_Step(&steppers[1]);
+//    Stepper_Step(MCU1_GetStepperByHwId(STEPPER_RIGHT_WHEEL));
+//    Stepper_Step(MCU1_GetStepperByHwId(STEPPER_LEFT_WHEEL));
 }
 
 static void MCU1_TaskLogData(void)

@@ -43,6 +43,7 @@ typedef struct
     uint32_t            steps;
     uint32_t            position;
     uint16_t            stepsPerCM;
+    uint16_t            speedCalcSteps;
 } Stepper;
 
 void Stepper_Init(Stepper*, uint8_t hwId, StepperStepMode, StepperDirection);
