@@ -41,7 +41,9 @@ typedef struct
 #define MCU1_STEPPERS   3
 
 #define ECP_COMMAND_MOTORS_STATUS     111
-#define ECP_COMMAND_MOTORS_STATUS_DLC 26
+#define ECP_COMMAND_MOTORS_STATUS_DLC 12
+#define ECP_COMMAND_MOTORS_SET        211
+
 #define ECP_COMMAND_MOTORS_SET        211
 
 typedef struct
@@ -50,13 +52,39 @@ typedef struct
     _Bool       stepperEnabled[MCU1_STEPPERS];
     _Bool       stepperDirection[MCU1_STEPPERS];
     uint8_t     stepperStepMode[MCU1_STEPPERS];
+    uint8_t     stepperOperMode[MCU1_STEPPERS];
     uint16_t    stepperSpeed[MCU1_STEPPERS];
+    uint32_t    stepperSteps[MCU1_STEPPERS];
+    uint32_t    stepperStepsToMake[MCU1_STEPPERS];
+    uint32_t    stepperPosition[MCU1_STEPPERS];
+    uint16_t    stepperStepsPerRevolution[MCU1_STEPPERS];
+    uint16_t    stepperWheelDiameter[MCU1_STEPPERS];
     uint16_t    levelingPosition;
     _Bool       limitSwitchUP;
     _Bool       limitSwitchDOWN;
+} MCU_1_MotorsDebug;
+
+typedef struct
+{
+    uint8_t     mainMotorSpeed; // percent
+    _Bool       stepperEnabled[MCU1_STEPPERS];
+    _Bool       stepperDirection[MCU1_STEPPERS];
+    uint8_t     stepperStepMode[MCU1_STEPPERS];
+    uint8_t     stepperOperMode[MCU1_STEPPERS];
+    uint16_t    stepperSpeed[MCU1_STEPPERS];
+    uint16_t    levelingPosition;
 } MCU_1_Motors;
 
-#define ECP_COMMAND_MOTORS_SET        211
+typedef struct
+{
+    _Bool       stepperEnabled[2];
+    _Bool       stepperDirection[2];
+    uint8_t     stepperStepMode[2];
+    uint8_t     stepperOperMode[2];
+    uint16_t    stepperSpeed[2];
+    uint32_t    stepperSteps[2];
+} MCU_1_WheelsMotorControl;
+
 
 ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * sensors);
 MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message * in);
@@ -69,4 +97,3 @@ MCU_1_Motors *  RastoBot_Decode_Motors(MCU_1_Motors * motorsOut, ECP_Message * i
 #endif
 
 #endif	/* RASTOBOT_H */
-

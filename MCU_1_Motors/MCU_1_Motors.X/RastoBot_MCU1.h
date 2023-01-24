@@ -14,6 +14,7 @@
 #include "pic32mm_uart.h"
 
 #define MCU1_CHECK_NEW_MESSAGES_EVERY   1
+#define MCU1_LOG_DATA_TO_STRUCT_EVERY   1
 #define MCU1_MOTOR_CONTROL_EVERY        1
 #define MCU1_SEND_STATUS_DATA_EVERY     2000
 
@@ -42,11 +43,14 @@ void MCU1_Loop(void);
 /* Setters */
 void MCU1_SetMainMotorSpeed(uint8_t);
 Stepper * MCU1_GetStepperByHwId(uint8_t id);
-void MCU1_SetStepperDirection(Stepper * stepper, StepperDirection dir);
-void MCU1_SetStepperSpeed(Stepper * stepper, uint16_t speed);
-void MCU1_SetStepperStepMode(Stepper * stepper, StepperStepMode mode);
-void MCU1_SetStepperEnable(Stepper * stepper);
-void MCU1_SetStepperDisable(Stepper * stepper);
+void MCU1_SetStepperDirection(uint8_t id, StepperDirection dir);
+void MCU1_SetStepperSpeed(uint8_t id, uint16_t speed);
+void MCU1_SetStepperMakeSteps(uint8_t stepperHwId, uint32_t steps);
+void MCU1_SetStepperStepMode(uint8_t id, StepperStepMode mode);
+void MCU1_SetStepperOperMode(uint8_t stepperHwId, StepperOperMode mode);
+void MCU1_SetStepperStop(uint8_t stepperHwId);
+void MCU1_SetStepperEnable(uint8_t id);
+void MCU1_SetStepperDisable(uint8_t id);
 
 
 

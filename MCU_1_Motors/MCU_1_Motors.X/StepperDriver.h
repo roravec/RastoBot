@@ -27,6 +27,12 @@ typedef enum
 
 typedef enum
 {
+    STEPPER_CONTINOUS = 0,    
+    STEPPER_STEPS_ON_DEMAND = 1
+} StepperOperMode;
+
+typedef enum
+{
     STEPPER_FULL_STEP = 0,    
     STEPPER_HALF_STEP = 1,
     STEPPER_QUARTER_STEP = 2,
@@ -37,19 +43,27 @@ typedef struct
 {
     uint8_t             hwId;
     StepperDirection    direction;
-    StepperStepMode     stepMode;
+    StepperStepMode     stepMode:2;
     uint16_t            speed;      // 1024 maximum
     _Bool               enabled;
     uint32_t            steps;
+    
+    StepperOperMode     opMode:2;
+    uint32_t            stepsToMake;
+    
     uint32_t            position;
-    uint16_t            stepsPerCM;
+    uint16_t            stepsPerRevolution;
+    uint16_t            wheelDiameter;
     uint16_t            speedCalcSteps;
 } Stepper;
 
 void Stepper_Init(Stepper*, uint8_t hwId, StepperStepMode, StepperDirection);
 void Stepper_Step(Stepper*);
+void Stepper_MakeSteps(Stepper*, uint32_t);
+void Stepper_Stop(Stepper*);
 void Stepper_ChangeSpeed(Stepper*, uint16_t);
 void Stepper_ChangeDirection(Stepper*, StepperDirection);
+void Stepper_ChangeOperMode(Stepper*, StepperOperMode);
 void Stepper_ChangeStepMode(Stepper*, StepperStepMode);
 void Stepper_Enable(Stepper*);
 void Stepper_Disable(Stepper*);

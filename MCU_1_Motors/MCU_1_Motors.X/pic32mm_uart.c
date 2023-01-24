@@ -7,13 +7,12 @@
  */ 
 #include "pic32mm_uart.h"
 
-Rarray uartBuffer;
-_Bool uartNewDataFlag = 0;
 /*
  * Initializes UART on predefined registers
  */
 void UART_Init(void)
 {
+    ECP_RecvBufferInit();
     U2MODEbits.BRGH = 0;
     U2BRG = ( (PER_FREQ / (16*UARTBAUDRATE))-1);//Baud rate generator register
     //UBBRG = 129;
@@ -87,8 +86,6 @@ void __ISR(_UART2_RX_VECTOR, IPL2AUTO) IntUart2AHandler(void){
     if(IEC1bits.U2RXIE && IFS1bits.U2RXIF){
         recvByte=U2RXREG;//Receiving data
         IFS1bits.U2RXIF = 0; // reset flag
-        RarrayPush(&uartBuffer, recvByte);
-        if (recvByte == 0x04) // end of packet
-            uartNewDataFlag = 1;
+        ECP_ReceivedByte();
     }
 }

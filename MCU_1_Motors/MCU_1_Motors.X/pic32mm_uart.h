@@ -24,7 +24,7 @@
 #include <p32xxxx.h>
 #include <sys/attribs.h>
 #include "config.h"
-#include "../../SW/libs/rarray.h"
+#include "../../SW/libs/ermaCommProtocol.h"
 
 #define PER_FREQ                FCY        // CPU peripheral frequency
 #define UARTBAUDRATE                19200//38400       // UART baudrate
