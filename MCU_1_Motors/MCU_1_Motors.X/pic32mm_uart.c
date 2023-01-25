@@ -86,6 +86,6 @@ void __ISR(_UART2_RX_VECTOR, IPL2AUTO) IntUart2AHandler(void){
     if(IEC1bits.U2RXIE && IFS1bits.U2RXIF){
         recvByte=U2RXREG;//Receiving data
         IFS1bits.U2RXIF = 0; // reset flag
-        ECP_ReceivedByte();
+        ECP_ReceivedByte(recvByte);
     }
 }

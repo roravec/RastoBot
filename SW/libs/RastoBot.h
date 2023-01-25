@@ -44,7 +44,7 @@ typedef struct
 #define ECP_COMMAND_MOTORS_STATUS_DLC 12
 #define ECP_COMMAND_MOTORS_SET        211
 
-#define ECP_COMMAND_MOTORS_SET        211
+#define ECP_COMMAND_WHEELS_SET_DLC    14
 
 typedef struct
 {
@@ -90,6 +90,8 @@ ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * senso
 MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message * in);
 ECP_Message *   RastoBot_Encode_Motors(ECP_Message * out, MCU_1_Motors * motors);
 MCU_1_Motors *  RastoBot_Decode_Motors(MCU_1_Motors * motorsOut, ECP_Message * in);
+ECP_Message *   RastoBot_Encode_WheelsMotorControl(ECP_Message * out, MCU_1_WheelsMotorControl * wheelsControl);
+MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorControl(MCU_1_WheelsMotorControl * wheelsControl, ECP_Message * in);
 
 
 #ifdef	__cplusplus

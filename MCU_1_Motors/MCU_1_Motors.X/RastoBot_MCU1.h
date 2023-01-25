@@ -51,6 +51,8 @@ void MCU1_SetStepperOperMode(uint8_t stepperHwId, StepperOperMode mode);
 void MCU1_SetStepperStop(uint8_t stepperHwId);
 void MCU1_SetStepperEnable(uint8_t id);
 void MCU1_SetStepperDisable(uint8_t id);
+void MCU1_LevelingReferenceRun(void);
+void MCU1_LevelingGoToPosition(uint8_t position);
 
 
 

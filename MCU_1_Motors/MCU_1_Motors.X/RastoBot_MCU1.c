@@ -1,6 +1,7 @@
 #include "RastoBot_MCU1.h"
 /* GLOBALS */
 MCU_1_Motors statusData;
+MCU_1_WheelsMotorControl wheelsSetting;
 
 uint8_t sendPacketArr[ECP_MAX_PACKET_LEN];
 Rarray sendPacket;
@@ -110,6 +111,16 @@ void MCU1_SetStepperDisable(uint8_t stepperHwId)
     Stepper_Disable(stepper);
     statusData.stepperEnabled[stepperHwId] = 0;
 }
+void MCU1_LevelingReferenceRun(void)
+{
+}
+void MCU1_LevelingGoToPosition(uint8_t position)
+{
+}
+void MCU1_SetWheelSteppersByStruct()
+{
+    
+}
 
 /* Limit switches */
 _Bool MCU1_GetLimitSwitchUP(void)
@@ -174,6 +185,88 @@ static void MCU1_DoMessageAction(ECP_Message * msg)
     {
         switch (msg->subCommand)
         {
+            case 90: MCU1_SetMainMotorSpeed(msg->data[0]);
+            case 0: MCU1_SetStepperDisable(0); break;
+            case 10: MCU1_SetStepperDisable(1); break;
+            case 20: MCU1_SetStepperDisable(2); break;
+            case 1: MCU1_SetStepperEnable(0); break;
+            case 11: MCU1_SetStepperEnable(1); break;
+            case 21: MCU1_SetStepperEnable(2); break;
+            
+            case 2: MCU1_SetStepperDirection(0,STEPPER_CW); break;
+            case 12: MCU1_SetStepperDirection(1,STEPPER_CW); break;
+            case 22: MCU1_SetStepperDirection(2,STEPPER_CW); break;
+            case 3: MCU1_SetStepperDirection(0,STEPPER_CCW); break;
+            case 13: MCU1_SetStepperDirection(1,STEPPER_CCW); break;
+            case 23: MCU1_SetStepperDirection(2,STEPPER_CCW); break;
+            
+            case 4: MCU1_SetStepperStepMode(0,STEPPER_FULL_STEP); break;
+            case 14: MCU1_SetStepperStepMode(1,STEPPER_FULL_STEP); break;
+            case 24: MCU1_SetStepperStepMode(2,STEPPER_FULL_STEP); break;
+            case 5: MCU1_SetStepperStepMode(0,STEPPER_HALF_STEP); break;
+            case 15: MCU1_SetStepperStepMode(1,STEPPER_HALF_STEP); break;
+            case 25: MCU1_SetStepperStepMode(2,STEPPER_HALF_STEP); break;
+            case 6: MCU1_SetStepperStepMode(0,STEPPER_QUARTER_STEP); break;
+            case 16: MCU1_SetStepperStepMode(1,STEPPER_QUARTER_STEP); break;
+            case 26: MCU1_SetStepperStepMode(2,STEPPER_QUARTER_STEP); break;
+            case 7: MCU1_SetStepperStepMode(0,STEPPER_EIGHTH_STEP); break;
+            case 17: MCU1_SetStepperStepMode(1,STEPPER_EIGHTH_STEP); break;
+            case 27: MCU1_SetStepperStepMode(2,STEPPER_EIGHTH_STEP); break;
+            
+            case 8: MCU1_SetStepperOperMode(0,STEPPER_CONTINOUS); break;
+            case 18: MCU1_SetStepperOperMode(1,STEPPER_CONTINOUS); break;
+            case 28: MCU1_SetStepperOperMode(2,STEPPER_CONTINOUS); break;
+            case 9: MCU1_SetStepperOperMode(0,STEPPER_STEPS_ON_DEMAND); break;
+            case 19: MCU1_SetStepperOperMode(1,STEPPER_STEPS_ON_DEMAND); break;
+            case 29: MCU1_SetStepperOperMode(2,STEPPER_STEPS_ON_DEMAND); break;
+            
+            case 100: MCU1_SetStepperStop(0); break;
+            case 101: MCU1_SetStepperStop(1); break;
+            case 102: MCU1_SetStepperStop(2); break;
+            
+            case 110: MCU1_SetStepperOperMode(0,STEPPER_CONTINOUS); break;
+            case 111: MCU1_SetStepperOperMode(1,STEPPER_CONTINOUS); break;
+            case 112: MCU1_SetStepperOperMode(2,STEPPER_CONTINOUS); break;
+            
+            case 120: MCU1_SetStepperSpeed(0,(msg->data[1]<<8|msg->data[0])); break;
+            case 121: MCU1_SetStepperSpeed(1,(msg->data[1]<<8|msg->data[0])); break;
+            case 122: MCU1_SetStepperSpeed(2,(msg->data[1]<<8|msg->data[0])); break;
+            
+            case 130: MCU1_SetStepperMakeSteps(0,(
+                    msg->data[3]<<24 |
+                    msg->data[2]<<16 |
+                    msg->data[1]<<8  |
+                    msg->data[0])); break;
+            case 131: MCU1_SetStepperMakeSteps(1,(
+                    msg->data[3]<<24 |
+                    msg->data[2]<<16 |
+                    msg->data[1]<<8  |
+                    msg->data[0])); break;
+            case 132: MCU1_SetStepperMakeSteps(2,(
+                    msg->data[3]<<24 |
+                    msg->data[2]<<16 |
+                    msg->data[1]<<8  |
+                    msg->data[0])); break;
+            
+            case 30: MCU1_LevelingReferenceRun(); break;
+            case 31: MCU1_LevelingGoToPosition(msg->data[0]); break;
+            
+            case 200: RastoBot_Decode_WheelsMotorControl(&wheelsSetting,msg); 
+                if (wheelsSetting.stepperEnabled[0]) MCU1_SetStepperEnable(0);
+                else MCU1_SetStepperDisable(0);
+                if (wheelsSetting.stepperEnabled[1]) MCU1_SetStepperEnable(1);
+                else MCU1_SetStepperDisable(1);
+                MCU1_SetStepperDirection(0,wheelsSetting.stepperDirection[0]);
+                MCU1_SetStepperDirection(1,wheelsSetting.stepperDirection[1]);
+                MCU1_SetStepperStepMode(0,wheelsSetting.stepperStepMode[0]);
+                MCU1_SetStepperStepMode(1,wheelsSetting.stepperStepMode[1]);
+                MCU1_SetStepperOperMode(0,wheelsSetting.stepperOperMode[0]);
+                MCU1_SetStepperOperMode(1,wheelsSetting.stepperOperMode[1]);
+                MCU1_SetStepperSpeed(0, wheelsSetting.stepperSpeed[0]);
+                MCU1_SetStepperSpeed(1, wheelsSetting.stepperSpeed[1]);
+                if (wheelsSetting.stepperSteps[0] > 0) MCU1_SetStepperMakeSteps(0, wheelsSetting.stepperSteps[0]);
+                if (wheelsSetting.stepperSteps[1] > 0) MCU1_SetStepperMakeSteps(1, wheelsSetting.stepperSteps[1]);
+                break;
             default: break;
         }
     }

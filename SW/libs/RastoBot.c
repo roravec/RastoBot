@@ -140,3 +140,59 @@ MCU_1_Motors * RastoBot_Decode_Motors(MCU_1_Motors * motorsOut, ECP_Message * in
     
     return motorsOut;
 }
+
+ECP_Message * RastoBot_Encode_WheelsMotorControl(ECP_Message * out, MCU_1_WheelsMotorControl * wheelsControl)
+{
+    out->command = ECP_COMMAND_MOTORS_SET;
+    out->subCommand = 200;
+    
+    out->data[0] = (wheelsControl->stepperEnabled[0]) | 
+            (wheelsControl->stepperDirection[0] << 1) | 
+            (wheelsControl->stepperStepMode[0] << 2) | 
+            (wheelsControl->stepperOperMode[0] << 4);
+    out->data[1] = (wheelsControl->stepperEnabled[1]) | 
+            (wheelsControl->stepperDirection[1] << 1) | 
+            (wheelsControl->stepperStepMode[1] << 2) | 
+            (wheelsControl->stepperOperMode[1] << 4);
+    
+    out->data[2] = (uint8_t)(wheelsControl->stepperSpeed[0]>>8);
+    out->data[3] = (uint8_t)wheelsControl->stepperSpeed[0];
+    out->data[4] = (uint8_t)(wheelsControl->stepperSpeed[1]>>8);
+    out->data[5] = (uint8_t)wheelsControl->stepperSpeed[1];
+    
+    out->data[6] = (uint8_t)(wheelsControl->stepperSteps[0]>>24);
+    out->data[7] = (uint8_t)(wheelsControl->stepperSteps[0]>>16);
+    out->data[8] = (uint8_t)(wheelsControl->stepperSteps[0]>>8);
+    out->data[9] = (uint8_t)wheelsControl->stepperSteps[0];
+    
+    out->data[10] = (uint8_t)(wheelsControl->stepperSteps[1]>>24);
+    out->data[11] = (uint8_t)(wheelsControl->stepperSteps[1]>>16);
+    out->data[12] = (uint8_t)(wheelsControl->stepperSteps[1]>>8);
+    out->data[13] = (uint8_t)wheelsControl->stepperSteps[1];
+    
+    out->dlc = ECP_COMMAND_WHEELS_SET_DLC;
+    
+    return out;
+}
+
+MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorControl(MCU_1_WheelsMotorControl * wheelsControl, ECP_Message * in)
+{
+    wheelsControl->stepperEnabled[0] = (_Bool)in->data[0];
+    wheelsControl->stepperDirection[0] = (_Bool)(in->data[0] >> 1);
+    wheelsControl->stepperStepMode[0] = (_Bool)(in->data[0] >> 2);
+    wheelsControl->stepperOperMode[0] = (_Bool)(in->data[0] >> 4);
+    
+    wheelsControl->stepperEnabled[1] = (_Bool)in->data[1];
+    wheelsControl->stepperDirection[1] = (_Bool)(in->data[1] >> 1);
+    wheelsControl->stepperStepMode[1] = (_Bool)(in->data[1] >> 2);
+    wheelsControl->stepperOperMode[1] = (_Bool)(in->data[1] >> 4);
+    
+    
+    wheelsControl->stepperSpeed[0] = in->data[3] | (in->data[2] << 8);
+    wheelsControl->stepperSpeed[1] = in->data[5] | (in->data[4] << 8);
+    
+    wheelsControl->stepperSteps[0] = in->data[9] | (in->data[8] << 8) | (in->data[7] << 16) | (in->data[6] << 24);
+    wheelsControl->stepperSteps[1] = in->data[13] | (in->data[12] << 8) | (in->data[11] << 16) | (in->data[10] << 24);
+    
+    return wheelsControl;
+}
