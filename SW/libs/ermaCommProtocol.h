@@ -44,6 +44,16 @@ static void MCU0_TaskCheckForNewReceivedData(void)
  * 4. At this point we have to just send rawPacket data with UART or some other peripheral of our choice.
  * rawPacket stores data and data size.
  * 
+ * TODO:
+ * DMA will always copy X Bytes chunks of data. So we have to prepare out packet to be always X Bytes long.
+ * Not shorter or longer.
+ * - Make flag (receivingCalibrated) to allow start DMA after first successfully decoded packet.
+ *      This will prevent the start of DMA transfer in the middle of packet 
+ *      in case of faulty transfer or late start of late start of MCU receiver 
+ *      (TX started before RX MCU even start receiving a data).
+ * - In case if application receives invalid packet we have to "recalibrate" receiver's DMA:
+ *      Turn DMA off, clear receivingCalibrated, wait for another valid packet without DMA and repeat the first step.
+ * 
  */
 
 #ifndef ERMACOMMPROTOCOL_H

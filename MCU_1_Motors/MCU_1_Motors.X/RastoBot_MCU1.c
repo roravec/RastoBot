@@ -29,14 +29,16 @@ static void MCU1_TaskCheckForNewReceivedData(void);
 void MCU1_Init(void)
 {
     RarrayCreate(&sendPacket, sendPacketArr, ECP_MAX_PACKET_LEN);
-    PWM_Init();
+    //PWM_Init();
     UART_Init();
-    Stepper_Init(&steppers[0], STEPPER_RIGHT_WHEEL,     STEPPER_QUARTER_STEP, STEPPER_CW);
-    Stepper_Init(&steppers[1], STEPPER_LEFT_WHEEL,      STEPPER_QUARTER_STEP, STEPPER_CCW);
+    Stepper_Init(&steppers[0], STEPPER_LEFT_WHEEL,     STEPPER_QUARTER_STEP, STEPPER_CW);
+    Stepper_Init(&steppers[1], STEPPER_RIGHT_WHEEL,      STEPPER_QUARTER_STEP, STEPPER_CCW);
     Stepper_Init(&steppers[2], STEPPER_LEVELING,        STEPPER_QUARTER_STEP, STEPPER_CW);
-    MCU1_SetStepperEnable(STEPPER_RIGHT_WHEEL);
     MCU1_SetStepperEnable(STEPPER_LEFT_WHEEL);
-    MCU1_SetStepperEnable(STEPPER_LEVELING);
+    //MCU1_SetStepperEnable(STEPPER_RIGHT_WHEEL);
+    //MCU1_SetStepperEnable(STEPPER_LEVELING);
+    
+    //Stepper_MakeSteps(&steppers[0],100);
     
 }
 uint16_t loopCounter = 0;
@@ -44,6 +46,7 @@ uint16_t loopCounter = 0;
 // Main MCU loop - should be called every 10ms
 void MCU1_Loop(void)
 {
+    MAIN_MOTOR_LAT = ~MAIN_MOTOR_LAT;
     MCU1_DoTasks();
     loopCounter++;
 }
@@ -145,7 +148,7 @@ static void MCU1_DoTasks(void)
         MCU1_TaskMotorControl();
     if (loopCounter % MCU1_CHECK_NEW_MESSAGES_EVERY == 0)
         MCU1_TaskCheckForNewReceivedData();
-    if (loopCounter % MCU1_CHECK_NEW_MESSAGES_EVERY == 0)
+    if (loopCounter % MCU1_SEND_STATUS_DATA_EVERY == 0)
         MCU1_TaskSendStatusData();
 }
 

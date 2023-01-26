@@ -21,8 +21,8 @@
 #pragma config FPLLRNG = RANGE_5_10_MHZ // System PLL Input Range (5-10 MHz Input)
 #pragma config FPLLICLK = PLL_FRC     // INTERNAL System PLL Input Clock Selection (POSC is input to the System PLL)
 //#pragma config FPLLICLK = PLL_POSC      // EXTERNAL System PLL Input Clock Selection (POSC is input to the System PLL)
-#pragma config FPLLMULT = MUL_80        // System PLL Multiplier (PLL Multiply by 80)
-#pragma config FPLLODIV = DIV_8         // System PLL Output Clock Divider (8x Divider)
+#pragma config FPLLMULT = MUL_60        // System PLL Multiplier (PLL Multiply by 80)
+#pragma config FPLLODIV = DIV_4         // System PLL Output Clock Divider (8x Divider)
 #pragma config BORSEL = HIGH            // Brown-out trip voltage (BOR trip voltage 2.1v (Non-OPAMP deviced operation))
 #pragma config UPLLEN = OFF             // USB PLL Enable (USB PLL Disabled)
 

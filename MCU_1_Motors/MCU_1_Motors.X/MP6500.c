@@ -48,16 +48,30 @@ void MP6500_Step(uint8_t stepper)
     switch (stepper)
     {
         case 0: STEPDRV_0_STEP_LAT = 1;
-                //Delay_ms(500);
+                Delay_us(MP6500_LATCH_HOLD_HIGH);
                 STEPDRV_0_STEP_LAT = 0;
                 break;
         case 1: STEPDRV_1_STEP_LAT = 1;
-                //Delay_ms(500);
+                Delay_us(MP6500_LATCH_HOLD_HIGH);
                 STEPDRV_1_STEP_LAT = 0;
                 break;
         case 2: STEPDRV_2_STEP_LAT = 1;
-                //Delay_ms(500);
+                Delay_us(MP6500_LATCH_HOLD_HIGH);
                 STEPDRV_2_STEP_LAT = 0;
+                break;
+        default: break; 
+    }
+}
+
+void MP6500_StepSetLatch(uint8_t stepper, _Bool latch)
+{
+    switch (stepper)
+    {
+        case 0: STEPDRV_0_STEP_LAT = latch;
+                break;
+        case 1: STEPDRV_1_STEP_LAT = latch;
+                break;
+        case 2: STEPDRV_2_STEP_LAT = latch;
                 break;
         default: break; 
     }

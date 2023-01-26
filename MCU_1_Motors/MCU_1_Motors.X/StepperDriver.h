@@ -18,6 +18,8 @@ extern "C" {
     
 #define STEPPER_ENABLE 0
 #define STEPPER_DISABLE 1
+    
+#define STEPPER_STEP_SCHEDULER 0    // make step on all motors simultaneously
 
 typedef enum
 {
@@ -55,10 +57,13 @@ typedef struct
     uint16_t            stepsPerRevolution;
     uint16_t            wheelDiameter;
     uint16_t            speedCalcSteps;
+    
+    _Bool               stepScheduled;
 } Stepper;
 
 void Stepper_Init(Stepper*, uint8_t hwId, StepperStepMode, StepperDirection);
 void Stepper_Step(Stepper*);
+void Stepper_FinishStep(Stepper*);
 void Stepper_MakeSteps(Stepper*, uint32_t);
 void Stepper_Stop(Stepper*);
 void Stepper_ChangeSpeed(Stepper*, uint16_t);

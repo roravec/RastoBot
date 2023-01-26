@@ -5,7 +5,7 @@ void Stepper_Init(Stepper* stepper, uint8_t hwId, StepperStepMode mode, StepperD
     stepper->hwId = hwId;
     Stepper_ChangeDirection(stepper, dir);
     Stepper_ChangeStepMode(stepper, mode);
-    Stepper_ChangeSpeed(stepper, STEPPER_MAX_SPEED);
+    Stepper_ChangeSpeed(stepper, 400);
     Stepper_Disable(stepper);
     stepper->steps = 0;
     stepper->speedCalcSteps = 0;
@@ -25,11 +25,22 @@ void Stepper_Step(Stepper* stepper)
         stepper->speedCalcSteps++;
         if (stepper->opMode == STEPPER_STEPS_ON_DEMAND)
             stepper->stepsToMake--;
-        MP6500_Step(stepper->hwId);
+        
+        if (STEPPER_STEP_SCHEDULER) // set latch HIGH. Do not forget to set it LOW after all steps.
+            stepper->stepScheduled=1;
+        else // make step right now
+            MP6500_Step(stepper->hwId);
     }
     else
     {
         stepper->speedCalcSteps++;
+    }
+}
+void Stepper_FinishStep(Stepper* stepper)
+{
+    if (STEPPER_STEP_SCHEDULER) // 
+    {
+        MP6500_StepSetLatch(stepper->hwId, 0);
     }
 }
 void Stepper_MakeSteps(Stepper* stepper, uint32_t steps)

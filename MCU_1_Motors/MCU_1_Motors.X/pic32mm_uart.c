@@ -34,12 +34,12 @@ void UART_Deactivate()
     U2MODEbits.ON = 0;           //UART module disable
 }
 // writes byte to UART TX
-void UART_Write(unsigned char data)
+void UART_Write(uint8_t data)
 {   
     while(!U2STAbits.TRMT);  // wait for empty TX register
     U2TXREG = data;         // fill TX register with data
 }
-void UART_WriteString(char* buf)
+void UART_WriteString(uint8_t* buf)
 {
     while(*buf != '\0'){
         UART_Write(*buf);
@@ -47,9 +47,9 @@ void UART_WriteString(char* buf)
     }
 }
 // writes a string of data byte by byte
-void UART_WriteData(char* buf, int len)
+void UART_WriteData(uint8_t* buf, uint8_t len)
 {
-    for(int i = 0; i<len;i++)
+    for(uint8_t i = 0; i<len;i++)
         UART_Write(buf[i]);
 }
 

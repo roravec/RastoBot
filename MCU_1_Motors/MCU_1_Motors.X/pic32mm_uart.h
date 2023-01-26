@@ -27,7 +27,7 @@
 #include "../../SW/libs/ermaCommProtocol.h"
 
 #define PER_FREQ                FCY        // CPU peripheral frequency
-#define UARTBAUDRATE                19200//38400       // UART baudrate
+#define UARTBAUDRATE                115200//19200//38400       // UART baudrate
 
 extern Rarray uartBuffer;
 extern _Bool uartNewDataFlag;
@@ -36,9 +36,9 @@ extern _Bool uartNewDataFlag;
 
 void UART_Init(void);           // first time init
 void UART_Deactivate();         // deactivates uart
-void UART_Write(unsigned char); // writes individual char
-void UART_Write_String(char*);  // writes string of chars
-void UART_WriteData(char* buf, int len);    // writes string of chars
+void UART_Write(uint8_t); // writes individual char
+void UART_Write_String(uint8_t*);  // writes string of chars
+void UART_WriteData(uint8_t* buf, uint8_t len);    // writes string of chars
 void UART_SendBreak(void);      // prepares bus for incoming message
 void UART_InitInterrupts(void); // 
 void UART_DisableInterrupts();  // 
