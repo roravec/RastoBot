@@ -70,6 +70,14 @@ extern "C" {
     #define ECP_MAX_DATA_BYTES  32
 #endif
 
+#define ECP_FIXED_DATA_SIZE 8   // dataload will be always X bytes. For DMA size pattern. 
+                                //If you do not provide enough data to fill it it will be left as 0x00
+#define ECP_EMPTY_DATA      0x00
+#if ECP_MAX_DATA_BYTES > 0
+    #undef ECP_MAX_DATA_BYTES
+    #define ECP_MAX_DATA_BYTES ECP_FIXED_DATA_SIZE
+#endif
+
 #define ECP_QUEUE_SIZE      3   // has to be less than 127!!!
     
 #define ECP_START_BYTE      0x01
@@ -77,8 +85,8 @@ extern "C" {
 #define ECP_COMMAND_LEN     4
 #define ECP_DLC_LEN         1
 #define ECP_CRC_LEN         1
-#define ECP_PATTERN_LEN     1+ECP_COMMAND_LEN+ECP_DLC_LEN
-#define ECP_MIN_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN
+#define ECP_PATTERN_LEN     1+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_FIXED_DATA_SIZE
+#define ECP_MIN_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN+ECP_FIXED_DATA_SIZE
 #define ECP_MAX_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_MAX_DATA_BYTES+ECP_CRC_LEN
     
 #define ECP_CRC_START_VALUE 0x55
@@ -101,6 +109,7 @@ typedef struct
     uint8_t     subCommand;
     uint8_t     crc;
     uint8_t     dlc;
+    uint16_t    size;
 } ECP_Buffer;
 
 typedef struct
@@ -123,7 +132,7 @@ void            ECP_RecvBufferInit(void);
 void            ECP_ReceivedByte(uint8_t data);
 _Bool           ECP_DetectHeadPattern(Rarray * data);
 _Bool           ECP_DetectHeadPatternAtIndex(Rarray * data, uint16_t index);
-_Bool           ECP_CheckCRCAtIndex(Rarray * data, uint16_t dlc, uint16_t index);
+_Bool           ECP_CheckCRCAtIndex(Rarray * data, uint8_t dlc, uint16_t index);
 void            ECP_BufferReset(ECP_Buffer * buffer);
 ECP_Message *   ECP_MessageDequeue(void);
 void            ECP_MarkMessageAsComplete(ECP_Message * msg);

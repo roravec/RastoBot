@@ -1,5 +1,5 @@
 #include "RastoBot.h"
-
+/* MCU 0 Messages *************************************************************/
 ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * sensors)
 {
     out->command = ECP_COMMAND_SENSORS_STATUS;
@@ -80,7 +80,7 @@ MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message 
     sensorsOut->fanManualControl = (_Bool)(in->data[25] >> 4);
     return sensorsOut;
 }
-
+/* MCU1 Messages **************************************************************/
 ECP_Message *   RastoBot_Encode_Motors(ECP_Message * out, MCU_1_Motors * motors)
 {
     out->command = ECP_COMMAND_MOTORS_STATUS;
