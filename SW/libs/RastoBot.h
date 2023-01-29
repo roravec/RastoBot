@@ -87,11 +87,18 @@ typedef struct
 
 
 ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * sensors);
+ECP_Message *   RastoBot_Encode_Sensors_1(ECP_Message * out, MCU_0_Sensors * sensors);
+ECP_Message *   RastoBot_Encode_Sensors_2(ECP_Message * out, MCU_0_Sensors * sensors);
+ECP_Message *   RastoBot_Encode_Sensors_3(ECP_Message * out, MCU_0_Sensors * sensors);
 MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message * in);
 ECP_Message *   RastoBot_Encode_Motors(ECP_Message * out, MCU_1_Motors * motors);
+ECP_Message *   RastoBot_Encode_Motors_1(ECP_Message * out, MCU_1_Motors * motors);
+ECP_Message *   RastoBot_Encode_Motors_2(ECP_Message * out, MCU_1_Motors * motors);
 MCU_1_Motors *  RastoBot_Decode_Motors(MCU_1_Motors * motorsOut, ECP_Message * in);
 ECP_Message *   RastoBot_Encode_WheelsMotorControl(ECP_Message * out, MCU_1_WheelsMotorControl * wheelsControl);
+ECP_Message *   RastoBot_Encode_WheelsMotorSteps(ECP_Message * out, MCU_1_WheelsMotorControl * wheelsControl);
 MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorControl(MCU_1_WheelsMotorControl * wheelsControl, ECP_Message * in);
+MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorSteps(MCU_1_WheelsMotorControl * wheelsControl, ECP_Message * in);
 
 
 #ifdef	__cplusplus

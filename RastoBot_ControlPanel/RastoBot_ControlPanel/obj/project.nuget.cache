@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "24JiKxsIgzDwmmi7GdTuaVNTPYzeH5Myd/RMQf5A6qo6tVe2VhYBzAYSImFRzIjQM/5q/rMBbYA3iszpw0Z53A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\orras\\Documents\\GitHub\\RastoBot\\RastoBot_ControlPanel\\RastoBot_ControlPanel\\RastoBot_ControlPanel.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\orras\\.nuget\\packages\\runtime.linux-arm.runtime.native.system.io.ports\\7.0.0\\runtime.linux-arm.runtime.native.system.io.ports.7.0.0.nupkg.sha512",
+    "C:\\Users\\orras\\.nuget\\packages\\runtime.linux-arm64.runtime.native.system.io.ports\\7.0.0\\runtime.linux-arm64.runtime.native.system.io.ports.7.0.0.nupkg.sha512",
+    "C:\\Users\\orras\\.nuget\\packages\\runtime.linux-x64.runtime.native.system.io.ports\\7.0.0\\runtime.linux-x64.runtime.native.system.io.ports.7.0.0.nupkg.sha512",
+    "C:\\Users\\orras\\.nuget\\packages\\runtime.native.system.io.ports\\7.0.0\\runtime.native.system.io.ports.7.0.0.nupkg.sha512",
+    "C:\\Users\\orras\\.nuget\\packages\\runtime.osx-arm64.runtime.native.system.io.ports\\7.0.0\\runtime.osx-arm64.runtime.native.system.io.ports.7.0.0.nupkg.sha512",
+    "C:\\Users\\orras\\.nuget\\packages\\runtime.osx-x64.runtime.native.system.io.ports\\7.0.0\\runtime.osx-x64.runtime.native.system.io.ports.7.0.0.nupkg.sha512",
+    "C:\\Users\\orras\\.nuget\\packages\\system.io.ports\\7.0.0\\system.io.ports.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

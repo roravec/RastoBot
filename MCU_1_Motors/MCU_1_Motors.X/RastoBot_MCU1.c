@@ -165,7 +165,10 @@ static void MCU1_TaskLogData(void)
 
 static void MCU1_TaskSendStatusData(void)
 {
-    RastoBot_Encode_Motors(&sendMessage, &statusData);
+    RastoBot_Encode_Motors_1(&sendMessage, &statusData);
+    ECP_Encode(&sendMessage, &sendPacket);
+    UART_WriteData(sendPacket.data, sendPacket.size);
+    RastoBot_Encode_Motors_2(&sendMessage, &statusData);
     ECP_Encode(&sendMessage, &sendPacket);
     UART_WriteData(sendPacket.data, sendPacket.size);
 }
