@@ -7,6 +7,10 @@
       <itemPath>hwinterface.h</itemPath>
       <itemPath>config.h</itemPath>
       <itemPath>RastoBot_MCU2.h</itemPath>
+      <itemPath>UART_Common.h</itemPath>
+      <itemPath>UART_PIC32MK.h</itemPath>
+      <itemPath>DMA_PIC32MK.h</itemPath>
+      <itemPath>DMA_Common.h</itemPath>
     </logicalFolder>
     <logicalFolder name="libs" displayName="libs" projectFiles="true">
       <itemPath>../../SW/libs/ermaCommProtocol.c</itemPath>
@@ -27,6 +31,8 @@
       <itemPath>hwinterface.c</itemPath>
       <itemPath>config.c</itemPath>
       <itemPath>RastoBot_MCU2.c</itemPath>
+      <itemPath>UART_PIC32MK.c</itemPath>
+      <itemPath>DMA_PIC32MK.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

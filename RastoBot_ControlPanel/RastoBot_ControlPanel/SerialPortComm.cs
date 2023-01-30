@@ -9,6 +9,7 @@ namespace RastoBot_ControlPanel
 {
     internal class SerialPortComm
     {
+        public String OpenedPort = "";
         private List<string> _ports = new List<string>();
         public List<string> Ports { get { return _ports; } }
         private SerialPort? _serialPort;
@@ -27,6 +28,7 @@ namespace RastoBot_ControlPanel
         }
         public SerialPortComm(string portName, int baudRate)
         {
+            OpenedPort = portName;
             OpenPort(portName, baudRate);
         }
 
