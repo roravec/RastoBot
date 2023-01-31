@@ -10,7 +10,7 @@
 #define _UART_PIC32MK_H
 
 #include "UART_Common.h"
-//#include <string.h>
+#include "DMA_PIC32MK.h"
 
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
@@ -51,3 +51,11 @@ extern "C" {
 #endif
 
 #endif /* _UART_PIC32MK_H */
+
+/*
+uint8_t dest[10];
+UART uart;
+UART_Create(&uart, UART_MODULE_1, 120000000UL, 9600, 1,1);
+DMA dma;
+DMA_Create(&dma, DMA_CHANNEL_0, uart.registers.UxRXREG, dest, 1, 10, 1, 39, 1);
+*/

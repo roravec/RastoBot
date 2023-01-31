@@ -126,7 +126,7 @@ typedef struct {
         _Bool           txInterrupt;
         _Bool           initialized;
         _Bool           enablePin;
-        void            (*DataReceived)(uint8_t*); // event
+        void            (*DataReceived)(uint8_t); // event
     } UART;
 
 #endif	/* UART_COMMON_H */

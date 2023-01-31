@@ -17,8 +17,17 @@ extern "C" {
     
     /* Function prototypes */
     /* Constructors-factories */
-    DMA * DMA_Create(DMA * dmaObj, DmaChannel channel, uint32_t * srcAddr, uint32_t * destAddr,
-            uint16_t srcSize, uint16_t destSize, uint8_t transferPerEvent, _Bool enInterrupt);
+    DMA * DMA_Create(
+            DMA * dmaObj, 
+            DmaChannel channel, 
+            uint32_t * srcAddr, 
+            uint32_t * destAddr,
+            uint16_t srcSize, 
+            uint16_t destSize, 
+            uint8_t transferBytesPerEvent, 
+            uint8_t triggerOnInterruptId, 
+            _Bool enInterrupt
+    );
     void DMA_Initialize(DMA * dmaObj);
     void DMA_AssignRegistersByModule(DMA * dmaObj);
     void DMA_InitInterrupts(DMA * dmaObj);

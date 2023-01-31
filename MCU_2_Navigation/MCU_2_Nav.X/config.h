@@ -18,11 +18,10 @@
 #define PMDUnLock() {SYSKEY=0x0; SYSKEY=0xAA996655; SYSKEY=0x556699AA; CFGCONbits.PMDLOCK=0;} 
 #define PMDLock()   {CFGCONbits.PMDLOCK=1; SYSKEY=0x0;} 
 
-#define FCY         80000000UL
-//#define PCLK        40000000UL
-#define REFO1CLK    80000000UL  // UARTs
-#define REFO2CLK    80000000UL  // I2C
-#define REFO4CLK    80000000UL  // CAN
+#define FCY         120000000UL
+#define REFO1CLK    120000000UL // UARTs, SPI
+#define PBCLK2      120000000UL // I2C
+#define REFO4CLK    120000000UL // CAN
 #define _DI()		__builtin_disable_interrupts()
 #define _EI()		__builtin_enable_interrupts()
 

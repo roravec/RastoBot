@@ -322,6 +322,10 @@ static void UART_InterruptHandler(UartModule module, UartInterruptType iType)
 }
 void UART_RX_InterruptHandler(UART * uartObj)
 {
+    if (uartObj->DataReceived != 0)
+    {
+        uartObj->DataReceived(*(uartObj->registers.UxRXREG));
+    }
     UART_ClearInterruptFlags(uartObj);
 }
 void UART_TX_InterruptHandler(UART * uartObj)

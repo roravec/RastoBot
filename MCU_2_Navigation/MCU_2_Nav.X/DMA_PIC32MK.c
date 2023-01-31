@@ -11,10 +11,30 @@
 
 DMA * DmaActiveChannels[DMA_NUMBER_OF_CHANNELS]; // reference to active DMA module configurations
 
-DMA * DMA_Create(DMA * dmaObj, DmaChannel channel, uint32_t * srcAddr, uint32_t * destAddr,
-            uint16_t srcSize, uint16_t destSize, uint8_t transferPerEvent, _Bool enInterrupt)
+DMA * DMA_Create(
+                DMA * dmaObj, 
+                DmaChannel channel, 
+                uint32_t * srcAddr, 
+                uint32_t * destAddr,
+                uint16_t srcSize, 
+                uint16_t destSize, 
+                uint8_t transferBytesPerEvent, 
+                uint8_t triggerOnInterruptId,
+                _Bool enInterrupt
+                )
 {
-    
+    if (!dmaObj->initialized)
+    {
+        dmaObj->channel =           channel;
+        dmaObj->source =            srcAddr;
+        dmaObj->destination =       destAddr;
+        dmaObj->sourceSize =        srcSize;
+        dmaObj->destSize =          destSize;
+        dmaObj->transferBytesPerEvent = transferBytesPerEvent;
+        dmaObj->triggerOnInterruptId = triggerOnInterruptId;
+        dmaObj->interruptEnabled =  enInterrupt;
+        dmaObj->initialized = 1;
+    }
 }
 
 void DMA_Initialize(DMA * dmaObj)
@@ -23,6 +43,12 @@ void DMA_Initialize(DMA * dmaObj)
     {
         DMA_AssignRegistersByModule(dmaObj);
         DMA_InitInterrupts(dmaObj);
+        dmaObj->registers.DCHxSSIZbits->CHSSIZ = dmaObj->sourceSize;
+        dmaObj->registers.DCHxDSIZbits->CHDSIZ = dmaObj->destSize;
+        dmaObj->registers.DCHxCSIZbits->CHCSIZ = dmaObj->transferBytesPerEvent;
+        dmaObj->registers.DCHxSSAbits->CHSSA = KVA_TO_PA(dmaObj->source);
+        dmaObj->registers.DCHxDSAbits->CHDSA = KVA_TO_PA(dmaObj->destination);
+        dmaObj->registers.DCHxECONbits->CHSIRQ = dmaObj->triggerOnInterruptId;
         dmaObj->registers.DCHxCONbits->CHEN = 1;
         dmaObj->initialized = 1;
     }
@@ -303,4 +329,31 @@ void DMA_Deactivate(DMA * dmaObj)
 {
     dmaObj->registers.DCHxCONbits->CHEN = 0; // disable channel
     DMA_DisableInterrupts(dmaObj); // disable interrupts
+}
+
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_0);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_1);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_2);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_3);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_4);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_5);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_6);   }
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+{   DMA_InterruptHandler(DMA_CHANNEL_7);   }
+
+
+/* Interrupt handlers */
+static void DMA_InterruptHandler(DmaChannel module)
+{
+    DMA * dmaObj = DmaActiveChannels[module];
+    if (dmaObj->TransferComplete != 0)
+        dmaObj->TransferComplete();
+    DMA_InterruptHandler(dmaObj);
 }

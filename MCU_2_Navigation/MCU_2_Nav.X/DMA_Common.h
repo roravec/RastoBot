@@ -131,10 +131,15 @@ typedef struct
 {
     DmaChannel      channel;
     DmaRegisters    registers;
+    uint32_t      * source;
+    uint32_t      * destination;
     uint8_t         sourceSize;
     uint8_t         destSize;
+    uint8_t         transferBytesPerEvent;
+    uint8_t         triggerOnInterruptId;
     _Bool           interruptEnabled;
     _Bool           initialized;
+    void            (*TransferComplete)(void); // event
 } DMA;
 
 
