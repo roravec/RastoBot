@@ -35,7 +35,7 @@ void MCU1_Init(void)
     Stepper_Init(&steppers[1], STEPPER_RIGHT_WHEEL,      STEPPER_QUARTER_STEP, STEPPER_CCW);
     Stepper_Init(&steppers[2], STEPPER_LEVELING,        STEPPER_QUARTER_STEP, STEPPER_CW);
     MCU1_SetStepperEnable(STEPPER_LEFT_WHEEL);
-    //MCU1_SetStepperEnable(STEPPER_RIGHT_WHEEL);
+    MCU1_SetStepperEnable(STEPPER_RIGHT_WHEEL);
     //MCU1_SetStepperEnable(STEPPER_LEVELING);
     
     //Stepper_MakeSteps(&steppers[0],100);

@@ -2,11 +2,27 @@
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
+#include <HardwareSerial.h>
+
+#define MCU3_MCU1_UART_BAUDRATE 115200
+#define MCU3_MCU2_UART_BAUDRATE 115200
+#define SERIAL_BAUDRATE         115200
+
+#define BUFFER_SIZE 100
+
+#define MCU3_MCU1_UART_RX_PIN 9
+#define MCU3_MCU1_UART_TX_PIN 10
+
+#define MCU3_MCU2_UART_RX_PIN 16
+#define MCU3_MCU2_UART_TX_PIN 17
 
 #define LED_STATUS_PIN  13
 
 const char* ssid = "RMFamily";
 const char* password = "1957288451";
+
+HardwareSerial UART_MCU3_MCU2(2);
+HardwareSerial UART_MCU3_MCU1(1);
 
 void Setup_GPIOs()
 {
@@ -15,7 +31,7 @@ void Setup_GPIOs()
 
 void setup() {
   
-  Serial.begin(115200);
+  Serial.begin(SERIAL_BAUDRATE);
   Serial.println("Booting");
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -66,6 +82,10 @@ void setup() {
 
   ArduinoOTA.begin();
 
+  Serial.print("Starting UARTs... ");
+  UART_MCU3_MCU2.begin(MCU3_MCU2_UART_BAUDRATE, SERIAL_8N1, MCU3_MCU2_UART_RX_PIN, MCU3_MCU2_UART_TX_PIN);
+  //UART_MCU3_MCU1.begin(MCU3_MCU1_UART_BAUDRATE, SERIAL_8N1, MCU3_MCU1_UART_RX_PIN, MCU3_MCU1_UART_TX_PIN);
+  Serial.print("Finished!\n");
   Setup_GPIOs();
 
   Serial.println("Ready");
@@ -77,6 +97,8 @@ void loop() {
   delay(1);
   ArduinoOTA.handle();
   LED_Blink();
+  //MCU2_RX_handler();
+  //MCU1_RX_handler();
 }
 
 uint32_t ledBlinkCounter = 0;
@@ -100,5 +122,53 @@ void LED_Blink()
   else
   {
     ledBlinkCounter++; // increment counter
+  }
+}
+
+void MCU1_TX(uint8_t msg, uint16_t len)
+{
+  UART_MCU3_MCU1.write(&msg, len);
+}
+void MCU2_TX(uint8_t msg, uint16_t len)
+{
+  UART_MCU3_MCU2.write(&msg, len);
+}
+
+void MCU2_RX_handler()
+{
+  uint16_t bytesCounter = 0;
+  // read UART buffer
+  while (UART_MCU3_MCU2.available() > 0)
+  {
+    if (bytesCounter == 0)
+    {
+      Serial.print("MCU2 RX:");
+    }
+    uint8_t receivedByte = UART_MCU3_MCU2.read();
+    Serial.write(&receivedByte, 1);
+    bytesCounter++;
+  }
+  if (bytesCounter > 0)
+  {
+    Serial.println("MCU1 bytes received: " + bytesCounter);
+  }
+}
+void MCU1_RX_handler()
+{
+  uint16_t bytesCounter = 0;
+  // read UART buffer
+  while (UART_MCU3_MCU1.available() > 0)
+  {
+    if (bytesCounter == 0)
+    {
+      Serial.print("MCU1 RX:");
+    }
+    uint8_t receivedByte = UART_MCU3_MCU1.read();
+    Serial.write(&receivedByte, 1);
+    bytesCounter++;
+  }
+  if (bytesCounter > 0)
+  {
+    Serial.println("MCU1 bytes received: " + bytesCounter);
   }
 }
