@@ -6,8 +6,9 @@
  */
 
 #include <proc/p32mk1024mcm064.h>
-
 #include "DMA_PIC32MK.h"
+
+static void DMA_InterruptHandler(DmaChannel module);
 
 DMA * DmaActiveChannels[DMA_NUMBER_OF_CHANNELS]; // reference to active DMA module configurations
 
@@ -331,21 +332,69 @@ void DMA_Deactivate(DMA * dmaObj)
     DMA_DisableInterrupts(dmaObj); // disable interrupts
 }
 
+void DMA_ClearIRQFlags(DMA * dmaObj)
+{
+    switch (dmaObj->channel)
+    {
+        case DMA_CHANNEL_0:
+        {
+            IFS2bits.DMA0IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_1:
+        {
+            IFS2bits.DMA1IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_2:
+        {
+            IFS2bits.DMA2IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_3:
+        {
+            IFS2bits.DMA3IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_4:
+        {
+            IFS5bits.DMA4IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_5:
+        {
+            IFS5bits.DMA5IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_6:
+        {
+            IFS5bits.DMA6IF = 0; // interrupt flag reset
+            break;
+        }
+        case DMA_CHANNEL_7:
+        {
+            IFS5bits.DMA7IF = 0; // interrupt flag reset
+            break;
+        }
+        default: break;
+    }
+}
+
 void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_0);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA1_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_1);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA2_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_2);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA3_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_3);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA4_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_4);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA5_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_5);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA6_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_6);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA7_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_7);   }
 
 
@@ -355,5 +404,5 @@ static void DMA_InterruptHandler(DmaChannel module)
     DMA * dmaObj = DmaActiveChannels[module];
     if (dmaObj->TransferComplete != 0)
         dmaObj->TransferComplete();
-    DMA_InterruptHandler(dmaObj);
+    DMA_ClearIRQFlags(dmaObj);
 }

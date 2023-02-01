@@ -102,27 +102,41 @@ void InitGPIOs()
     LED_1_LAT = 1;
     LED_2_LAT = 1;
     LED_3_LAT = 1;
+    
+    // UART RX
+    U1RXR = 0b0010; // RPA4
+    U2RXR = 0b0001; // RPB5
+    U3RXR = 0b0100; // RPB7
+    U5RXR = 0b0111; // RPA7
+    U6RXR = 0b0110; // RPC0
+    
+    // UART TX
+    RPA11R = 0b00001;      // U1TX
+    RPB10R = 0b00010;      // U2TX
+    RPC15R = 0b00001;      // U3TX
+    RPB14R = 0b01011;      // U5TX
+    RPC1R  = 0b01011;      // U6TX
 }
 
 // MCU3     UART1
 // RX:33
-// TX:12 
+// *TX:12 
 
 // MCU1     UART5
 // RX:1
-// TX:2 
+// *TX:2 
 
 // MCU0     UART3
 // RX:46
-// TX:40 
+// *TX:40 
 
 // LIDAR    UART2
 // RX:43
-// TX:60 
+// *TX:60 
 
 // GPS      UART6
 // RX:21
-// TX:22 
+// *TX:22 
 
 // I2C4
 // SDA:27

@@ -33,6 +33,7 @@ extern "C" {
     void DMA_InitInterrupts(DMA * dmaObj);
     void DMA_DisableInterrupts(DMA * dmaObj);
     void DMA_Deactivate(DMA * dmaObj);
+    void DMA_ClearIRQFlags(DMA * dmaObj);
 
 #ifdef	__cplusplus
 }

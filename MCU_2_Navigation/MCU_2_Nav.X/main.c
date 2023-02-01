@@ -77,13 +77,15 @@
 void setup()
 {
     Config_Init();
+    MCU2_Init();
 }
 
 void main(void) {
     setup();
     while (1)
     {
-        
+        Delay_ms(1);
+        MCU2_Loop();
     }
     return;
 }

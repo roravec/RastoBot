@@ -2,11 +2,11 @@
 
 void HwInterface_Init(void)
 {
-    UART_MCU1_RX_TRIS = 1;
-    UART_MCU1_TX_TRIS = 0;
-    UART_MCU3_RX_TRIS = 1;
-    UART_MCU3_TX_TRIS = 0;
-    UART_MCU0_RX_TRIS = 1; // change this
+    UART_MCU1_RX_TRIS = 0;
+    UART_MCU1_TX_TRIS = 1;
+    UART_MCU3_RX_TRIS = 0;
+    UART_MCU3_TX_TRIS = 1;
+    UART_MCU0_RX_TRIS = 0;
     UART_MCU0_TX_TRIS = 1;
     UART_GPS_RX_TRIS = 0;
     UART_GPS_TX_TRIS = 1;
