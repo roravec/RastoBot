@@ -12,6 +12,20 @@
 #include "UART_Common.h"
 #include "DMA_PIC32MK.h"
 
+/* Interrupt IDs */
+#define UART1_RX_IRQ_ID    39
+#define UART1_TX_IRQ_ID    40
+#define UART2_RX_IRQ_ID    57
+#define UART2_TX_IRQ_ID    58
+#define UART3_RX_IRQ_ID    63
+#define UART3_TX_IRQ_ID    64
+#define UART4_RX_IRQ_ID    66
+#define UART4_TX_IRQ_ID    67
+#define UART5_RX_IRQ_ID    69
+#define UART5_TX_IRQ_ID    70
+#define UART6_RX_IRQ_ID    165
+#define UART6_TX_IRQ_ID    166
+
 /* Provide C++ Compatibility */
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +34,7 @@ extern "C" {
     /* Function prototypes */
     /* Constructors-factories */
     UART * UART_Create
-    (UART * uartObj, UartModule iModule, uint32_t perFreq, uint32_t baudrate, _Bool rxInt, _Bool txInt);
+    (UART * uartObj, UartModule iModule, uint32_t perFreq, uint32_t baudrate, _Bool rxInt);
     
     void UART_Initialize(UART * uartObj);
     void UART_AssignRegistersByModule(UART * uartObj);
@@ -31,6 +45,7 @@ extern "C" {
     void UART_SendData(UART * uartObj, unsigned char* data, uint16_t len);  // sends string of chars
     void UART_SendBreak(UART * uartObj);      // prepares bus for incoming message
     void UART_InitInterrupts(UART * uartObj, _Bool rxInt, _Bool txInt); // 
+    void UART_SetTXInterrupt(UART * uartObj, uint8_t value);
     void UART_DisableInterrupts(UART * uartObj);  // 
     
         /* Interrupt handlers */
@@ -41,7 +56,7 @@ extern "C" {
     /***************************************/
     
     /* Interrupt handler utility functions */
-    void UART_ClearInterruptFlags(UART * uartObj);     // clears all interrupt flags
+    void UART_ClearInterruptFlags(UART * uartObj, UartIrqFlagToClear ftc);     // clears interrupt flags
     
 
     /**************************************************************************/

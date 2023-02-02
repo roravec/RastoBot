@@ -8,6 +8,8 @@
 #include <proc/p32mk1024mcm064.h>
 #include "DMA_PIC32MK.h"
 
+uint8_t buffer[200];
+
 static void DMA_InterruptHandler(DmaChannel module);
 
 DMA * DmaActiveChannels[DMA_NUMBER_OF_CHANNELS]; // reference to active DMA module configurations
@@ -34,7 +36,9 @@ DMA * DMA_Create(
         dmaObj->transferBytesPerEvent = transferBytesPerEvent;
         dmaObj->triggerOnInterruptId = triggerOnInterruptId;
         dmaObj->interruptEnabled =  enInterrupt;
-        dmaObj->initialized = 1;
+        dmaObj->TransferComplete = 0;
+        dmaObj->channelPriority = 3;
+        dmaObj->initialized = 0;
     }
 }
 
@@ -43,14 +47,52 @@ void DMA_Initialize(DMA * dmaObj)
     if (!dmaObj->initialized)
     {
         DMA_AssignRegistersByModule(dmaObj);
-        DMA_InitInterrupts(dmaObj);
+        DMA_ClearIRQFlags(dmaObj);
+        DMACONbits.ON=1; // enable the main DMA controller
+        dmaObj->registers.DCHxCONbits->CHPRI = dmaObj->channelPriority;
         dmaObj->registers.DCHxSSIZbits->CHSSIZ = dmaObj->sourceSize;
         dmaObj->registers.DCHxDSIZbits->CHDSIZ = dmaObj->destSize;
         dmaObj->registers.DCHxCSIZbits->CHCSIZ = dmaObj->transferBytesPerEvent;
         dmaObj->registers.DCHxSSAbits->CHSSA = KVA_TO_PA(dmaObj->source);
         dmaObj->registers.DCHxDSAbits->CHDSA = KVA_TO_PA(dmaObj->destination);
         dmaObj->registers.DCHxECONbits->CHSIRQ = dmaObj->triggerOnInterruptId;
-        dmaObj->registers.DCHxCONbits->CHEN = 1;
+        DCH0DSA = KVA_TO_PA(&U1TXREG);
+        
+//        dmaObj->registers.DCHxDSIZbits->CHDSIZ = 200;
+//        DCH0DSA = KVA_TO_PA(buffer);
+        
+        if (dmaObj->interruptEnabled) DMA_InitInterrupts(dmaObj);
+        dmaObj->registers.DCHxCONbits->CHAEN = 1;
+        dmaObj->registers.DCHxCONbits->CHBUSY = 1; // channel is active
+        dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
+        
+        dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
+        
+//0x00010000; // disable DMA channel 0 interrupts
+//IFS1CLR=0x00010000; // clear any existing DMA channel 0 interrupt flag
+//DMACONSET=0x00008000; // enable the DMA controller
+//DCH0CON=0x3; // channel 0 off, priority 3, no chaining
+//DCH1CON=0x62; // channel 1 off, priority 2
+//// chain to higher priority
+//// (channel 0), enable events detection while disabled
+//DCH0ECONbits.CHSIRQ = 63; // IRQ UART2 TX
+//// program channel 0 transfer
+//DCH0SSA=KVA_TO_PA(&U3RXREG); // transfer source physical address
+//DCH0DSA=KVA_TO_PA(buffer); // transfer destination physical address
+//DCH0SSIZ=1; // source size is 1 byte
+//DCH0DSIZ=200; // dst size at most 200 bytes
+//DCH0CSIZ=1; // one byte per UART transfer request
+//
+//DCH0INTCLR=0x00ff00ff; // DMA0: clear events, disable interrupts
+//
+//IPC9CLR=0x00001f1f; // clear the DMA channels 0 and 1 priority and
+//// sub-priority
+//IPC9SET=0x00000b16; // set IPL 5, sub-priority 2 for DMA channel 0
+//// set IPL 2, sub-priority 3 for DMA channel 1
+//IEC1SET=0x00020000; // enable DMA channel 1 interrupt
+//DCH0ECONbits.SIRQEN = 1;
+//DCH0CONSET=0x80; // turn channel on
+        
         dmaObj->initialized = 1;
     }
 }
@@ -213,66 +255,66 @@ void DMA_InitInterrupts(DMA * dmaObj)
     {
         case DMA_CHANNEL_0:
         {
-            IEC2bits.DMA0IE = 1; // interrupt
             IFS2bits.DMA0IF = 0; // interrupt flag reset
             IPC18bits.DMA0IP = 5; // interrupt priority
             IPC18bits.DMA0IS = 2; // interrupt sub priority
+            IEC2bits.DMA0IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_1:
         {
-            IEC2bits.DMA1IE = 1; // interrupt
             IFS2bits.DMA1IF = 0; // interrupt flag reset
             IPC18bits.DMA1IP = 5; // interrupt priority
             IPC18bits.DMA1IS = 2; // interrupt sub priority
+            IEC2bits.DMA1IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_2:
         {
-            IEC2bits.DMA2IE = 1; // interrupt
             IFS2bits.DMA2IF = 0; // interrupt flag reset
             IPC18bits.DMA2IP = 5; // interrupt priority
             IPC18bits.DMA2IS = 2; // interrupt sub priority
+            IEC2bits.DMA2IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_3:
         {
-            IEC2bits.DMA3IE = 1; // interrupt
             IFS2bits.DMA3IF = 0; // interrupt flag reset
             IPC18bits.DMA3IP = 5; // interrupt priority
             IPC18bits.DMA3IS = 2; // interrupt sub priority
+            IEC2bits.DMA3IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_4:
         {
-            IEC5bits.DMA4IE = 1; // interrupt
             IFS5bits.DMA4IF = 0; // interrupt flag reset
             IPC45bits.DMA4IP = 5; // interrupt priority
             IPC45bits.DMA4IS = 2; // interrupt sub priority
+            IEC5bits.DMA4IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_5:
         {
-            IEC5bits.DMA5IE = 1; // interrupt
             IFS5bits.DMA5IF = 0; // interrupt flag reset
             IPC45bits.DMA5IP = 5; // interrupt priority
             IPC45bits.DMA5IS = 2; // interrupt sub priority
+            IEC5bits.DMA5IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_6:
         {
-            IEC5bits.DMA6IE = 1; // interrupt
             IFS5bits.DMA6IF = 0; // interrupt flag reset
             IPC46bits.DMA6IP = 5; // interrupt priority
             IPC46bits.DMA6IS = 2; // interrupt sub priority
+            IEC5bits.DMA6IE = 1; // interrupt
             break;
         }
         case DMA_CHANNEL_7:
         {
-            IEC5bits.DMA7IE = 1; // interrupt
             IFS5bits.DMA7IF = 0; // interrupt flag reset
             IPC46bits.DMA7IP = 5; // interrupt priority
             IPC46bits.DMA7IS = 2; // interrupt sub priority
+            IEC5bits.DMA7IE = 1; // interrupt
             break;
         }
         default: break;
@@ -339,6 +381,7 @@ void DMA_ClearIRQFlags(DMA * dmaObj)
         case DMA_CHANNEL_0:
         {
             IFS2bits.DMA0IF = 0; // interrupt flag reset
+            IFS1bits.U1TXIF = 0;
             break;
         }
         case DMA_CHANNEL_1:
@@ -380,21 +423,21 @@ void DMA_ClearIRQFlags(DMA * dmaObj)
     }
 }
 
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA0_VECTOR), aligned(16))) DMA0_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_0);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA1_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA1_VECTOR), aligned(16))) DMA1_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_1);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA2_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA2_VECTOR), aligned(16))) DMA2_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_2);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA3_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA3_VECTOR), aligned(16))) DMA3_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_3);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA4_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA4_VECTOR), aligned(16))) DMA4_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_4);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA5_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA5_VECTOR), aligned(16))) DMA5_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_5);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA6_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA6_VECTOR), aligned(16))) DMA6_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_6);   }
-void __attribute__((interrupt(ipl1SRS), at_vector(_DMA0_VECTOR), aligned(16))) DMA7_IRQ_Handler (void)
+void __attribute__((interrupt(ipl5auto), at_vector(_DMA7_VECTOR), aligned(16))) DMA7_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_7);   }
 
 

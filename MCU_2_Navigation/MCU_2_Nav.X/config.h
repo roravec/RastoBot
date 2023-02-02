@@ -19,7 +19,7 @@
 #define PMDLock()   {CFGCONbits.PMDLOCK=1; SYSKEY=0x0;} 
 
 #define FCY         120000000UL
-#define REFO1CLK    120000000UL // UARTs, SPI
+#define REFO1CLK    60000000UL // UARTs, SPI
 #define PBCLK2      120000000UL // I2C
 #define REFO4CLK    120000000UL // CAN
 #define _DI()		__builtin_disable_interrupts()
@@ -27,9 +27,9 @@
 
 /* Function prototypes */
 void Config_Init(void);
-void Delay_us(unsigned long us);
-void Delay_ms(unsigned int ms);
-void Delay_ticks(unsigned int del);
+void Delay_us(uint32_t us);
+void Delay_ms(uint32_t ms);
+void Delay_ticks(uint32_t del);
 void InitOscillator(void);
 void InitInterrupts(void);
 void InitGPIOs();

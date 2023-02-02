@@ -11,11 +11,11 @@ void Config_Init(void)
 {
     InitOscillator();
     InitInterrupts();
-    HwInterface_Init();
     InitGPIOs();
+    HwInterface_Init();
 }
 uint32_t __coretimer = 0; // used to calculate core ticks
-void Delay_us(unsigned long us)
+void Delay_us(uint32_t us)
 {
     // Convert microseconds us into how many clock ticks it will take
     us *= FCY / 1000000 / 2; // Core Timer updates every 2 ticks
@@ -56,19 +56,17 @@ void InitOscillator(void)
     CHECONbits.PFMWS = 1;
     CHECONbits.PREFEN = 1;
     
-    
-   
     // REFO1 - UART SPI
     /* Selecting the SYSCLK as input for REFO4CLK*/
     //REFO1CONbits.ROSEL = 7;
     REFO1CON = 0x200;
     /* Selecting the REFO4 prescaler to 3*/
-    REFO1CONbits.RODIV = 0;
+    REFO1CONbits.RODIV = 1;
     REFO1TRIMbits.ROTRIM = 0;
     REFO1CONSET = 0x00008000;
     
-    PB2DIVbits.PBDIV = 0;
-    PB3DIVbits.PBDIV = 0;
+    PB2DIVbits.PBDIV = 2;
+    PB2DIVbits.ON = 1;
     
     // REFO4 - CAN
     /* Selecting the SYSCLK as input for REFO4CLK*/
@@ -98,6 +96,14 @@ void InitInterrupts(void)
 
 void InitGPIOs()
 {
+    ANSELA = 0; // disable all analog pins
+    ANSELB = 0; // disable all analog pins
+    ANSELC = 0; // disable all analog pins
+//    ANSELD = 0; // disable all analog pins
+    ANSELE = 0; // disable all analog pins
+//    ANSELF = 0; // disable all analog pins
+    ANSELG = 0; // disable all analog pins
+    
     LED_0_LAT = 1;
     LED_1_LAT = 1;
     LED_2_LAT = 1;

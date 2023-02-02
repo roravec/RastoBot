@@ -8,6 +8,8 @@
 #ifndef DMA_PIC32MK_H
 #define	DMA_PIC32MK_H
 
+#define VirtToPhys(p) (int)p<0?((int)p&0x1fffffffL):(unsigned int)((unsigned char*)p+0x40000000L)
+
 #include <sys/kmem.h>
 #include "DMA_Common.h"
 

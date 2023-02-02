@@ -137,6 +137,7 @@ typedef struct
     uint8_t         destSize;
     uint8_t         transferBytesPerEvent;
     uint8_t         triggerOnInterruptId;
+    uint8_t         channelPriority;
     _Bool           interruptEnabled;
     _Bool           initialized;
     void            (*TransferComplete)(void); // event

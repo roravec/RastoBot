@@ -97,7 +97,7 @@ void loop() {
   delay(1);
   ArduinoOTA.handle();
   LED_Blink();
-  //MCU2_RX_handler();
+  MCU2_RX_handler();
   //MCU1_RX_handler();
 }
 
@@ -145,12 +145,14 @@ void MCU2_RX_handler()
       Serial.print("MCU2 RX:");
     }
     uint8_t receivedByte = UART_MCU3_MCU2.read();
-    Serial.write(&receivedByte, 1);
+    //Serial.write(receivedByte);
+    Serial.print(String(receivedByte) + " ");
     bytesCounter++;
   }
   if (bytesCounter > 0)
   {
-    Serial.println("MCU1 bytes received: " + bytesCounter);
+    Serial.println("");
+    Serial.println("MCU2 bytes received: " + bytesCounter);
   }
 }
 void MCU1_RX_handler()
@@ -164,7 +166,7 @@ void MCU1_RX_handler()
       Serial.print("MCU1 RX:");
     }
     uint8_t receivedByte = UART_MCU3_MCU1.read();
-    Serial.write(&receivedByte, 1);
+    Serial.write(receivedByte);
     bytesCounter++;
   }
   if (bytesCounter > 0)

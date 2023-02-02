@@ -21,6 +21,10 @@ typedef enum {
     UART_VECTOR_RX=0, UART_VECTOR_TX, UART_VECTOR_FAULT
 } UartInterruptType;
 
+typedef enum {
+    UART_ALL_FLAGS=0, UART_RX_FLAG, UART_TX_FLAG, UART_FAULT_FLAG
+} UartIrqFlagToClear;
+
 typedef union {
   struct {
     uint32_t STSEL:1;
@@ -126,7 +130,8 @@ typedef struct {
         _Bool           txInterrupt;
         _Bool           initialized;
         _Bool           enablePin;
-        void            (*DataReceived)(uint8_t); // event
+        void            (*DataReceived)(uint8_t); // event data received
+        void            (*DataSent)(void); // event data sent
     } UART;
 
 #endif	/* UART_COMMON_H */

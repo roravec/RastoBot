@@ -73,6 +73,7 @@
 // Use project enums instead of #define for ON and OFF.
 
 #include "config.h"
+#include "RastoBot_MCU2.h"
 
 void setup()
 {
