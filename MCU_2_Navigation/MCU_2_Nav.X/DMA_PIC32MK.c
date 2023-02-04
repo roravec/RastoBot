@@ -36,7 +36,7 @@ DMA * DMA_Create(
         dmaObj->transferBytesPerEvent = transferBytesPerEvent;
         dmaObj->triggerOnInterruptId = triggerOnInterruptId;
         dmaObj->interruptEnabled =  enInterrupt;
-        dmaObj->TransferComplete = 0;
+        dmaObj->InterruptTriggerFnc = 0;
         dmaObj->channelPriority = 3;
         dmaObj->initialized = 0;
     }
@@ -55,46 +55,28 @@ void DMA_Initialize(DMA * dmaObj)
         dmaObj->registers.DCHxCSIZbits->CHCSIZ = dmaObj->transferBytesPerEvent;
         dmaObj->registers.DCHxSSAbits->CHSSA = KVA_TO_PA(dmaObj->source);
         dmaObj->registers.DCHxDSAbits->CHDSA = KVA_TO_PA(dmaObj->destination);
-        dmaObj->registers.DCHxECONbits->CHSIRQ = dmaObj->triggerOnInterruptId;
-        DCH0DSA = KVA_TO_PA(&U1TXREG);
-        
-//        dmaObj->registers.DCHxDSIZbits->CHDSIZ = 200;
-//        DCH0DSA = KVA_TO_PA(buffer);
-        
+        dmaObj->registers.DCHxECONbits->CHSIRQ = dmaObj->triggerOnInterruptId;      
         if (dmaObj->interruptEnabled) DMA_InitInterrupts(dmaObj);
         dmaObj->registers.DCHxCONbits->CHAEN = 1;
         dmaObj->registers.DCHxCONbits->CHBUSY = 1; // channel is active
-        dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
+        //dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
+        
+        dmaObj->registers.DCHxINTbits->CHBCIE = 1; // block complete interrupt
         
         dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
-        
-//0x00010000; // disable DMA channel 0 interrupts
-//IFS1CLR=0x00010000; // clear any existing DMA channel 0 interrupt flag
-//DMACONSET=0x00008000; // enable the DMA controller
-//DCH0CON=0x3; // channel 0 off, priority 3, no chaining
-//DCH1CON=0x62; // channel 1 off, priority 2
-//// chain to higher priority
-//// (channel 0), enable events detection while disabled
-//DCH0ECONbits.CHSIRQ = 63; // IRQ UART2 TX
-//// program channel 0 transfer
-//DCH0SSA=KVA_TO_PA(&U3RXREG); // transfer source physical address
-//DCH0DSA=KVA_TO_PA(buffer); // transfer destination physical address
-//DCH0SSIZ=1; // source size is 1 byte
-//DCH0DSIZ=200; // dst size at most 200 bytes
-//DCH0CSIZ=1; // one byte per UART transfer request
-//
-//DCH0INTCLR=0x00ff00ff; // DMA0: clear events, disable interrupts
-//
-//IPC9CLR=0x00001f1f; // clear the DMA channels 0 and 1 priority and
-//// sub-priority
-//IPC9SET=0x00000b16; // set IPL 5, sub-priority 2 for DMA channel 0
-//// set IPL 2, sub-priority 3 for DMA channel 1
-//IEC1SET=0x00020000; // enable DMA channel 1 interrupt
-//DCH0ECONbits.SIRQEN = 1;
-//DCH0CONSET=0x80; // turn channel on
-        
+
         dmaObj->initialized = 1;
+        DMA_TurnOnListeningForInterrupt(dmaObj);
     }
+}
+
+void DMA_TurnOnListeningForInterrupt(DMA * dmaObj)
+{
+    dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
+}
+void DMA_TurnOffListeningForInterrupt(DMA * dmaObj)
+{
+    dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
 }
 
 void DMA_AssignRegistersByModule(DMA * dmaObj)
@@ -381,7 +363,6 @@ void DMA_ClearIRQFlags(DMA * dmaObj)
         case DMA_CHANNEL_0:
         {
             IFS2bits.DMA0IF = 0; // interrupt flag reset
-            IFS1bits.U1TXIF = 0;
             break;
         }
         case DMA_CHANNEL_1:
@@ -445,7 +426,7 @@ void __attribute__((interrupt(ipl5auto), at_vector(_DMA7_VECTOR), aligned(16))) 
 static void DMA_InterruptHandler(DmaChannel module)
 {
     DMA * dmaObj = DmaActiveChannels[module];
-    if (dmaObj->TransferComplete != 0)
-        dmaObj->TransferComplete();
+    if (dmaObj->InterruptTriggerFnc != 0)
+        dmaObj->InterruptTriggerFnc(dmaObj->destination);
     DMA_ClearIRQFlags(dmaObj);
 }

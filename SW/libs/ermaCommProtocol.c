@@ -121,71 +121,100 @@ void ECP_RecvBufferInit(void)
     RarrayCreate(&ecpRecvBuffer.buffer, recvBufferArr, ECP_MAX_PACKET_LEN);
     ECP_BufferReset(&ecpRecvBuffer);
 }
-
+void ECP_BufferInit(ECP_Buffer * ecpBuffer, uint8_t * ecpBufferArr, uint8_t size)
+{
+    RarrayCreate(&ecpBuffer->buffer, ecpBufferArr, size);
+    ECP_BufferReset(ecpBuffer);
+}
 
 void ECP_ReceivedByte(uint8_t data)
 {
-    if (!ecpRecvBuffer.buffer.created) // if array wasn't initialized then exit
-        return;
-    if (!ecpRecvBuffer.startByteDetected && data == ECP_START_BYTE) // waiting for start byte
-        ecpRecvBuffer.startByteDetected = 1; // streaming of ECP packet has started, next check for pattern
-    if (ecpRecvBuffer.startByteDetected) // receiving bytes
+    ECP_ReceivedByteCust(data, &ecpRecvBuffer);
+}
+
+ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer)
+{
+    if (!ecpBuffer->buffer.created) // if array wasn't initialized then exit
+        return ECP_UNKNOWN;
+    if (!ecpBuffer->startByteDetected && data == ECP_START_BYTE) // waiting for start byte
+        ecpBuffer->startByteDetected = 1; // streaming of ECP packet has started, next check for pattern
+    if (ecpBuffer->startByteDetected) // receiving bytes
     {
-        RarrayPush(&ecpRecvBuffer.buffer,data);
-        if (ecpRecvBuffer.buffer.currentIndex < ECP_PATTERN_LEN)
+        RarrayPush(&ecpBuffer->buffer,data);
+        if (ecpBuffer->buffer.currentIndex < ECP_PATTERN_LEN)
         {
             // wait for data until ECP_PATTERN_LEN is reached to check head pattern and determine if packet is correct
         }
-        else if (ecpRecvBuffer.buffer.currentIndex == ECP_PATTERN_LEN)
+        else if (ecpBuffer->buffer.currentIndex == ECP_PATTERN_LEN)
         {
             // at this point we should be able to detect basic pattern of ECP packet
             // if pattern failed we will stop receiving packet and will wait for another packet
-            if (ECP_DetectHeadPattern(&ecpRecvBuffer.buffer))
+            if (ECP_DetectHeadPattern(&ecpBuffer->buffer))
             {
-                ecpRecvBuffer.dlc = data;
-                ecpRecvBuffer.patternDetected = 1;
+                ecpBuffer->dlc = data;
+                ecpBuffer->patternDetected = 1;
             }
             else // invalid packet - RESET BUFFER
             {
-                ECP_BufferReset(&ecpRecvBuffer);
+                ECP_BufferReset(ecpBuffer);
+                return ECP_INVALID_HEADER;
             }
         }
-        else if (ecpRecvBuffer.patternDetected) // head pattern already detected, wait for stop byte after data+crc
+        else if (ecpBuffer->patternDetected) // head pattern already detected, wait for stop byte after data+crc
         {
-            if (ECP_FIXED_DATA_SIZE == 0 && ecpRecvBuffer.buffer.currentIndex < (ECP_PATTERN_LEN + ecpRecvBuffer.dlc + 2) 
-             || ECP_FIXED_DATA_SIZE > 0  && ecpRecvBuffer.buffer.currentIndex < (ECP_MAX_PACKET_LEN-1))
+            if (ECP_FIXED_DATA_SIZE == 0 && ecpBuffer->buffer.currentIndex < (ECP_PATTERN_LEN + ecpBuffer->dlc + 2) 
+             || ECP_FIXED_DATA_SIZE > 0  && ecpBuffer->buffer.currentIndex < (ECP_MAX_PACKET_LEN-1))
             {
                 // receiving data and waiting for STOP BYTE
             }
             else if (
-                    (ECP_FIXED_DATA_SIZE == 0 && ecpRecvBuffer.buffer.currentIndex == (ECP_PATTERN_LEN + ecpRecvBuffer.dlc + 2) 
-                  || ECP_FIXED_DATA_SIZE > 0  && ecpRecvBuffer.buffer.currentIndex == (ECP_MAX_PACKET_LEN-1))
-                  && ecpRecvBuffer.buffer.data[(ecpRecvBuffer.buffer.currentIndex-1)] == ECP_STOP_BYTE)
+                    (ECP_FIXED_DATA_SIZE == 0 && ecpBuffer->buffer.currentIndex == (ECP_PATTERN_LEN + ecpBuffer->dlc + 2) 
+                  || ECP_FIXED_DATA_SIZE > 0  && ecpBuffer->buffer.currentIndex == (ECP_MAX_PACKET_LEN-1))
+                  && ecpBuffer->buffer.data[(ecpBuffer->buffer.currentIndex-1)] == ECP_STOP_BYTE)
             {
-                ecpRecvBuffer.stopByteDetected = 1;
+                ecpBuffer->stopByteDetected = 1;
                 // stop byte received, check CRC
-                if (ECP_CheckCRCAtIndex(&ecpRecvBuffer.buffer,
-                        (ECP_FIXED_DATA_SIZE == 0 ? ecpRecvBuffer.dlc : ECP_FIXED_DATA_SIZE), 
-                        ecpRecvBuffer.buffer.currentIndex-2))
+                if (ECP_CheckCRCAtIndex(&ecpBuffer->buffer,
+                        (ECP_FIXED_DATA_SIZE == 0 ? ecpBuffer->dlc : ECP_FIXED_DATA_SIZE), 
+                        ecpBuffer->buffer.currentIndex-2))
                 {
                     // CRC OK
                     // Packet is valid ECP packet
-                    ecpRecvBuffer.command = ecpRecvBuffer.buffer.data[1];
-                    ecpRecvBuffer.subCommand = ecpRecvBuffer.buffer.data[3];
-                    ecpRecvBuffer.size = (ECP_FIXED_DATA_SIZE == 0 ? ECP_MIN_PACKET_LEN+ecpRecvBuffer.dlc : ECP_MAX_PACKET_LEN);
-                    ECP_BufferMessageEnqueue(&ecpRecvBuffer);
+                    ecpBuffer->command = ecpBuffer->buffer.data[1];
+                    ecpBuffer->subCommand = ecpBuffer->buffer.data[3];
+                    ecpBuffer->size = (ECP_FIXED_DATA_SIZE == 0 ? ECP_MIN_PACKET_LEN+ecpBuffer->dlc : ECP_MAX_PACKET_LEN);
+                    ECP_BufferMessageEnqueue(ecpBuffer);
+                    return ECP_VALID;
+                }
+                else // wrong CRC
+                {
+                    return ECP_INVALID_CRC;
                 }
             }
             else 
             {
-                ECP_BufferReset(&ecpRecvBuffer);
+                ECP_BufferReset(ecpBuffer);
+                return ECP_INVALID_FOOTER;
             }
         }
         else
         {
-            ECP_BufferReset(&ecpRecvBuffer);
+            ECP_BufferReset(ecpBuffer);
+            return ECP_INVALID_PACKET_SIZE;
         }
     }
+    return ECP_UNKNOWN;
+}
+
+ECP_PacketValidity ECP_CheckPacketValidity(uint8_t * packet, uint8_t len)
+{
+    uint8_t dlc = ECP_GetDLCFromPacket(packet,0);
+    if (len < ECP_MIN_PACKET_LEN)                                       return ECP_INVALID_PACKET_SIZE;
+    if (dlc != len-ECP_PATTERN_LEN-ECP_DLC_LEN-ECP_CRC_LEN-1)           return ECP_INVALID_DATA_SIZE;
+    if (!ECP_DetectHeadPatternAtIndexArr(packet, ECP_PATTERN_LEN))      return ECP_INVALID_HEADER;
+    if (packet[len-1] != ECP_STOP_BYTE)                                 return ECP_INVALID_FOOTER;
+    if (!ECP_CheckCRCAtIndexArr(packet, dlc, ECP_GetCRCIndex(0, dlc)))  return ECP_INVALID_CRC;
+    return ECP_VALID;
 }
 
 _Bool ECP_DetectHeadPattern(Rarray * data)
@@ -195,14 +224,22 @@ _Bool ECP_DetectHeadPattern(Rarray * data)
 
 _Bool ECP_DetectHeadPatternAtIndex(Rarray * data, uint16_t startIndex)
 {
-    if (startIndex >= ECP_PATTERN_LEN && data->size >= startIndex)
+    if (data->size >= startIndex)
+    {
+        return ECP_DetectHeadPatternAtIndexArr(data->data, startIndex);
+    }
+    return 0;
+}
+_Bool ECP_DetectHeadPatternAtIndexArr(uint8_t * data, uint16_t startIndex)
+{
+    if (startIndex >= ECP_PATTERN_LEN)
     {
         uint8_t index = startIndex - (ECP_PATTERN_LEN); // set index at beginning of the packet
-        uint8_t negdat0 = ~data->data[index+1];
-        uint8_t negdat1 = ~data->data[index+3];
-        if (    data->data[index] == ECP_START_BYTE &&
-                negdat0 == data->data[(index+2)] &&
-                negdat1 == data->data[(index+4)])
+        uint8_t negdat0 = ~data[index+1];
+        uint8_t negdat1 = ~data[index+3];
+        if (    data[index] == ECP_START_BYTE &&
+                negdat0 == data[(index+2)] &&
+                negdat1 == data[(index+4)])
         {
             return 1;
         }
@@ -211,20 +248,47 @@ _Bool ECP_DetectHeadPatternAtIndex(Rarray * data, uint16_t startIndex)
 }
 _Bool ECP_CheckCRCAtIndex(Rarray * data, uint8_t dlc, uint16_t index)
 {
-    if (index < data->size && index >= dlc+ECP_PATTERN_LEN)
+    if (index < data->size)
     {
-        uint8_t actualCrc = ECP_CRC_START_VALUE;
-        uint8_t crcFromPacket = data->data[index];
-        for (uint8_t i=index-dlc-ECP_PATTERN_LEN;i<index;i++)
-        {
-            actualCrc ^= data->data[i];
-        }
+        return ECP_CheckCRCAtIndexArr(data->data, dlc, index);
+    }
+    return 0;
+}
+_Bool ECP_CheckCRCAtIndexArr(uint8_t * data, uint8_t dlc, uint16_t index)
+{
+    if (index >= dlc+ECP_PATTERN_LEN+ECP_DLC_LEN)
+    {
+        uint8_t actualCrc = ECP_CalculateCRCFromPacket(data, dlc, 0);
+        uint8_t crcFromPacket = ECP_GetCRCFromPacket(data, dlc, 0);
         if (ECP_AVOID_CRC_CHECK_ON_RCV)
             return 1;
         if (crcFromPacket == actualCrc)
             return 1;
     }
     return 0;
+}
+
+uint8_t ECP_GetCRCIndex(uint8_t packetStartIndex, uint8_t dlc)
+{
+    return packetStartIndex + dlc + ECP_PATTERN_LEN + ECP_DLC_LEN;
+}
+
+uint8_t ECP_GetDLCFromPacket(uint8_t * data, uint8_t packetStartIndex)
+{
+    return data[ECP_PATTERN_LEN + packetStartIndex];
+}
+uint8_t ECP_GetCRCFromPacket(uint8_t * data, uint8_t dlc, uint8_t packetStartIndex)
+{
+    return data[ECP_PATTERN_LEN + packetStartIndex + dlc + ECP_DLC_LEN];
+}
+uint8_t ECP_CalculateCRCFromPacket(uint8_t * data, uint8_t dlc, uint16_t startIndex)
+{
+    uint8_t actualCrc = ECP_CRC_START_VALUE;
+    for (uint8_t i=startIndex; i<=startIndex+dlc+ECP_PATTERN_LEN ;i++)
+    {
+        actualCrc ^= data[i];
+    }
+    return actualCrc;
 }
 
 void ECP_BufferReset(ECP_Buffer * buffer)

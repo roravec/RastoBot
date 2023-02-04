@@ -99,6 +99,17 @@ typedef enum
     ECP_COMMAND         // just command
 } ECP_MessageType;
 
+typedef enum
+{
+    ECP_UNKNOWN = 0,    
+    ECP_VALID,
+    ECP_INVALID_CRC,
+    ECP_INVALID_HEADER,
+    ECP_INVALID_FOOTER,
+    ECP_INVALID_PACKET_SIZE,
+    ECP_INVALID_DATA_SIZE
+} ECP_PacketValidity;
+
 typedef struct
 {
     _Bool       startByteDetected;
@@ -129,10 +140,18 @@ Rarray *        ECP_Encode(ECP_Message * message, Rarray * out);
 int8_t          ECP_FindECPPacket(Rarray * in, Rarray * out);
 
 void            ECP_RecvBufferInit(void);
+void            ECP_BufferInit(ECP_Buffer * ecpBuffer, uint8_t * ecpBufferArr, uint8_t size);
 void            ECP_ReceivedByte(uint8_t data);
+void            ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpRecvBuffer);
 _Bool           ECP_DetectHeadPattern(Rarray * data);
 _Bool           ECP_DetectHeadPatternAtIndex(Rarray * data, uint16_t index);
+_Bool           ECP_DetectHeadPatternAtIndexArr(uint8_t * data, uint16_t startIndex);
 _Bool           ECP_CheckCRCAtIndex(Rarray * data, uint8_t dlc, uint16_t index);
+_Bool           ECP_CheckCRCAtIndexArr(uint8_t * data, uint8_t dlc, uint16_t index);
+uint8_t         ECP_GetCRCIndex(uint8_t packetStartIndex, uint8_t dlc);
+uint8_t         ECP_GetDLCFromPacket(uint8_t * data, uint8_t packetStartIndex);
+uint8_t         ECP_GetCRCFromPacket(uint8_t * data, uint8_t dlc, uint8_t packetStartIndex);
+uint8_t         ECP_CalculateCRCFromPacket(uint8_t * data, uint8_t dlc, uint16_t startIndex);
 void            ECP_BufferReset(ECP_Buffer * buffer);
 ECP_Message *   ECP_MessageDequeue(void);
 void            ECP_MarkMessageAsComplete(ECP_Message * msg);
