@@ -73,19 +73,19 @@ extern "C" {
 #define ECP_FIXED_DATA_SIZE 8   // dataload will be always X bytes. For DMA size pattern. 
                                 //If you do not provide enough data to fill it it will be left as 0x00
 #define ECP_EMPTY_DATA      0x00
-#if ECP_MAX_DATA_BYTES > 0
+#if ECP_FIXED_DATA_SIZE > 0
     #undef ECP_MAX_DATA_BYTES
     #define ECP_MAX_DATA_BYTES ECP_FIXED_DATA_SIZE
 #endif
 
-#define ECP_QUEUE_SIZE      3   // has to be less than 127!!!
+#define ECP_QUEUE_SIZE      10   // has to be less than 127!!!
     
 #define ECP_START_BYTE      0x01
 #define ECP_STOP_BYTE       0x04
 #define ECP_COMMAND_LEN     4
 #define ECP_DLC_LEN         1
 #define ECP_CRC_LEN         1
-#define ECP_PATTERN_LEN     1+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_FIXED_DATA_SIZE
+#define ECP_PATTERN_LEN     1+ECP_COMMAND_LEN+ECP_DLC_LEN
 #define ECP_MIN_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN+ECP_FIXED_DATA_SIZE
 #define ECP_MAX_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_MAX_DATA_BYTES+ECP_CRC_LEN
     
@@ -142,7 +142,8 @@ int8_t          ECP_FindECPPacket(Rarray * in, Rarray * out);
 void            ECP_RecvBufferInit(void);
 void            ECP_BufferInit(ECP_Buffer * ecpBuffer, uint8_t * ecpBufferArr, uint8_t size);
 void            ECP_ReceivedByte(uint8_t data);
-void            ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpRecvBuffer);
+ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer);
+ECP_PacketValidity ECP_CheckPacketValidity(uint8_t * packet, uint8_t len);
 _Bool           ECP_DetectHeadPattern(Rarray * data);
 _Bool           ECP_DetectHeadPatternAtIndex(Rarray * data, uint16_t index);
 _Bool           ECP_DetectHeadPatternAtIndexArr(uint8_t * data, uint16_t startIndex);

@@ -59,24 +59,27 @@ void DMA_Initialize(DMA * dmaObj)
         if (dmaObj->interruptEnabled) DMA_InitInterrupts(dmaObj);
         dmaObj->registers.DCHxCONbits->CHAEN = 1;
         dmaObj->registers.DCHxCONbits->CHBUSY = 1; // channel is active
+        
+        //dmaObj->registers.DCHxINTbits->CHBCIE = 1; // block complete interrupt
+        //dmaObj->registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
+        
         //dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
-        
-        dmaObj->registers.DCHxINTbits->CHBCIE = 1; // block complete interrupt
-        
-        dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
+        //dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
 
         dmaObj->initialized = 1;
-        DMA_TurnOnListeningForInterrupt(dmaObj);
+        //DMA_TurnOnListeningForInterrupt(dmaObj);
     }
 }
 
 void DMA_TurnOnListeningForInterrupt(DMA * dmaObj)
 {
     dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
+    dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
 }
 void DMA_TurnOffListeningForInterrupt(DMA * dmaObj)
 {
-    dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
+    dmaObj->registers.DCHxECONbits->SIRQEN = 0; // enable with interrupt
+    dmaObj->registers.DCHxCONbits->CHEN = 0;    // enable channel
 }
 
 void DMA_AssignRegistersByModule(DMA * dmaObj)
@@ -237,6 +240,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
     {
         case DMA_CHANNEL_0:
         {
+            DCH0INT = 0;
             IFS2bits.DMA0IF = 0; // interrupt flag reset
             IPC18bits.DMA0IP = 5; // interrupt priority
             IPC18bits.DMA0IS = 2; // interrupt sub priority
@@ -245,6 +249,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_1:
         {
+            DCH1INT = 0;
             IFS2bits.DMA1IF = 0; // interrupt flag reset
             IPC18bits.DMA1IP = 5; // interrupt priority
             IPC18bits.DMA1IS = 2; // interrupt sub priority
@@ -253,6 +258,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_2:
         {
+            DCH2INT = 0;
             IFS2bits.DMA2IF = 0; // interrupt flag reset
             IPC18bits.DMA2IP = 5; // interrupt priority
             IPC18bits.DMA2IS = 2; // interrupt sub priority
@@ -261,6 +267,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_3:
         {
+            DCH3INT = 0;
             IFS2bits.DMA3IF = 0; // interrupt flag reset
             IPC18bits.DMA3IP = 5; // interrupt priority
             IPC18bits.DMA3IS = 2; // interrupt sub priority
@@ -269,6 +276,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_4:
         {
+            DCH4INT = 0;
             IFS5bits.DMA4IF = 0; // interrupt flag reset
             IPC45bits.DMA4IP = 5; // interrupt priority
             IPC45bits.DMA4IS = 2; // interrupt sub priority
@@ -277,6 +285,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_5:
         {
+            DCH5INT = 0;
             IFS5bits.DMA5IF = 0; // interrupt flag reset
             IPC45bits.DMA5IP = 5; // interrupt priority
             IPC45bits.DMA5IS = 2; // interrupt sub priority
@@ -285,6 +294,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_6:
         {
+            DCH6INT = 0;
             IFS5bits.DMA6IF = 0; // interrupt flag reset
             IPC46bits.DMA6IP = 5; // interrupt priority
             IPC46bits.DMA6IS = 2; // interrupt sub priority
@@ -293,6 +303,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         }
         case DMA_CHANNEL_7:
         {
+            DCH7INT = 0;
             IFS5bits.DMA7IF = 0; // interrupt flag reset
             IPC46bits.DMA7IP = 5; // interrupt priority
             IPC46bits.DMA7IS = 2; // interrupt sub priority
@@ -358,6 +369,7 @@ void DMA_Deactivate(DMA * dmaObj)
 
 void DMA_ClearIRQFlags(DMA * dmaObj)
 {
+    dmaObj->registers.DCHxINTbits->CHDDIF = 0;
     switch (dmaObj->channel)
     {
         case DMA_CHANNEL_0:
@@ -427,6 +439,6 @@ static void DMA_InterruptHandler(DmaChannel module)
 {
     DMA * dmaObj = DmaActiveChannels[module];
     if (dmaObj->InterruptTriggerFnc != 0)
-        dmaObj->InterruptTriggerFnc(dmaObj->destination);
+        dmaObj->InterruptTriggerFnc((uint8_t*)dmaObj->destination);
     DMA_ClearIRQFlags(dmaObj);
 }

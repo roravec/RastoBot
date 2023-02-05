@@ -42,7 +42,7 @@ extern "C" {
     void UART_Deactivate(UART * uartObj);
     
     void UART_SendByte(UART * uartObj, uint8_t data); // sends individual char
-    void UART_SendData(UART * uartObj, unsigned char* data, uint16_t len);  // sends string of chars
+    void UART_SendData(UART * uartObj, uint8_t* data, uint16_t len);  // sends string of chars
     void UART_SendBreak(UART * uartObj);      // prepares bus for incoming message
     void UART_InitInterrupts(UART * uartObj, _Bool rxInt, _Bool txInt); // 
     void UART_SetTXInterrupt(UART * uartObj, uint8_t value);

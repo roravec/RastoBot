@@ -140,7 +140,7 @@ typedef struct
     uint8_t         channelPriority;
     _Bool           interruptEnabled;
     _Bool           initialized;
-    void            (*InterruptTriggerFnc)(uint32_t*); // event
+    void            (*InterruptTriggerFnc)(uint8_t*); // event
 } DMA;
 
 

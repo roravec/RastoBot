@@ -286,13 +286,12 @@ void UART_SendByte(UART * uartObj, uint8_t data)
 {
     while(!uartObj->registers.UxSTAbits->TRMT);  // wait for empty TX register
      // fill TX register with data
-    volatile uint32_t * refToTXreg = uartObj->registers.UxTXREG;
-    *refToTXreg = (uint32_t)data;
+    *uartObj->registers.UxTXREG = data;
 }
-void UART_SendData(UART * uartObj, unsigned char* data, uint16_t len)
+void UART_SendData(UART * uartObj, uint8_t* data, uint16_t len)
 {
     for(uint16_t i = 0; i<len;i++)
-        UART_SendByte(uartObj, (uint8_t)data[i]);
+        UART_SendByte(uartObj, data[i]);
 }
 void UART_SendBreak(UART * uartObj)
 {
@@ -343,8 +342,6 @@ void __attribute__((interrupt(ipl6auto), at_vector(_UART6_FAULT_VECTOR), aligned
 static void UART_InterruptHandler(UartModule module, UartInterruptType iType)
 {
     UART * uartObj = UartActiveModules[module];
-   
-    /* Call CAN MISC interrupt handler if SERRIF/CERRIF/IVMIF interrupt flag is set */
     switch (iType)
     {
         case UART_VECTOR_RX:

@@ -21,6 +21,10 @@
 #define UART_LIDAR_BAUDRATE     230400UL
 #define UART_GPS_BAUDRATE       9600
 
+#define MCU2_LOG_DATA_TO_STRUCT_EVERY   1000
+#define MCU2_CHECK_NEW_MESSAGES_EVERY   1
+#define MCU2_SEND_STATUS_DATA_EVERY     1000
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
@@ -33,6 +37,7 @@ void MCU2_Loop(void);
 void MCU2_UARTMCU0_ReceiveData(uint8_t data);
 void MCU2_UARTMCU1_ReceiveData(uint8_t data);
 void MCU2_UARTMCU3_ReceiveData(uint8_t data);
+void MCU2_UARTMCU0_ReceivedDataBlock(uint8_t * data);
 
 
 #ifdef	__cplusplus
