@@ -360,7 +360,7 @@ void UART_RX_InterruptHandler(UART * uartObj)
 {
     if (uartObj->DataReceived != 0)
     {
-        uartObj->DataReceived(*(uartObj->registers.UxRXREG));
+        uartObj->DataReceived(*(uartObj->registers.UxRXREG), uartObj->module);
     }
     UART_ClearInterruptFlags(uartObj, UART_RX_FLAG);
 }

@@ -130,7 +130,7 @@ typedef struct {
         _Bool           txInterrupt;
         _Bool           initialized;
         _Bool           enablePin;
-        void            (*DataReceived)(uint8_t); // event data received
+        void            (*DataReceived)(uint8_t, UartModule); // event data received
         void            (*DataSent)(void); // event data sent
     } UART;
 

@@ -208,6 +208,16 @@ ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer)
     }
     return ECP_UNKNOWN;
 }
+ECP_PacketValidity ECP_ParseEnqueueRawDataBlock(uint8_t * packet, uint8_t len)
+{
+    uint8_t data[ECP_MAX_DATA_BYTES];
+    if (packet[5] > 0) // if data is more than 0 then get data from raw packet
+    {
+        for (uint8_t i=0; i < packet[5] && i<ECP_MAX_DATA_BYTES ;i++)
+            data[i] = packet[i];
+    }
+    ECP_EnqueueData(packet[1], packet[3], packet[5], data);
+}
 
 ECP_PacketValidity ECP_CheckPacketValidity(uint8_t * packet, uint8_t len)
 {
@@ -321,23 +331,47 @@ void ECP_MarkMessageAsComplete(ECP_Message * msg)
 
 static void ECP_BufferMessageEnqueue(ECP_Buffer * ecpRecvBuffer)
 {
+    if (ecpRecvBuffer == 0) return; // invalid pointer
+    uint8_t data[ECP_MAX_DATA_BYTES];
+    if (ecpRecvBuffer->dlc > 0)
+    {
+        for (uint8_t i=0,j=ECP_PATTERN_LEN; i < ecpRecvBuffer->dlc ;i++)
+            data[i] = ecpRecvBuffer->buffer.data[j+i];
+    }
+    ECP_EnqueueData(
+            ecpRecvBuffer->command,
+            ecpRecvBuffer->subCommand,
+            ecpRecvBuffer->dlc,
+            data);
+    ECP_BufferReset(ecpRecvBuffer);
+}
+
+void ECP_MessageEnqueue(ECP_Message * ecpMsg)
+{
+    ECP_EnqueueData(
+            ecpMsg->command,
+            ecpMsg->subCommand,
+            ecpMsg->dlc,
+            ecpMsg->data);
+}
+void ECP_EnqueueData(uint8_t command, uint8_t subComm, uint8_t dlc, uint8_t * data)
+{
     int8_t index = ECP_GetFreeQueueIndex();
     if (index > -1) // queue is not full
     {
         //ECP_QueueShiftRight(); // shift all current messages to right to free the first index
-        ecpMessagesQueue[index].command = ecpRecvBuffer->command;
-        ecpMessagesQueue[index].subCommand = ecpRecvBuffer->subCommand;
-        ecpMessagesQueue[index].dlc = ecpRecvBuffer->dlc;
+        ecpMessagesQueue[index].command = command;
+        ecpMessagesQueue[index].subCommand = subComm;
+        ecpMessagesQueue[index].dlc = dlc;
         if (ecpMessagesQueue[index].dlc > 0)
         {
-            for (uint8_t i=0,j=ECP_PATTERN_LEN; i<ecpMessagesQueue[0].dlc ;i++)
-                ecpMessagesQueue[index].data[i] = ecpRecvBuffer->buffer.data[j+i];
+            for (uint8_t i=0; i<ecpMessagesQueue[0].dlc ;i++)
+                ecpMessagesQueue[index].data[i] = data[i];
             ecpMessagesQueue[index].msgType = ECP_COMDATA;
         }
         else
             ecpMessagesQueue[index].msgType = ECP_COMMAND;
     }
-    ECP_BufferReset(ecpRecvBuffer);
 }
 
 static int8_t ECP_GetFreeQueueIndex(void)

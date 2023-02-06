@@ -31,13 +31,13 @@ extern "C" {
 
 /* Function prototypes */
 void MCU2_Init(void);
+void MCU2_InitUART(void);
+void MCU2_InitDMA(void);
 
 // Main loop. Should be called every 10ms
 void MCU2_Loop(void);
-void MCU2_UARTMCU0_ReceiveData(uint8_t data);
-void MCU2_UARTMCU1_ReceiveData(uint8_t data);
-void MCU2_UARTMCU3_ReceiveData(uint8_t data);
-void MCU2_UARTMCU0_ReceivedDataBlock(uint8_t * data);
+void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule);
+void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data);
 
 
 #ifdef	__cplusplus

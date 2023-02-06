@@ -85,6 +85,29 @@ typedef struct
     uint32_t    stepperSteps[2];
 } MCU_1_WheelsMotorControl;
 
+typedef struct
+{
+    int16_t     magnetX;
+    int16_t     magnetY;
+    int16_t     magnetZ;
+    int16_t     accelX;
+    int16_t     accelY;
+    int16_t     accelZ;
+    int16_t     gyroX;
+    int16_t     gyroY;
+    int16_t     gyroZ;
+    int16_t     temperature;
+    uint16_t    perimeterWire;
+} MCU_2_GyroData;
+
+typedef struct
+{
+} MCU_2_GPSData;
+
+typedef struct
+{
+} MCU_2_LidarData;
+
 
 ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * sensors);
 ECP_Message *   RastoBot_Encode_Sensors_1(ECP_Message * out, MCU_0_Sensors * sensors);
@@ -105,4 +128,4 @@ MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorSteps(MCU_1_WheelsMotorCon
 }
 #endif
 
-#endif	/* RASTOBOT_H */
+#endif	/* RASTOBOT_H*/

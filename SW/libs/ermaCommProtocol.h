@@ -88,6 +88,7 @@ extern "C" {
 #define ECP_PATTERN_LEN     1+ECP_COMMAND_LEN+ECP_DLC_LEN
 #define ECP_MIN_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN+ECP_FIXED_DATA_SIZE
 #define ECP_MAX_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_MAX_DATA_BYTES+ECP_CRC_LEN
+#define ECP_PACKET_LEN_WO_DATA  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN
     
 #define ECP_CRC_START_VALUE 0x55
     
@@ -143,6 +144,7 @@ void            ECP_RecvBufferInit(void);
 void            ECP_BufferInit(ECP_Buffer * ecpBuffer, uint8_t * ecpBufferArr, uint8_t size);
 void            ECP_ReceivedByte(uint8_t data);
 ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer);
+ECP_PacketValidity ECP_ParseEnqueueRawDataBlock(uint8_t * packet, uint8_t len);
 ECP_PacketValidity ECP_CheckPacketValidity(uint8_t * packet, uint8_t len);
 _Bool           ECP_DetectHeadPattern(Rarray * data);
 _Bool           ECP_DetectHeadPatternAtIndex(Rarray * data, uint16_t index);
@@ -156,6 +158,8 @@ uint8_t         ECP_CalculateCRCFromPacket(uint8_t * data, uint8_t dlc, uint16_t
 void            ECP_BufferReset(ECP_Buffer * buffer);
 ECP_Message *   ECP_MessageDequeue(void);
 void            ECP_MarkMessageAsComplete(ECP_Message * msg);
+void            ECP_MessageEnqueue(ECP_Message * ecpRecvBuffer);
+void            ECP_EnqueueData(uint8_t command, uint8_t subComm, uint8_t dlc, uint8_t * data);
 
 #ifdef	__cplusplus
 }
