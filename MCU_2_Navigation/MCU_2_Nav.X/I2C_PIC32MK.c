@@ -21,26 +21,53 @@ void I2C_Initialize(I2C * i2cObj)
     {
         I2C_AssignRegistersByModule(i2cObj);
         I2CConfigure(i2cObj,0); // reset CON
-     
         
-    /* Disable the I2C Master interrupt */
-    IEC1CLR = _IEC1_I2C1MIE_MASK;
-
-    /* Disable the I2C Bus collision interrupt */
-    IEC1CLR = _IEC1_I2C1BIE_MASK;
-
-    I2C1CONCLR = _I2C1CON_SIDL_MASK;
-    I2C1CONCLR = _I2C1CON_DISSLW_MASK;
-    I2C1CONCLR = _I2C1CON_SMEN_MASK;
-
-    /* Clear master interrupt flag */
-    IFS1CLR = _IFS1_I2C1MIF_MASK;
-
-    /* Clear fault interrupt flag */
-    IFS1CLR = _IFS1_I2C1BIF_MASK;
+        i2cObj->registers.I2CxCONbits->SIDL = 0;
+        i2cObj->registers.I2CxCONbits->DISSLW = 0;
+        i2cObj->registers.I2CxCONbits->SMEN = 1;
+     
+        IEC6bits.I2C4BIE = 0;
+        IEC6bits.I2C4MIE = 0;
+        IEC6bits.I2C4SIE = 0;
+        IFS6bits.I2C4BIF = 0;
+        IFS6bits.I2C4MIF = 0;
+        IFS6bits.I2C4SIF = 0;
+//    /* Disable the I2C Master interrupt */
+//    IEC1CLR = _IEC1_I2C1MIE_MASK;
+//
+//    /* Disable the I2C Bus collision interrupt */
+//    IEC1CLR = _IEC1_I2C1BIE_MASK;
+//
+//    I2C1CONCLR = _I2C1CON_SIDL_MASK;
+//    I2C1CONCLR = _I2C1CON_DISSLW_MASK;
+//    I2C1CONCLR = _I2C1CON_SMEN_MASK;
+//
+//    /* Clear master interrupt flag */
+//    IFS1CLR = _IFS1_I2C1MIF_MASK;
+//
+//    /* Clear fault interrupt flag */
+//    IFS1CLR = _IFS6_I2C1BIF_MASK;
+        
+        
+//        //    /* Disable the I2C Master interrupt */
+//    IEC6CLR = _IEC6_I2C4MIE_MASK;
+//
+//    /* Disable the I2C Bus collision interrupt */
+//    IEC6CLR = _IEC6_I2C4BIE_MASK;
+//
+//    I2C4CONCLR = _I2C4CON_SIDL_MASK;
+//    I2C4CONCLR = _I2C4CON_DISSLW_MASK;
+//    I2C4CONCLR = _I2C4CON_SMEN_MASK;
+//
+//    /* Clear master interrupt flag */
+//    IFS6CLR = _IFS6_I2C4MIF_MASK;
+//
+//    /* Clear fault interrupt flag */
+//    IFS6CLR = _IFS6_I2C4BIF_MASK;
+    
     
         i2cObj->registers.I2CxBRGbits->I2CBRG = i2cObj->baudrate; // set baudrate
-        i2cObj->registers.I2CxCONbits->SDAHT = 1; // Minimum of 300 ns hold time on SDA after the falling edge of SCL
+        i2cObj->registers.I2CxCONbits->SDAHT = 0; // Minimum of 300 ns hold time on SDA after the falling edge of SCL
         //I2CSetFrequency(i2cObj,PERIPHERAL_FREQ,I2C_CLOCK_FREQ);
         I2CEnable(i2cObj, 1);
         i2cObj->initialized = 1;

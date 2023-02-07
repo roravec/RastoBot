@@ -10,9 +10,12 @@
 
 #include "config.h"
 #include "../../SW/libs/RastoBot.h"
+#include "I2C_PIC32MK.h"
 #include "UART_PIC32MK.h"
 #include "DMA_PIC32MK.h"
 #include "DataFlowControl_PIC32MK.h"
+#include "MPU6050.h"
+#include "QMC5883L.h"
 
 #define UART_CLOCK              REFO1CLK
 #define UART_MCU0_BAUDRATE      19200
@@ -24,6 +27,9 @@
 #define MCU2_LOG_DATA_TO_STRUCT_EVERY   1000
 #define MCU2_CHECK_NEW_MESSAGES_EVERY   1
 #define MCU2_SEND_STATUS_DATA_EVERY     1000
+#define MCU2_READ_GYRO_DATA_EVERY       1000
+#define MCU2_READ_COMPASS_DATA_EVERY    250
+#define MCU2_READ_PERIMETER_WIRE_EVERY  100
 
 #ifdef	__cplusplus
 extern "C" {
@@ -33,6 +39,12 @@ extern "C" {
 void MCU2_Init(void);
 void MCU2_InitUART(void);
 void MCU2_InitDMA(void);
+void MCU2_InitI2C(void);
+void MCU2_InitGyroMPU6050(void);
+void MCU2_InitCompass(void);
+void MCU2_InitLidar(void);
+void MCU2_InitGPS(void);
+void MCU2_InitPerimeterWire(void);
 
 // Main loop. Should be called every 10ms
 void MCU2_Loop(void);

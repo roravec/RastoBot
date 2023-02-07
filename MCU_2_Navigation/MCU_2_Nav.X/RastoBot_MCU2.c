@@ -3,6 +3,8 @@
 /* GLOBALS */
 uint32_t loopCounter = 0;
 
+I2C i2c;
+
 UART uartMCU0;  // U3; RX TX
 UART uartMCU1;  // U5; RX TX
 UART uartMCU3;  // U1; RX TX
@@ -11,6 +13,9 @@ UART uartLIDAR; // U2; RX only; DMA
 
 MCU_0_Sensors   sensorsStatus;
 MCU_1_Motors    motorsStatus;
+MCU_2_GyroData  gyroData;
+MCU_2_GPSData   gpsData;
+MCU_2_LidarData lidarData;
 
 DMA dmaMcu0IN;
 DMA dmaMcu1IN;
@@ -42,6 +47,9 @@ static Rarray uartMCU3_OUT;
 
 /* STATIC FUNCTIONS */
 static void MCU2_DoTasks(void);
+static void MCU2_TaskReadGyro(void);
+static void MCU2_TaskReadCompass(void);
+static void MCU2_TaskReadPerimeterWire(void);
 static void MCU2_TaskLogData(void);
 static void MCU2_TaskSendStatusData(void);
 static void MCU2_TaskCheckForNewReceivedData(void);
@@ -79,6 +87,13 @@ void MCU2_InitUART(void)
     UART_Initialize(&uartMCU3);
 //    UART_Initialize(&uartGPS);
 //    UART_Initialize(&uartLIDAR);
+    
+    MCU2_InitI2C();
+    MCU2_InitGyroMPU6050();
+    MCU2_InitCompass();
+    MCU2_InitLidar();
+    MCU2_InitGPS();
+    MCU2_InitPerimeterWire();
 }
 
 void MCU2_InitDMA(void)
@@ -105,14 +120,43 @@ void MCU2_InitDMA(void)
     DMA_Initialize(&dmaMcu1IN);
     dmaMcu1IN.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
 }
+void MCU2_InitI2C(void)
+{
+    I2C_Create(&i2c, I2C_MODULE_4, REFO1CLK, 100000, 0);
+    i2c.baudrate = 0x018A;  // 100kHz@80MHzPBCL
+    Delay_ms(100);
+    I2C_Initialize(&i2c);
+    Delay_ms(100);
+}
+void MCU2_InitGyroMPU6050(void)
+{
+    MPU6050_Init(&i2c);
+}
+void MCU2_InitCompass(void)
+{
+    
+}
+void MCU2_InitLidar(void)
+{
+    
+}
+void MCU2_InitGPS(void)
+{
+    
+}
+void MCU2_InitPerimeterWire(void)
+{
+    
+}
 
+/* MAIN LOOP ******************************************************************/
 void MCU2_Loop(void)
 {
     loopCounter++;
     MCU2_DoTasks();
     //UART_SendByte(&uartMCU3, 0x55);
 }
-
+/******************************************************************************/
 void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule)
 {
     UART * uart;
@@ -159,6 +203,33 @@ static void MCU2_DoTasks(void)
         MCU2_TaskCheckForNewReceivedData();
     if (loopCounter % MCU2_SEND_STATUS_DATA_EVERY == 0)
         MCU2_TaskSendStatusData();
+     if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
+        MCU2_TaskReadPerimeterWire();
+     if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
+        MCU2_TaskReadGyro();
+    if (loopCounter % MCU2_READ_COMPASS_DATA_EVERY == 0)
+        MCU2_TaskReadCompass();
+}
+
+static void MCU2_TaskReadGyro(void)
+{
+    MPU6050_Read(&gyroData.accelX, 
+            &gyroData.accelY,
+            &gyroData.accelZ,
+            &gyroData.gyroX,
+            &gyroData.gyroY,
+            &gyroData.gyroZ,
+            &gyroData.temperature);
+}
+
+static void MCU2_TaskReadCompass(void)
+{
+    
+}
+
+static void MCU2_TaskReadPerimeterWire(void)
+{
+    
 }
 
 static void MCU2_TaskLogData(void)

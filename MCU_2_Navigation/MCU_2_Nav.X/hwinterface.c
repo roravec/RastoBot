@@ -21,4 +21,7 @@ void HwInterface_Init(void)
     INDUCTION_SENSE_TRIS = 1;
     
     LIDAR_ENABLE_TRIS = 0;
+    
+    I2C_SDA_TRIS = 1;
+    I2C_SCL_TRIS = 1;
 }
