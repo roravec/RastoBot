@@ -15,19 +15,27 @@ void MPU6050_Init(I2C * i2cObj)
     I2C_STATUS status;
     pI2cObj = i2cObj;
     // Setting The Sample (Data) Rate ******************************************/
+    while(!I2CBusIsIdle(pI2cObj));                   // wait for bus idle
+    while(!I2CConReady(pI2cObj));
     I2CStart(pI2cObj);
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    //if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, MPU6050_W);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, SMPLRT_DIV) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, SMPLRT_DIV) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, SMPLRT_DIV);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, 0x07) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, 0x07) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, 0x07);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
@@ -42,15 +50,51 @@ void MPU6050_Init(I2C * i2cObj)
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, MPU6050_W);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, PWR_MGMT_1) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, PWR_MGMT_1) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, PWR_MGMT_1);
+    while (!I2CByteWasAcknowledged(pI2cObj));
+    while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
+    while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
+    // tu neprejde
+    
+//    if (I2CSendByte(pI2cObj, 0x01) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, 0x00);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, 0x01) != I2C_SUCCESS) return;
+    I2CStop(pI2cObj);
+    do{
+        status = I2CGetStatus(pI2cObj);
+    } while ( !(status & I2C_STOP) );  
+    while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
+    /***************************************************************************/
+        // Setting The Clock Source ******************************************/
+    I2CStart(pI2cObj);
+    while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
+    while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
+    
+//    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, MPU6050_W);
+    while (!I2CByteWasAcknowledged(pI2cObj));
+    while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
+    while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
+    
+//    if (I2CSendByte(pI2cObj, PWR_MGMT_1) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, PWR_MGMT_2);
+    while (!I2CByteWasAcknowledged(pI2cObj));
+    while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
+    while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
+    
+//    if (I2CSendByte(pI2cObj, 0x01) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, 0x78);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
@@ -65,15 +109,21 @@ void MPU6050_Init(I2C * i2cObj)
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, MPU6050_W);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, CONFIG) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, CONFIG) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, CONFIG);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, 0x00) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, 0x00) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, 0x00);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
@@ -88,15 +138,19 @@ void MPU6050_Init(I2C * i2cObj)
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+//    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    I2CSendByte(pI2cObj, MPU6050_W);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, ACCEL_CONFIG) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, ACCEL_CONFIG) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, 0x18) != I2C_SUCCESS) return;// requires lots of moving to see results
+    if (I2CSendByte(pI2cObj, 0x18) != I2C_SUCCESS);// requires lots of moving to see results
+    while (!I2CByteWasAcknowledged(pI2cObj));
     //if (I2CSendByte(pI2cObj, 0x01) != I2C_SUCCESS) return;// little move can change everything
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
@@ -112,15 +166,18 @@ void MPU6050_Init(I2C * i2cObj)
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, GYRO_CONFIG) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, GYRO_CONFIG) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, 0x18) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, 0x18) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
@@ -135,15 +192,18 @@ void MPU6050_Init(I2C * i2cObj)
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, INT_ENABLE) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, INT_ENABLE) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, 0x01) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, 0x00) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
@@ -173,16 +233,25 @@ void MPU6050_Read(int16_t *ax,  int16_t *ay,  int16_t *az,  int16_t *gx,  int16_
     while (!I2CStartConditionStarted(pI2cObj));       // wait for START condition complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmitter
     
-    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, MPU6050_W) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
-    if (I2CSendByte(pI2cObj, ACCEL_XOUT_H) != I2C_SUCCESS) return;
+    if (I2CSendByte(pI2cObj, ACCEL_XOUT_H) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
+    //if (I2CSendByte(pI2cObj, 0x60) != I2C_SUCCESS);
     while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
     while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
     
     result = I2CRepeatStart(pI2cObj);                // call repeated start
     while (!I2CRestartConditionStarted(pI2cObj));
+    
+    if (I2CSendByte(pI2cObj, MPU6050_R) != I2C_SUCCESS);
+    while (!I2CByteWasAcknowledged(pI2cObj));
+    while(!I2CTransmissionHasCompleted(pI2cObj));    // wait for transmission complete
+    while(!I2CTransmitterIsReady(pI2cObj));          // wait for transmission ready status
+    
     // Repeated Starts allow a master to change bus direction of addressed slave device 
     // without relinquishing control of the bus
     result = I2CReceiverEnable(pI2cObj, 1);          // wait for receiver
@@ -262,7 +331,7 @@ void MPU6050_Read(int16_t *ax,  int16_t *ay,  int16_t *az,  int16_t *gx,  int16_
     result = I2CReceiverEnable(pI2cObj, 1);          // enable RX
     while(!I2CReceivedDataIsAvailable(pI2cObj));     // wait for data on RX
     Gz = Gz | (int16_t)I2CGetByte(pI2cObj);
-    I2CAcknowledgeByte(pI2cObj,1);                   // send ACK
+    I2CAcknowledgeByte(pI2cObj,0);                   // send ACK
     while(!I2CAcknowledgeHasCompleted(pI2cObj));     // wait for ACK complete
     
     I2CStop(pI2cObj);

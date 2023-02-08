@@ -26,6 +26,8 @@
 /* I2C ************************************/
 #define I2C_SDA_TRIS        TRISEbits.TRISE12
 #define I2C_SCL_TRIS        TRISEbits.TRISE13
+#define I2C_SDA_LAT         LATEbits.LATE12
+#define I2C_SCL_LAT         LATEbits.LATE13
 /******************************************/ 
 
 /* LEDS ***********************************/

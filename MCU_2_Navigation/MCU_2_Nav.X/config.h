@@ -20,7 +20,8 @@
 
 #define FCY         120000000UL
 #define REFO1CLK    60000000UL // UARTs, SPI
-#define PBCLK2      120000000UL // I2C
+#define PBCLK2      60000000UL // I2C1 I2C2
+#define PBCLK3      60000000UL // I2C3 I2C4
 #define REFO4CLK    120000000UL // CAN
 #define _DI()		__builtin_disable_interrupts()
 #define _EI()		__builtin_enable_interrupts()

@@ -59,6 +59,12 @@ void MCU2_Init(void)
 {
     MCU2_InitUART();
     MCU2_InitDMA();
+    MCU2_InitI2C();
+    MCU2_InitGyroMPU6050();
+    MCU2_InitCompass();
+    MCU2_InitLidar();
+    MCU2_InitGPS();
+    MCU2_InitPerimeterWire();
 }
 
 
@@ -86,14 +92,7 @@ void MCU2_InitUART(void)
     UART_Initialize(&uartMCU1);
     UART_Initialize(&uartMCU3);
 //    UART_Initialize(&uartGPS);
-//    UART_Initialize(&uartLIDAR);
-    
-    MCU2_InitI2C();
-    MCU2_InitGyroMPU6050();
-    MCU2_InitCompass();
-    MCU2_InitLidar();
-    MCU2_InitGPS();
-    MCU2_InitPerimeterWire();
+//    UART_Initialize(&uartLIDAR); 
 }
 
 void MCU2_InitDMA(void)
@@ -107,7 +106,7 @@ void MCU2_InitDMA(void)
             1, UART3_RX_IRQ_ID, 1);
     dmaMcu0IN.InterruptTriggerFnc = &MCU2_UART_ECP_ReceivedDataBlock;
     DMA_Initialize(&dmaMcu0IN);
-    dmaMcu0IN.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
+    dmaMcu0IN.registers.DCHxINTbits->CHDDIE = 1; // destination is full, interrupt
     
     /* DMA MCU1 IN *************************************/
         DMA_Create(&dmaMcu1IN, DMA_CHANNEL_1, 
@@ -122,11 +121,10 @@ void MCU2_InitDMA(void)
 }
 void MCU2_InitI2C(void)
 {
-    I2C_Create(&i2c, I2C_MODULE_4, REFO1CLK, 100000, 0);
-    i2c.baudrate = 0x018A;  // 100kHz@80MHzPBCL
-    Delay_ms(100);
+    I2C_Create(&i2c, I2C_MODULE_4, PBCLK3, 100000, 0);
+    i2c.baudrate = 0x0128;  // 100kHz@60MHzPBCL
     I2C_Initialize(&i2c);
-    Delay_ms(100);
+    Delay_ms(50);
 }
 void MCU2_InitGyroMPU6050(void)
 {
@@ -203,9 +201,9 @@ static void MCU2_DoTasks(void)
         MCU2_TaskCheckForNewReceivedData();
     if (loopCounter % MCU2_SEND_STATUS_DATA_EVERY == 0)
         MCU2_TaskSendStatusData();
-     if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
+    if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
         MCU2_TaskReadPerimeterWire();
-     if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
+    if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
         MCU2_TaskReadGyro();
     if (loopCounter % MCU2_READ_COMPASS_DATA_EVERY == 0)
         MCU2_TaskReadCompass();

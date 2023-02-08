@@ -1577,6 +1577,8 @@ BOOL I2CStartConditionStarted ( I2C * i2cObj );
     * FALSE   - Not started yet */
 BOOL I2CRestartConditionStarted ( I2C * i2cObj );
 
+BOOL I2CConReady ( I2C * i2cObj );
+
 
     /**************************************************************************/
     /* End of C++ Compatibility */

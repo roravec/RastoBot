@@ -22,16 +22,18 @@ void I2C_Initialize(I2C * i2cObj)
         I2C_AssignRegistersByModule(i2cObj);
         I2CConfigure(i2cObj,0); // reset CON
         
-        i2cObj->registers.I2CxCONbits->SIDL = 0;
-        i2cObj->registers.I2CxCONbits->DISSLW = 0;
-        i2cObj->registers.I2CxCONbits->SMEN = 1;
-     
-        IEC6bits.I2C4BIE = 0;
-        IEC6bits.I2C4MIE = 0;
-        IEC6bits.I2C4SIE = 0;
-        IFS6bits.I2C4BIF = 0;
-        IFS6bits.I2C4MIF = 0;
-        IFS6bits.I2C4SIF = 0;
+//        i2cObj->registers.I2CxCONbits->SIDL = 0;
+//        i2cObj->registers.I2CxCONbits->DISSLW = 0;
+//        i2cObj->registers.I2CxCONbits->SMEN = 0;
+//     
+//        IEC6bits.I2C4BIE = 0;
+//        IEC6bits.I2C4MIE = 0;
+//        IEC6bits.I2C4SIE = 0;
+//        IFS6bits.I2C4BIF = 0;
+//        IFS6bits.I2C4MIF = 0;
+//        IFS6bits.I2C4SIF = 0;
+        
+        
 //    /* Disable the I2C Master interrupt */
 //    IEC1CLR = _IEC1_I2C1MIE_MASK;
 //
@@ -49,11 +51,32 @@ void I2C_Initialize(I2C * i2cObj)
 //    IFS1CLR = _IFS6_I2C1BIF_MASK;
         
         
-//        //    /* Disable the I2C Master interrupt */
+        //    /* Disable the I2C Master interrupt */
+    IEC6CLR = _IEC6_I2C4MIE_MASK;
+
+    /* Disable the I2C Bus collision interrupt */
+    IEC6CLR = _IEC6_I2C4BIE_MASK;
+
+    I2C4CONCLR = _I2C4CON_SIDL_MASK;
+    I2C4CONCLR = _I2C4CON_DISSLW_MASK;
+    I2C4CONCLR = _I2C4CON_SMEN_MASK;
+
+    /* Clear master interrupt flag */
+    IFS6CLR = _IFS6_I2C4MIF_MASK;
+
+    /* Clear fault interrupt flag */
+    IFS6CLR = _IFS6_I2C4BIF_MASK;
+    
+    
+    
+    
+//    /* Disable the I2C Master interrupt */
 //    IEC6CLR = _IEC6_I2C4MIE_MASK;
 //
 //    /* Disable the I2C Bus collision interrupt */
 //    IEC6CLR = _IEC6_I2C4BIE_MASK;
+//
+//    I2C4BRG = 595;
 //
 //    I2C4CONCLR = _I2C4CON_SIDL_MASK;
 //    I2C4CONCLR = _I2C4CON_DISSLW_MASK;
@@ -64,10 +87,13 @@ void I2C_Initialize(I2C * i2cObj)
 //
 //    /* Clear fault interrupt flag */
 //    IFS6CLR = _IFS6_I2C4BIF_MASK;
+//
+//    /* Turn on the I2C module */
+//    I2C4CONSET = _I2C4CON_ON_MASK;
     
     
         i2cObj->registers.I2CxBRGbits->I2CBRG = i2cObj->baudrate; // set baudrate
-        i2cObj->registers.I2CxCONbits->SDAHT = 0; // Minimum of 300 ns hold time on SDA after the falling edge of SCL
+        i2cObj->registers.I2CxCONbits->SDAHT = 1; // Minimum of 300 ns hold time on SDA after the falling edge of SCL
         //I2CSetFrequency(i2cObj,PERIPHERAL_FREQ,I2C_CLOCK_FREQ);
         I2CEnable(i2cObj, 1);
         i2cObj->initialized = 1;
@@ -95,7 +121,7 @@ void I2C_AssignRegistersByModule(I2C * i2cObj)
         }
         case I2C_MODULE_2:
         {
-            I2CActiveModules[I2C_MODULE_1] = i2cObj;           
+            I2CActiveModules[I2C_MODULE_2] = i2cObj;           
             i2cObj->registers.I2CxCONbits =       (I2CxCONbits_t*)&I2C2CONbits;
             i2cObj->registers.I2CxSTATbits =      (I2CxSTATbits_t*)&I2C2STATbits;
             i2cObj->registers.I2CxBRGbits =       (I2CxBRGbits_t*)&I2C2BRGbits;
@@ -110,7 +136,7 @@ void I2C_AssignRegistersByModule(I2C * i2cObj)
         }
         case I2C_MODULE_3:
         {
-            I2CActiveModules[I2C_MODULE_1] = i2cObj;           
+            I2CActiveModules[I2C_MODULE_3] = i2cObj;           
             i2cObj->registers.I2CxCONbits =       (I2CxCONbits_t*)&I2C3CONbits;
             i2cObj->registers.I2CxSTATbits =      (I2CxSTATbits_t*)&I2C3STATbits;
             i2cObj->registers.I2CxBRGbits =       (I2CxBRGbits_t*)&I2C3BRGbits;
@@ -125,7 +151,7 @@ void I2C_AssignRegistersByModule(I2C * i2cObj)
         }
         case I2C_MODULE_4:
         {
-            I2CActiveModules[I2C_MODULE_1] = i2cObj;           
+            I2CActiveModules[I2C_MODULE_4] = i2cObj;           
             i2cObj->registers.I2CxCONbits =       (I2CxCONbits_t*)&I2C4CONbits;
             i2cObj->registers.I2CxSTATbits =      (I2CxSTATbits_t*)&I2C4STATbits;
             i2cObj->registers.I2CxBRGbits =       (I2CxBRGbits_t*)&I2C4BRGbits;
@@ -720,4 +746,13 @@ BOOL I2CStartConditionStarted ( I2C * i2cObj )
 BOOL I2CRestartConditionStarted ( I2C * i2cObj )
 {
 	return(!i2cObj->registers.I2CxCONbits->RSEN);
+}
+
+/* Returns:
+    Boolean identifying if start condition successfully started
+    * TRUE    - Started
+    * FALSE   - Not started yet */
+BOOL I2CConReady ( I2C * i2cObj )
+{
+	return(!i2cObj->registers.I2CxCONbits->SEN & 0x1F);
 }
