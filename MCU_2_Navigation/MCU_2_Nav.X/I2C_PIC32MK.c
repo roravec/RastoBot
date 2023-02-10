@@ -1,4 +1,5 @@
 #include "I2C_PIC32MK.h"
+#include "hwinterface.h"
 
 I2C * I2CActiveModules[I2C_NUMBER_OF_MODULES]; // reference to active CAN module configurations
 
@@ -21,17 +22,17 @@ void I2C_Initialize(I2C * i2cObj)
     {
         I2C_AssignRegistersByModule(i2cObj);
         I2CConfigure(i2cObj,0); // reset CON
-        
-//        i2cObj->registers.I2CxCONbits->SIDL = 0;
-//        i2cObj->registers.I2CxCONbits->DISSLW = 0;
-//        i2cObj->registers.I2CxCONbits->SMEN = 0;
-//     
-//        IEC6bits.I2C4BIE = 0;
-//        IEC6bits.I2C4MIE = 0;
-//        IEC6bits.I2C4SIE = 0;
-//        IFS6bits.I2C4BIF = 0;
-//        IFS6bits.I2C4MIF = 0;
-//        IFS6bits.I2C4SIF = 0;
+        *i2cObj->registers.I2CxCON = 0;
+        i2cObj->registers.I2CxCONbits->SIDL = 0;
+        i2cObj->registers.I2CxCONbits->DISSLW = 1;
+        i2cObj->registers.I2CxCONbits->SMEN = 0;
+     
+        IEC6bits.I2C4BIE = 0;
+        IEC6bits.I2C4MIE = 0;
+        IEC6bits.I2C4SIE = 0;
+        IFS6bits.I2C4BIF = 0;
+        IFS6bits.I2C4MIF = 0;
+        IFS6bits.I2C4SIF = 0;
         
         
 //    /* Disable the I2C Master interrupt */
@@ -51,25 +52,7 @@ void I2C_Initialize(I2C * i2cObj)
 //    IFS1CLR = _IFS6_I2C1BIF_MASK;
         
         
-        //    /* Disable the I2C Master interrupt */
-    IEC6CLR = _IEC6_I2C4MIE_MASK;
 
-    /* Disable the I2C Bus collision interrupt */
-    IEC6CLR = _IEC6_I2C4BIE_MASK;
-
-    I2C4CONCLR = _I2C4CON_SIDL_MASK;
-    I2C4CONCLR = _I2C4CON_DISSLW_MASK;
-    I2C4CONCLR = _I2C4CON_SMEN_MASK;
-
-    /* Clear master interrupt flag */
-    IFS6CLR = _IFS6_I2C4MIF_MASK;
-
-    /* Clear fault interrupt flag */
-    IFS6CLR = _IFS6_I2C4BIF_MASK;
-    
-    
-    
-    
 //    /* Disable the I2C Master interrupt */
 //    IEC6CLR = _IEC6_I2C4MIE_MASK;
 //
@@ -87,13 +70,13 @@ void I2C_Initialize(I2C * i2cObj)
 //
 //    /* Clear fault interrupt flag */
 //    IFS6CLR = _IFS6_I2C4BIF_MASK;
-//
-//    /* Turn on the I2C module */
+
+    /* Turn on the I2C module */
 //    I2C4CONSET = _I2C4CON_ON_MASK;
     
     
         i2cObj->registers.I2CxBRGbits->I2CBRG = i2cObj->baudrate; // set baudrate
-        i2cObj->registers.I2CxCONbits->SDAHT = 1; // Minimum of 300 ns hold time on SDA after the falling edge of SCL
+        i2cObj->registers.I2CxCONbits->SDAHT = 0; // Minimum of 300 ns hold time on SDA after the falling edge of SCL
         //I2CSetFrequency(i2cObj,PERIPHERAL_FREQ,I2C_CLOCK_FREQ);
         I2CEnable(i2cObj, 1);
         i2cObj->initialized = 1;
@@ -172,18 +155,12 @@ void I2C_AssignRegistersByModule(I2C * i2cObj)
 /* This routine can be used by both master or slave receivers. */
 void I2CAcknowledgeByte ( I2C * i2cObj, BOOL ack )
 {
+    I2CWaitForIdle(i2cObj);
+    //while(!I2CBusIsIdle(i2cObj));                   // wait for bus idle
     // Assign the ACK/NAK value
-	if(ack == 1)
-    {
-		*(i2cObj->registers.I2CxCONCLR) = _I2CCON_ACKDT_MASK;
-    }
-	else
-    {
-		*(i2cObj->registers.I2CxCONSET) = _I2CCON_ACKDT_MASK;
-    }
-
-    // Send the ACK/NAK
-	*(i2cObj->registers.I2CxCONSET) = _I2CCON_ACKEN_MASK;
+	if(ack == 1)    i2cObj->registers.I2CxCONbits->ACKDT = 1;
+    else            i2cObj->registers.I2CxCONbits->ACKDT = 0;
+    i2cObj->registers.I2CxCONbits->ACKEN = 0; // Send the ACK/NAK
 }
 
 /*This routine can be used by both master or slave receivers.*/
@@ -201,6 +178,21 @@ BOOL I2CBusIsIdle( I2C * i2cObj )
     // Check the status of the Start & Stop bits to determine if the bus is idle.
     return ( (i2cObj->registers.I2CxSTATbits->S == 0 && i2cObj->registers.I2CxSTATbits->P == 0 ) ||
              (i2cObj->registers.I2CxSTATbits->S == 0 && i2cObj->registers.I2CxSTATbits->P == 1 )   );
+}
+
+void I2CWaitForIdle( I2C * i2cObj )
+{
+    //Delay_ms(10);
+    while (!I2CTransmitterIsReady(i2cObj));          // wait for transmitter	
+    while(i2cObj->registers.I2CxSTATbits->TRSTAT); // Bit = 0 ? Master transmit is not in progress
+    while(!I2CConReady(i2cObj));
+    //if (I2CBusIsIdle(i2cObj)) return;
+    //while (!I2CBusIsIdle(i2cObj));
+    while(!I2CBusIsIdle(i2cObj) && (*(i2cObj->registers.I2CxCON) & 0x1F)/* && (*i2cObj->registers.I2CxSTAT & 0x04)*/); // Acknowledge sequence not in progress
+                                // Receive sequence not in progress
+                                // Stop condition not in progress
+                                // Repeated Start condition not in progress
+                                // Start condition not in progress
 }
 
 /* This routine can be used by both master or slave receivers. */
@@ -232,7 +224,21 @@ void I2CEnable( I2C * i2cObj, BOOL enable )
 /* This routing should be used by both master and slave receivers. */
 BYTE I2CGetByte ( I2C * i2cObj )
 {
-    uint8_t data = *(i2cObj->registers.I2CxRCV);
+    I2CReceiverEnable(i2cObj, 1);
+    while(!I2CReceivedDataIsAvailable(i2cObj));     // wait for data on RX
+    uint8_t data = *(i2cObj->registers.I2CxRCV);    
+	return data;
+}
+/* This routing should be used by both master and slave receivers. */
+BYTE I2CGetData ( I2C * i2cObj, BOOL ackAfter, BOOL ackStatus)
+{
+    BYTE data = 0x00;
+    data = I2CGetByte(i2cObj);
+    if (ackAfter)
+    {
+        I2CAcknowledgeByte(i2cObj,ackStatus);     
+        while(!I2CAcknowledgeHasCompleted(i2cObj));     // wait for ACK complete
+    }
 	return data;
 }
 
@@ -292,8 +298,10 @@ BOOL I2CReceivedDataIsAvailable ( I2C * i2cObj )
               * If FALSE, disables the module from receiving data on the I2C*/
 I2C_RESULT I2CReceiverEnable ( I2C * i2cObj, BOOL enable )
 {
+    I2CWaitForIdle(i2cObj);
     // Enable the receiver
 	i2cObj->registers.I2CxCONbits->RCEN = enable;
+    //while (i2cObj->registers.I2CxCONbits->RCEN);           // Wait until RCEN is cleared (automatic)  
 	
     // Check for an overflow condition
 	if(i2cObj->registers.I2CxSTATbits->I2COV)
@@ -331,19 +339,27 @@ I2C_RESULT I2CReceiverEnable ( I2C * i2cObj, BOOL enable )
   *****************************************************************************/
 I2C_RESULT I2CRepeatStart ( I2C * i2cObj )
 {
+    I2C_RESULT result;
     // Send the repeated Start
 	//*(i2cObj->registers.I2CxCONSET) = _I2CCON_RSEN_MASK;
+    I2CWaitForIdle(i2cObj);
+    //while(!I2CBusIsIdle(i2cObj));                   // wait for bus idle
+    while(!I2CConReady(i2cObj));
     i2cObj->registers.I2CxCONbits->RSEN = 1;
+//    I2C_SDA_LAT = 0;
+//    I2C_SCL_LAT = 0;
 	
     // Check for collisions
 	if( *(i2cObj->registers.I2CxSTAT) & (_I2CSTAT_BCL_MASK|_I2CSTAT_IWCOL_MASK) )
     {
-		return(I2C_MASTER_BUS_COLLISION); 
+		result = (I2C_MASTER_BUS_COLLISION); 
     }
 	else
     {
-		return(I2C_SUCCESS);
+		result = (I2C_SUCCESS);
     }
+    while (!I2CRestartConditionStarted(i2cObj));
+    return result;
 }
 
 /*******************************************************************************
@@ -380,7 +396,6 @@ I2C_RESULT I2CSendByte ( I2C * i2cObj, BYTE data )
 {
     // Send the byte
     *(i2cObj->registers.I2CxTRN) = data;
-
     // Check for collisions
 	if( *(i2cObj->registers.I2CxSTAT) & (_I2CSTAT_BCL_MASK|_I2CSTAT_IWCOL_MASK) )
     {
@@ -620,17 +635,23 @@ BOOL I2CSlaveDataReadRequested (I2C * i2cObj )
 
 I2C_RESULT I2CStart( I2C * i2cObj )
 {
-
+    //while (!I2CTransmitterIsReady(i2cObj));          // wait for transmitter	
+    I2C_RESULT result;
+    I2CWaitForIdle(i2cObj);
+    while(!I2CConReady(i2cObj));
     i2cObj->registers.I2CxCONbits->SEN = 1;
     // Check for collisions
 	if(i2cObj->registers.I2CxSTATbits->BCL)
     {
-		return(I2C_MASTER_BUS_COLLISION); 
+		result = (I2C_MASTER_BUS_COLLISION); 
     }
 	else
     {
-		return(I2C_SUCCESS);
-    }		
+		result = (I2C_SUCCESS);
+    }
+    while (!I2CStartConditionStarted(i2cObj));       // wait for START condition complete
+    while (!I2CTransmitterIsReady(i2cObj));          // wait for transmitter	
+    return result;
 }
 
 /*******************************************************************************
@@ -657,8 +678,16 @@ I2C_RESULT I2CStart( I2C * i2cObj )
 
 void I2CStop ( I2C * i2cObj )
 {
+    I2CWaitForIdle(i2cObj);
+    I2C_STATUS status;
     // Enable the Stop condition
-    *(i2cObj->registers.I2CxCONSET) = _I2CCON_PEN_MASK;
+    //*(i2cObj->registers.I2CxCONSET) = _I2CCON_PEN_MASK;/
+    i2cObj->registers.I2CxCONbits->PEN = 1;
+    
+    do{
+        status = I2CGetStatus(i2cObj);
+    } while ( !(status & I2C_STOP) );  
+    while(!I2CTransmitterIsReady(i2cObj));          // wait for transmission ready status
 }
 
 /*******************************************************************************
@@ -755,4 +784,145 @@ BOOL I2CRestartConditionStarted ( I2C * i2cObj )
 BOOL I2CConReady ( I2C * i2cObj )
 {
 	return(!i2cObj->registers.I2CxCONbits->SEN & 0x1F);
+}
+
+I2C_RESULT I2CSend(I2C * i2cObj, BYTE data, BOOL waitForAck)
+{
+    I2CWaitForIdle(i2cObj);
+    while(!I2CTransmitterIsReady(i2cObj));          // wait for transmitter
+    I2C_RESULT result = I2CSendByte(i2cObj, data);
+    while(!I2CTransmissionHasCompleted(i2cObj));    // wait for transmission complete
+    if (waitForAck) while (!I2CByteWasAcknowledged(i2cObj));
+    return result;
+}
+
+
+
+
+/* File:   i2c.c
+ * Author: Rastislav Oravec
+ * Created on Jan 26 2022
+ * Version: 1.0 (1/31/2022)
+ * 
+ * Description: PIC32 I2C communication library
+ */ 
+
+// I2C_init() initialises I2C1 at at frequency of [frequency]Hz  
+void I2C_Init(I2C * i2cObj, uint32_t sys_frequency, uint32_t frequency)
+{
+    if (!i2cObj->initialized)
+    {
+        I2C_AssignRegistersByModule(i2cObj);
+        double BRG;
+        *i2cObj->registers.I2CxCON = 0; // Turn off I2C2 module
+        i2cObj->registers.I2CxCONbits->DISSLW = 1; // Disable slew rate for 100kHz
+
+        BRG = (1 / (2 * (double)frequency)) - 0.000000104;
+        BRG *= (sys_frequency / 2) - 2;    
+
+        i2cObj->registers.I2CxBRGbits->I2CBRG = (uint32_t)BRG;     // Set baud rate
+        i2cObj->registers.I2CxCONbits->ON = 1;     // Turn on I2C1 module
+        i2cObj->initialized = 1;
+    }
+}
+// I2C_wait_for_idle() waits until the I2C peripheral is no longer doing anything  
+void I2C_WaitForIdle(I2C * i2cObj)
+{ 
+    while((*i2cObj->registers.I2CxCON & 0x1F) /*|| (I2C4STAT & 0x04)*/); // Acknowledge sequence not in progress
+                                // Receive sequence not in progress
+                                // Stop condition not in progress
+                                // Repeated Start condition not in progress
+                                // Start condition not in progress
+    while(I2C4STATbits.TRSTAT); // Bit = 0 ? Master transmit is not in progress
+}
+
+// I2C_start() sends a start condition  
+void I2C_Start(I2C * i2cObj, uint8_t addr)
+{
+    I2C_WaitForIdle(i2cObj);
+    i2cObj->registers.I2CxCONbits->SEN = 1;
+    while (i2cObj->registers.I2CxCONbits->SEN == 1);
+    if (addr != 0)
+        I2C_Write(i2cObj,addr, 0);
+}
+
+// I2C_stop() sends a stop condition  
+void I2C_Stop(I2C * i2cObj)
+{
+    I2C_WaitForIdle(i2cObj);
+    i2cObj->registers.I2CxCONbits->PEN = 1;
+}
+
+// I2C_restart() sends a repeated start/restart condition
+void I2C_Restart(I2C * i2cObj, uint8_t addr)
+{
+    I2C_WaitForIdle(i2cObj);
+    i2cObj->registers.I2CxCONbits->RSEN = 1;
+    while (i2cObj->registers.I2CxCONbits->RSEN == 1);
+    if (addr != 0)
+        I2C_Write(i2cObj,addr, 0);
+}
+
+// I2C_ack() sends an ACK condition
+void I2C_Ack(I2C * i2cObj)
+{
+    I2C_WaitForIdle(i2cObj);
+    i2cObj->registers.I2CxCONbits->ACKDT = 0; // Set hardware to send ACK bit
+    i2cObj->registers.I2CxCONbits->ACKEN = 1; // Send ACK bit, will be automatically cleared by hardware when sent  
+    while(i2cObj->registers.I2CxCONbits->ACKEN); // Wait until ACKEN bit is cleared, meaning ACK bit has been sent
+}
+
+// I2C_nack() sends a NACK condition
+void I2C_Nack(I2C * i2cObj) // Acknowledge Data bit
+{
+    I2C_WaitForIdle(i2cObj);
+    i2cObj->registers.I2CxCONbits->ACKDT = 1; // Set hardware to send NACK bit
+    i2cObj->registers.I2CxCONbits->ACKEN = 1; // Send NACK bit, will be automatically cleared by hardware when sent  
+    while(i2cObj->registers.I2CxCONbits->ACKEN); // Wait until ACKEN bit is cleared, meaning NACK bit has been sent
+}
+
+// set wait_ack to 1 to wait for ACK bit or anything else to skip ACK checking 
+void I2C_Wait(I2C * i2cObj, _Bool wait_ack)
+{
+    if (wait_ack) while (i2cObj->registers.I2CxSTATbits->ACKSTAT == 1);
+}
+
+// address is I2C slave address, set wait_ack to 1 to wait for ACK bit or anything else to skip ACK checking  
+void I2C_Write(I2C * i2cObj, uint8_t addr, _Bool wait_ack)
+{
+    I2C_WaitForIdle(i2cObj);                  // Wait until I2C bus is idle
+    *i2cObj->registers.I2CxTRN = addr;                   // Send slave address with Read/Write bit cleared
+    while (i2cObj->registers.I2CxSTATbits->TBF == 1);      // Wait until transmit buffer is empty
+    I2C_Wait(i2cObj,wait_ack); // Wait until ACK is received
+}
+
+// value is the value of the data we want to send, set ack_nack to 0 to send an ACK or anything else to send a NACK  
+void I2C_ReadRef(I2C * i2cObj, uint8_t * value, _Bool ack_nack)
+{
+    i2cObj->registers.I2CxCONbits->RCEN = 1;               // Receive enable
+    while (i2cObj->registers.I2CxCONbits->RCEN);           // Wait until RCEN is cleared (automatic)  
+    while (!i2cObj->registers.I2CxSTATbits->RBF);          // Wait until Receive Buffer is Full (RBF flag)  
+    *value = *i2cObj->registers.I2CxRCV;                   // Retrieve value from I2C1RCV
+
+    if (!ack_nack)                      // Do we need to send an ACK or a NACK?  
+        I2C_Ack(i2cObj);                      // Send ACK  
+    else
+        I2C_Nack(i2cObj);                     // Send NACK  
+}
+
+// set ack_nack to 0 to send an ACK or anything else to send a NACK  
+uint8_t I2C_Read(I2C * i2cObj, _Bool ack_nack)
+{
+    uint8_t data;
+    I2C_WaitForIdle(i2cObj);
+    i2cObj->registers.I2CxCONbits->RCEN = 1;               // Receive enable
+    while (i2cObj->registers.I2CxCONbits->RCEN);           // Wait until RCEN is cleared (automatic)  
+    while (!i2cObj->registers.I2CxSTATbits->RBF);           // Wait until Receive Buffer is Full (RBF flag)       
+    data = *i2cObj->registers.I2CxRCV;                     // Retrieve value
+    I2C_WaitForIdle(i2cObj);
+    if (!ack_nack)                      // Do we need to send an ACK or a NACK?  
+        I2C_Ack(i2cObj);                      // Send ACK  
+    else
+        I2C_Nack(i2cObj);   
+    return data;
 }

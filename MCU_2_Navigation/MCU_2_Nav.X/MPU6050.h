@@ -135,4 +135,7 @@
 void MPU6050_Init(I2C * i2cObj);
 void MPU6050_Read( int16_t *ax,  int16_t *ay,  int16_t *az,  int16_t *gx,  int16_t *gy,  int16_t *gz,  int16_t *t);
 
+void OLDMPU6050_Init(long sys_frequency, double frequency);
+void OLDMPU6050_Read(int16_t *ax,  int16_t *ay,  int16_t *az,  int16_t *gx,  int16_t *gy,  int16_t *gz,  int16_t *t);
+
 #endif

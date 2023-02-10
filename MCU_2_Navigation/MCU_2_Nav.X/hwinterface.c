@@ -22,8 +22,8 @@ void HwInterface_Init(void)
     
     LIDAR_ENABLE_TRIS = 0;
     
-//    I2C_SDA_TRIS = 0;
-//    I2C_SCL_TRIS = 0;
+    I2C_SDA_TRIS = 0;
+    I2C_SCL_TRIS = 0;
 //    I2C_SDA_LAT = 1;
 //    I2C_SCL_LAT = 1;
 }

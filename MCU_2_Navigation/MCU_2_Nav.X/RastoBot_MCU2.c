@@ -122,9 +122,8 @@ void MCU2_InitDMA(void)
 void MCU2_InitI2C(void)
 {
     I2C_Create(&i2c, I2C_MODULE_4, PBCLK3, 100000, 0);
-    i2c.baudrate = 0x0128;  // 100kHz@60MHzPBCL
-    I2C_Initialize(&i2c);
-    Delay_ms(50);
+    I2C_Init(&i2c,PBCLK3,100000);
+    Delay_ms(500);
 }
 void MCU2_InitGyroMPU6050(void)
 {
