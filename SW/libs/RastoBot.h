@@ -96,6 +96,7 @@ typedef struct
     int16_t     gyroX;
     int16_t     gyroY;
     int16_t     gyroZ;
+    int16_t     azimuth;
     int16_t     temperature;
     uint16_t    perimeterWire;
 } MCU_2_GyroData;

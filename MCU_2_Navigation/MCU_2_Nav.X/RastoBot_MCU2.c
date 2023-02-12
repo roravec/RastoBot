@@ -48,7 +48,6 @@ static Rarray uartMCU3_OUT;
 /* STATIC FUNCTIONS */
 static void MCU2_DoTasks(void);
 static void MCU2_TaskReadGyro(void);
-static void MCU2_TaskReadCompass(void);
 static void MCU2_TaskReadPerimeterWire(void);
 static void MCU2_TaskLogData(void);
 static void MCU2_TaskSendStatusData(void);
@@ -131,7 +130,8 @@ void MCU2_InitGyroMPU6050(void)
 }
 void MCU2_InitCompass(void)
 {
-    
+    //QMC5883L_Init(&i2c);
+    HMC5883_Init(&i2c);
 }
 void MCU2_InitLidar(void)
 {
@@ -204,8 +204,6 @@ static void MCU2_DoTasks(void)
         MCU2_TaskReadPerimeterWire();
     if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
         MCU2_TaskReadGyro();
-    if (loopCounter % MCU2_READ_COMPASS_DATA_EVERY == 0)
-        MCU2_TaskReadCompass();
 }
 
 static void MCU2_TaskReadGyro(void)
@@ -217,11 +215,13 @@ static void MCU2_TaskReadGyro(void)
             &gyroData.gyroY,
             &gyroData.gyroZ,
             &gyroData.temperature);
-}
-
-static void MCU2_TaskReadCompass(void)
-{
     
+    //QMC5883L_Read();
+    HMC5883_Read();
+    gyroData.magnetX = HMC5883_GetX();
+    gyroData.magnetY = HMC5883_GetY();
+    gyroData.magnetZ = HMC5883_GetZ();
+    gyroData.azimuth = HMC5883_GetAzimuth();
 }
 
 static void MCU2_TaskReadPerimeterWire(void)

@@ -13,9 +13,9 @@
 #include "I2C_PIC32MK.h"
 #include "UART_PIC32MK.h"
 #include "DMA_PIC32MK.h"
-#include "DataFlowControl_PIC32MK.h"
 #include "MPU6050.h"
 #include "QMC5883L.h"
+#include "HMC5883.h"
 
 #define UART_CLOCK              REFO1CLK
 #define UART_MCU0_BAUDRATE      19200

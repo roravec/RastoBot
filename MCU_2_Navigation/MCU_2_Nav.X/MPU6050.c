@@ -7,7 +7,7 @@
  */ 
 #include "MPU6050.h"
 
-I2C * pI2cObj = 0;
+static I2C * pI2cObj = 0;
 // Startup of MPU6050
 void MPU6050_Init(I2C * i2cObj)
 {

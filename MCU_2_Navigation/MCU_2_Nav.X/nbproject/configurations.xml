@@ -13,9 +13,9 @@
       <itemPath>DMA_Common.h</itemPath>
       <itemPath>I2C_PIC32MK.h</itemPath>
       <itemPath>I2C_Common.h</itemPath>
-      <itemPath>DataFlowControl_PIC32MK.h</itemPath>
       <itemPath>MPU6050.h</itemPath>
       <itemPath>QMC5883L.h</itemPath>
+      <itemPath>HMC5883.h</itemPath>
     </logicalFolder>
     <logicalFolder name="libs" displayName="libs" projectFiles="true">
       <itemPath>../../SW/libs/ermaCommProtocol.c</itemPath>
@@ -39,9 +39,9 @@
       <itemPath>UART_PIC32MK.c</itemPath>
       <itemPath>DMA_PIC32MK.c</itemPath>
       <itemPath>I2C_PIC32MK.c</itemPath>
-      <itemPath>DataFlowControl_PIC32MK.c</itemPath>
       <itemPath>MPU6050.c</itemPath>
       <itemPath>QMC5883L.c</itemPath>
+      <itemPath>HMC5883.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

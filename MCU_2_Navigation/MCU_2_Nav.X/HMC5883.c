@@ -1,4 +1,4 @@
-#include "QMC5883L.h"
+#include "HMC5883.h"
 
 static double PI = 3.14159265359;
 static I2C * pI2cObj = 0;
@@ -30,25 +30,28 @@ static uint8_t _bearings[16][3] =  {
     {'N', 'N', 'W'},
 };
 
-static void QMC5883L_WriteReg(uint8_t regAddr, uint8_t value);
-static int8_t QMC5883L_Get(uint8_t index);
-static void QMC5883L_ApplyCalibration();
-static void QMC5883L_Smoothing();
+static void HMC5883_WriteReg(uint8_t regAddr, uint8_t value);
+static int8_t HMC5883_Get(uint8_t index);
+static void HMC5883_ApplyCalibration();
+static void HMC5883_Smoothing();
 
-void QMC5883L_Init(I2C * i2cObj)
+void HMC5883_Init(I2C * i2cObj)
 {
     pI2cObj = i2cObj;
     _initialized = true;
-    QMC5883L_WriteReg(0x0B,0x01);   // soft reset period. It is recommended that the register 0BH is written by 0x01
-	QMC5883L_SetMode(0x01,0x0C,0x10,0x00);
-    QMC5883L_WriteReg(0x0A, 0x41); // disable interrupt pin, enable pointer rollover
+    //HMC5883_WriteReg(0x0B,0x01);   // soft reset period. It is recommended that the register 0BH is written by 0x01
+	//HMC5883_SetMode(0x01,0x0C,0x10,0x00);
+    //HMC5883_WriteReg(0x0A, 0x41); // disable interrupt pin, enable pointer rollover
+    HMC5883_WriteReg(0x00,0x78);
+    HMC5883_WriteReg(0x01,0x00); // highest resolution
+    HMC5883_WriteReg(0x02,0x00); // continuous measurement
 }
 
 /*
  SET CALIBRATION
 	Set calibration values for more accurate readings
  */
-void QMC5883L_SetCalibration(int16_t x_min, int16_t x_max, int16_t y_min, int16_t y_max, int16_t z_min, int16_t z_max)
+void HMC5883_SetCalibration(int16_t x_min, int16_t x_max, int16_t y_min, int16_t y_max, int16_t z_min, int16_t z_max)
 {
     _calibrationUse = true;
 	_vCalibration[0][0] = x_min;
@@ -59,78 +62,76 @@ void QMC5883L_SetCalibration(int16_t x_min, int16_t x_max, int16_t y_min, int16_
 	_vCalibration[2][1] = z_max;
 }
 
-void QMC5883L_Read()
+void HMC5883_Read()
 {
     if (_initialized)
     {
-        I2C_Start(pI2cObj,QMC5883L_ADDRESS_W);
-        I2C_Write(pI2cObj,QMC5883L_READ_FROM_ADDRESS,0);
+        I2C_Start(pI2cObj,HMC5883_ADDRESS_W);
+        I2C_Write(pI2cObj,HMC5883_READ_FROM_ADDRESS,0);
         I2C_Stop(pI2cObj);
-        //I2C_Restart(pI2cObj,QMC5883L_ADDRESS_R);
-        I2C_Start(pI2cObj,QMC5883L_ADDRESS_R);
+        //I2C_Restart(pI2cObj,HMC5883_ADDRESS_R);
+        I2C_Start(pI2cObj,HMC5883_ADDRESS_R);
         
         _vRaw[0] = ((int16_t)I2C_Read(pI2cObj,0)<<8) | (int16_t)I2C_Read(pI2cObj,0);
         _vRaw[1] = ((int16_t)I2C_Read(pI2cObj,0)<<8) | (int16_t)I2C_Read(pI2cObj,0);
-        _vRaw[2] = ((int16_t)I2C_Read(pI2cObj,0)<<8) | (int16_t)I2C_Read(pI2cObj,0);
-        (int16_t)I2C_Read(pI2cObj,1);
+        _vRaw[2] = ((int16_t)I2C_Read(pI2cObj,0)<<8) | (int16_t)I2C_Read(pI2cObj,1);
+//        (int16_t)I2C_Read(pI2cObj,1);
         
         if ( _calibrationUse ) {
-			QMC5883L_ApplyCalibration();
+			HMC5883_ApplyCalibration();
 		}
 		
-		if ( QMC5883L_SMOOTHING ) {
-			QMC5883L_Smoothing();
+		if ( HMC5883_SMOOTHING ) {
+			HMC5883_Smoothing();
 		}
-            //byte overflow = Wire.read() & 0x02;
-            //return overflow << 2;
     }
 }
 
-int16_t QMC5883L_GetX()
+int16_t HMC5883_GetX()
 {
-    return QMC5883L_Get(0);
+    return HMC5883_Get(0);
 }
 
-int16_t QMC5883L_GetY()
+int16_t HMC5883_GetY()
 {
-    return QMC5883L_Get(1);
+    return HMC5883_Get(1);
 }
 
-int16_t QMC5883L_GetZ()
+int16_t HMC5883_GetZ()
 {
-    return QMC5883L_Get(2);
+    return HMC5883_Get(2);
 }
 
-int16_t QMC5883L_GetAzimuth()
+int16_t HMC5883_GetAzimuth()
 {
-    int16_t a = atan2( (double)QMC5883L_GetY(), (double)QMC5883L_GetX() ) * 180.0 / PI;
+    int16_t a = atan2( (double)HMC5883_GetY(), (double)HMC5883_GetX() ) * 180.0 / PI;
 	return a < 0 ? 360 + a : a;
 }
 
-void    QMC5883L_SetMode(uint8_t mode, uint8_t odr, uint8_t rng, uint8_t osr)
+void    HMC5883_SetMode(uint8_t mode, uint8_t odr, uint8_t rng, uint8_t osr)
 {
-    QMC5883L_WriteReg(0x09,mode|odr|rng|osr);
+    HMC5883_WriteReg(0x09,mode|odr|rng|osr);
 }
 
-void    QMC5883L_ResetChip()
+void    HMC5883_ResetChip()
 {
-    QMC5883L_WriteReg(0x0A,0x80);
+    HMC5883_WriteReg(0x0A,0x80);
 }
 
-static void QMC5883L_WriteReg(uint8_t regAddr, uint8_t value)
+static void HMC5883_WriteReg(uint8_t regAddr, uint8_t value)
 {
     if (_initialized)
     {
-        I2C_Start(pI2cObj,QMC5883L_ADDRESS_W);
+        I2C_Start(pI2cObj,HMC5883_ADDRESS_W);
         I2C_Write(pI2cObj,regAddr, 0);
         I2C_Write(pI2cObj,value, 0);
         I2C_Stop(pI2cObj);
     }
 }
 
-static int8_t QMC5883L_Get(uint8_t index)
+static int8_t HMC5883_Get(uint8_t index)
 {
-    if ( QMC5883L_SMOOTHING ) 
+    if ( HMC5883_SMOOTHING ) 
 		return _vSmooth[index];
 	
 	if ( _calibrationUse )
@@ -143,7 +144,7 @@ static int8_t QMC5883L_Get(uint8_t index)
 	This function uses the calibration data provided via @see setCalibration() to calculate more
 	accurate readings
  */
-static void QMC5883L_ApplyCalibration()
+static void HMC5883_ApplyCalibration()
 {
     int16_t x_offset = (_vCalibration[0][0] + _vCalibration[0][1])/2;
 	int16_t y_offset = (_vCalibration[1][0] + _vCalibration[1][1])/2;
@@ -179,34 +180,34 @@ static void QMC5883L_ApplyCalibration()
 	
 	NOTE: This function does several calculations and can cause your sketch to run slower.
  */
-static void QMC5883L_Smoothing()
+static void HMC5883_Smoothing()
 {
     uint8_t max = 0;
 	uint8_t min = 0;
 	
-	if ( _vScan > QMC5883L_SMOOTHING_STEPS - 1 ) { _vScan = 0; }
+	if ( _vScan > HMC5883_SMOOTHING_STEPS - 1 ) { _vScan = 0; }
 	
-	for ( int i = 0; i < 3; i++ ) {
+	for ( uint8_t i = 0; i < 3; i++ ) {
 		if ( _vTotals[i] != 0 ) {
 			_vTotals[i] = _vTotals[i] - _vHistory[_vScan][i];
 		}
 		_vHistory[_vScan][i] = ( _calibrationUse ) ? _vCalibrated[i] : _vRaw[i];
 		_vTotals[i] = _vTotals[i] + _vHistory[_vScan][i];
 		
-		if ( QMC5883L_ADVANCED_SMOOTHING ) {
+		if ( HMC5883_ADVANCED_SMOOTHING ) {
 			max = 0;
-			for (int j = 0; j < QMC5883L_SMOOTHING_STEPS - 1; j++) {
+			for (uint16_t j = 0; j < HMC5883_SMOOTHING_STEPS - 1; j++) {
 				max = ( _vHistory[j][i] > _vHistory[max][i] ) ? j : max;
 			}
 			
 			min = 0;
-			for (int k = 0; k < QMC5883L_SMOOTHING_STEPS - 1; k++) {
+			for (uint16_t k = 0; k < HMC5883_SMOOTHING_STEPS - 1; k++) {
 				min = ( _vHistory[k][i] < _vHistory[min][i] ) ? k : min;
 			}
 					
-			_vSmooth[i] = ( _vTotals[i] - (_vHistory[max][i] + _vHistory[min][i]) ) / (QMC5883L_SMOOTHING_STEPS - 2);
+			_vSmooth[i] = ( _vTotals[i] - (_vHistory[max][i] + _vHistory[min][i]) ) / (HMC5883_SMOOTHING_STEPS - 2);
 		} else {
-			_vSmooth[i] = _vTotals[i]  / QMC5883L_SMOOTHING_STEPS;
+			_vSmooth[i] = _vTotals[i]  / HMC5883_SMOOTHING_STEPS;
 		}
 	}
 	
