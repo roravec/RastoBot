@@ -1,0 +1,145 @@
+RastoBot Description 221211
+
+*** MCU_0_Sensors ***************************************
+UART: 19200bps | Parity: none | Data bits: 8 | Stop bits: one
+SENDS apx. every 2 seconds
+class MCU_0_Sensors
+{
+	int16_t		batteryVoltage;
+//	int16_t		externalVoltage;
+	bool		externalInputDetected;
+	int8_t		temperatures[4];
+	uint8_t		humidities[4];
+	int16_t		currentSensors[4];
+	bool		powerOutputs[5];
+	bool		buzzer;
+	bool		tiltSensor;  // 1 if circuit is disconnected. So 1 when robot is upside down
+	uint16_t	rainSensor;
+	uint16_t	lightSensor;
+	bool		chargingEnabled;
+	bool       	fanManualControl;
+}
+
+RECEIVES
+Command ECP_COMMAND_SENSORS_SET (201) to set subsystems.
+Subcommands:
+0 - turn on automatic control
+1 - turn on manual control
+10 - turn on POWER_OUTPUT[0]
+11 - turn on POWER_OUTPUT[1]
+12 - turn on POWER_OUTPUT[2]
+13 - turn on POWER_OUTPUT[3]
+14 - turn on POWER_OUTPUT[4]
+20 - turn off POWER_OUTPUT[0]
+21 - turn off POWER_OUTPUT[1]
+22 - turn off POWER_OUTPUT[2]
+23 - turn off POWER_OUTPUT[3]
+24 - turn off POWER_OUTPUT[4]
+30 - turn on LED[0]
+31 - turn on LED[1]
+32 - turn on LED[2]
+40 - turn off LED[0]
+41 - turn off LED[1]
+42 - turn off LED[2]
+50 - turn off External_Input
+51 - turn on External_Input
+100 - buzz for 200ms
+101 - buzz for 400ms
+102 - buzz for 600ms
+103 - buzz for 800ms
+104 - buzz for 1000ms
+105 - buzz for 1500ms
+
+01 C9 36 64 9B 00 00 04 - beep
+01 C9 36 01 FE 00 00 04 - manual
+01 C9 36 0A F5 00 00 04 - fan0 ON
+01 C9 36 14 EB 00 00 04 - fan0 OFF
+01 C9 36 00 FF 00 00 04 - automat
+S  C0 C0 C1 C1 DL CR  E
+
+*********************************************************
+
+*** MCU_1_Motor_Driving *********************************
+UART: 115200bps | Parity: none | Data bits: 8 | Stop bits: one
+typedef struct
+{
+    uint8_t     mainMotorSpeed; // percent
+    _Bool       stepperEnabled[MCU1_STEPPERS];
+    _Bool       stepperDirection[MCU1_STEPPERS];
+    uint8_t     stepperStepMode[MCU1_STEPPERS];
+    uint8_t     stepperOperMode[MCU1_STEPPERS];
+    uint16_t    stepperSpeed[MCU1_STEPPERS];
+    uint16_t    levelingPosition;
+} MCU_1_Motors;
+
+RECEIVES
+Command ECP_COMMAND_MOTORS_SET (211) to set subsystems.
+Subcommands:
+90 [1B]	- SET MAIN MOTOR SPEED
+
+00	- disable stepper 0
+10	- disable stepper 1
+20	- disable stepper 2
+01	- enable stepper 0
+11	- enable stepper 1
+21	- enable stepper 2
+
+02	- stepper 0 dir CW
+12	- stepper 1 dir CW
+22	- stepper 2 dir CW
+03	- stepper 0 dir CCW
+13	- stepper 1 dir CCW
+23	- stepper 2 dir CCW
+
+04	- stepper 0 mode FULL
+14	- stepper 1 mode FULL
+24	- stepper 2 mode FULL
+05	- stepper 0 mode 1/2
+15	- stepper 1 mode 1/2
+25	- stepper 2 mode 1/2
+06	- stepper 0 mode 1/4
+16	- stepper 1 mode 1/4
+26	- stepper 2 mode 1/4
+07	- stepper 0 mode 1/8
+17	- stepper 1 mode 1/8
+27	- stepper 2 mode 1/8
+
+08	- stepper 0 opermode CONT
+18	- stepper 1 opermode CONT
+28	- stepper 2 opermode CONT
+09	- stepper 0 opermode ON_DEMAND
+19	- stepper 1 opermode ON_DEMAND
+29	- stepper 2 opermode ON_DEMAND
+
+100	- stepper 0 STOP
+101	- stepper 1 STOP
+102	- stepper 2 STOP
+
+110	- stepper 0 MOVE
+111	- stepper 1 MOVE
+112	- stepper 2 MOVE
+
+120 [2B]	- stepper 0 SET SPEED
+121 [2B]	- stepper 1 SET SPEED
+122 [2B]	- stepper 2 SET SPEED
+
+130 [4B]	- stepper 0 MAKE STEPS
+131 [4B]	- stepper 1 MAKE STEPS
+132 [4B]	- stepper 2 MAKE STEPS
+
+30	- stepper 2 reference run start
+31	[B]		- stepper 2 GO TO POSITION
+
+200 - stepper 0 and 1: SET BOTH BY STRUCT
+
+*********************************************************
+
+*** MCU_2_Navigation ************************************
+class
+
+*********************************************************
+
+*** MCU_3_ESP32 *****************************************
+class
+
+*********************************************************

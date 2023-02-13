@@ -246,6 +246,26 @@ static void MCU2_TaskSendStatusData(void)
     RastoBot_Encode_Sensors_1(&mcu3MsgOut, &sensorsStatus);
     ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
     UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    
+    RastoBot_Encode_Sensors_2(&mcu3MsgOut, &sensorsStatus);
+    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    
+    RastoBot_Encode_Sensors_3(&mcu3MsgOut, &sensorsStatus);
+    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    
+    RastoBot_Encode_Sensors_4(&mcu3MsgOut, &sensorsStatus);
+    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    
+    RastoBot_Encode_Motors_1(&mcu3MsgOut, &sensorsStatus);
+    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    
+    RastoBot_Encode_Motors_2(&mcu3MsgOut, &sensorsStatus);
+    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
 }
 
 static ECP_Message * msg;  // pointer to message to process

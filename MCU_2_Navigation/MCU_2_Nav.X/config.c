@@ -117,9 +117,7 @@ void InitGPIOs()
     ANSELE = 0; // disable all analog pins
 //    ANSELF = 0; // disable all analog pins
     ANSELG = 0; // disable all analog pins
-    
-    ANSELEbits.ANSE12 = 0;
-    ANSELEbits.ANSE13 = 0;
+    ANSELGbits.ANSG6 = 1; // turn on analog function for wire sense; AN19 - class 2
     
     LED_0_LAT = 1;
     LED_1_LAT = 1;

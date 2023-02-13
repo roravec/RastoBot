@@ -1,0 +1,359 @@
+Partlist
+
+Exported from RastoBot-r1.brd at 11/17/2022 11:17 AM
+
+EAGLE Version 9.6.2 Copyright (c) 1988-2020 Autodesk, Inc.
+
+Assembly variant: 
+
+Part                 Value                               Package                      Library                     Position (mm)         Orientation
+
+3V3_REG0             TSR_1-2433E                         CONV_TSR_1-2433E             skorra                      (34 64)               R90
+3V3_REG1             TSR_1-2433E                         CONV_TSR_1-2433E             skorra                      (47 64)               R90
+3V3_REG2             TSR_1-2433E                         CONV_TSR_1-2433E             skorra                      (34 49)               R90
+3V3_REG3             TSR_1-2433E                         CONV_TSR_1-2433E             skorra                      (47 49)               R90
+5V_REG0              TSR_1-2433E                         CONV_TSR_1-2433E             skorra                      (34 34)               R90
+5V_REG1              TSR_1-2433E                         CONV_TSR_1-2433E             skorra                      (47 34)               R90
+BATT                 TPB1,27                             B1,27                        testpad                     (59.2 115.3)          R0
+BATT1                SMTU2032LF                          SMTU2032LF                   mike                        (134.95 19.19)        R270
+BATTERY_INPUT        XT60-M                              AMASS_XT60-M                 XT60-M                      (48 118)              R270
+BATT_POS             TPB1,27                             B1,27                        testpad                     (30.2 73)             R0
+BOOT                 MOMENTARY-SWITCH-SPST-PTH-6.0MM     TACTILE_SWITCH_PTH_6.0MM     SparkFun-Switches           (164 31)              R180
+BUTTONS              BUTTONS                             1X10                         pinhead                     (181 55)              R180
+BUZZER               BUZZER-PTH                          BUZZER-12MM                  SparkFun-Electromechanical  (5.9 20.5)            R270
+C1                   10n                                 C0603                        rcl                         (192.4 51)            R270
+C2                   220u                                E2,5-5                       rcl                         (49 78)               R270
+C3                   220u                                E2,5-5                       rcl                         (42 78)               R270
+C4                   10n                                 C0603                        rcl                         (189.9 51)            R270
+C5                   4.7u                                C1206                        rcl                         (53 52)               R270
+C6                   100nF                               C0603                        rcl                         (186 110)             R90
+C7                   10u 6.3V                            C1206                        rcl                         (87 54)               R0
+C8                   100nF                               C0603                        rcl                         (66.8 59)             R0
+C9                   100nF                               C0603                        rcl                         (86 60)               R180
+C10                  100n                                C0603                        rcl                         (135 40)              R180
+C11                  100nF                               C0603                        rcl                         (186 93)              R90
+C12                  100nF                               C0603                        rcl                         (163 78)              R270
+C13                  10u 6.3V                            C1206                        rcl                         (163 96)              R270
+C14                  100nF                               C0603                        rcl                         (178 106)             R270
+C15                  100nF                               C0603                        rcl                         (186 76)              R90
+C18                  100n                                C0603                        rcl                         (125 52)              R180
+C19                  6.8nF 25V                           C0603                        rcl                         (122 80)              R90
+C20                  6.8nF 25V                           C0603                        rcl                         (108 80)              R270
+C21                  100n                                C0603                        rcl                         (137 59)              R180
+C22                  100n                                C0603                        rcl                         (125 49)              R180
+C23                  100n                                C0603                        rcl                         (145 49)              R0
+C24                  6.8nF 25V                           C0603                        rcl                         (115 77)              R0
+C25                  6.8nF 25V                           C0603                        rcl                         (142 80)              R90
+C26                  6.8nF 25V                           C0603                        rcl                         (128 80)              R270
+C27                  6.8nF 25V                           C0603                        rcl                         (135 77)              R0
+C28                  6.8nF 25V                           C0603                        rcl                         (102 80)              R90
+C29                  6.8nF 25V                           C0603                        rcl                         (88 80)               R270
+C30                  6.8nF 25V                           C0603                        rcl                         (95 77)               R0
+C31                  6.8nF 25V                           C0603                        rcl                         (82 80)               R90
+C32                  6.8nF 25V                           C0603                        rcl                         (68 80)               R270
+C33                  6.8nF 25V                           C0603                        rcl                         (75 77)               R0
+C34                  220nF                               C0603                        rcl                         (124 112)             R0
+C35                  100nF                               C0603                        rcl                         (124 109)             R180
+C36                  100nF                               C0603                        rcl                         (124 106)             R180
+C37                  1u                                  C0603                        rcl@1                       (165 13)              R270
+C38                  100n                                C0603                        rcl@1                       (168 13)              R270
+C39                  100n                                C0603                        rcl@1                       (172 18)              R90
+C40                  4.7u                                C0603                        rcl@1                       (175 18)              R90
+C41                  100n                                C0603                        rcl                         (116 115)             R180
+C42                  100nF                               C0603                        rcl                         (120 103.6)           R0
+C43                  4.7uF                               C0603                        rcl                         (115.8 103.6)         R180
+C44                  10nF                                C0603                        rcl                         (137 70)              R180
+C45                  100nF                               C0603                        rcl                         (140 63)              R90
+C46                  2.2nF 50V                           C0603                        rcl                         (133 70)              R180
+C47                  100nF                               C0603                        rcl                         (140 67)              R90
+C48                  4.7u                                C1206                        rcl                         (53 46)               R90
+C49                  4.7u                                C1206                        rcl                         (40 67)               R270
+C50                  4.7u                                C1206                        rcl                         (40 61)               R90
+C51                  220nF                               C0603                        rcl                         (141 112)             R0
+C52                  100nF                               C0603                        rcl                         (141 109)             R180
+C53                  100nF                               C0603                        rcl                         (141 106)             R180
+C54                  100n                                C0603                        rcl                         (137.1 103.5)         R0
+C55                  100nF                               C0603                        rcl                         (133 115)             R180
+C56                  4.7uF                               C0603                        rcl                         (132.8 103.5)         R180
+C57                  220nF                               C0603                        rcl                         (158 112)             R0
+C58                  100nF                               C0603                        rcl                         (158 109)             R180
+C59                  100nF                               C0603                        rcl                         (158 106)             R180
+C60                  100n                                C0603                        rcl                         (150 115)             R180
+C61                  100nF                               C0603                        rcl                         (155 103.4)           R0
+C62                  4.7uF                               C0603                        rcl                         (150.2 103.4)         R180
+C63                  1u                                  C0603                        rcl@1                       (45 22)               R0
+C64                  1u                                  C0603                        rcl@1                       (32 22)               R0
+C65                  1u                                  C0603                        rcl@1                       (45 11)               R0
+C66                  1u                                  C0603                        rcl@1                       (32 11)               R0
+C67                  100n                                C0603                        rcl                         (191 47)              R180
+C68                  4.7u                                C1206                        rcl                         (53 67)               R270
+C69                  4.7u                                C1206                        rcl                         (53 61)               R90
+C70                  4.7u                                C1206                        rcl                         (40 52)               R270
+C71                  4.7u                                C1206                        rcl                         (40 46)               R90
+C72                  220u                                E2,5-5                       rcl                         (56 78)               R270
+C73                  10n                                 C0603                        rcl                         (187.3 51)            R270
+C74                  10n                                 C0603                        rcl                         (184.8 51)            R270
+C75                  10n                                 C0603                        rcl                         (182.3 51)            R270
+C76                  10n                                 C0603                        rcl                         (179.7 51)            R270
+C77                  10n                                 C0603                        rcl                         (177.2 51)            R270
+C78                  10n                                 C0603                        rcl                         (174.6 51)            R270
+C79                  100n                                C1206                        rcl                         (118 68)              R270
+C80                  220u                                E2,5-5                       rcl                         (42.3 102.8)          R90
+C81                  47u/6V3                             C1206                        rcl                         (78 40)               MR0
+C82                  100n                                C0603                        rcl                         (149 26)              R180
+C84                  4.7u                                C1206                        rcl                         (40 37)               R270
+C85                  4.7u                                C1206                        rcl                         (40 31)               R90
+C86                  4.7u                                C1206                        rcl                         (53 37)               R270
+C87                  4.7u                                C1206                        rcl                         (53 31)               R90
+CAMERA               ESP32_CAMERA                        1X04                         pinhead                     (157 55)              R180
+CP2102               CP2101                              MLP28                        silabs                      (181.573 16.873)      R0
+CP2102_RX            TPB1,27                             B1,27                        testpad                     (186.9 21)            R0
+CP2102_TX            TPB1,27                             B1,27                        testpad                     (180 21)              R0
+CS_BATT              TPB1,27                             B1,27                        testpad                     (84 77)               R0
+CS_MAIN_MOT          TPB1,27                             B1,27                        testpad                     (104 77)              R0
+CS_STEP0             TPB1,27                             B1,27                        testpad                     (124 77)              R0
+CS_STEP1             TPB1,27                             B1,27                        testpad                     (143 76)              R0
+CURRENT_SENSOR_BATT  TLI4971A050T5UE0001XUMA1            IC_TLI4971A050T5UE0001XUMA1  TLI4971A050T5UE0001XUMA1    (75 85)               R90
+CUTOFF_SWITCH        CUTOFF SWITCH                       1X04                         pinhead                     (60 111)              R180
+D2                   3V3                                 SOD80C                       diode                       (117 30.3)            R90
+D3                   BAT60J                              SOD323_ST                    diode                       (171 13)              R90
+D4                   BAT60J                              SOD323_ST                    diode                       (175 13)              R90
+D5                   BAT60J                              SOD323_ST                    diode                       (173 13)              R90
+D6                   6.8V                                SOD-323                      SparkFun-DiscreteSemi       (50 90)               R0
+D9                                                       AG                           adafruit                    (79 109)              R180
+D10                                                      AG                           adafruit                    (79 98)               R0
+D11                                                      AG                           adafruit                    (79 120)              R180
+DISPLAY              DISPLAY                             1X04                         pinhead                     (152 5)               R0
+EM_LIGHT             EMERGENCY LIGHT                     1X02                         pinhead                     (6 31)                R270
+EN                   MOMENTARY-SWITCH-SPST-PTH-6.0MM     TACTILE_SWITCH_PTH_6.0MM     SparkFun-Switches           (164 39)              R180
+EXTERNAL_INPUT       XT60-M                              AMASS_XT60-M                 XT60-M                      (18 118)              R90
+FAN_0                FAN_0                               1X02                         pinhead                     (6 67)                R270
+FAN_1                FAN_1                               1X02                         pinhead                     (6 58)                R270
+FAN_2                FAN_2                               1X02                         pinhead                     (6 49)                R270
+FAN_3                FAN_3                               1X02                         pinhead                     (6 40)                R270
+GPS                  GPS MODULE                          1X05                         pinhead                     (102 33)              R270
+GPS_RX               TPB1,27                             B1,27                        testpad                     (97.6 32.7)           R0
+GPS_TX               TPB1,27                             B1,27                        testpad                     (97.6 36)             R90
+H1                   MOUNT-PAD-ROUND3.0                  3,0-PAD                      holes                       (100 65)              R0
+H2                   MOUNT-PAD-ROUND3.0                  3,0-PAD                      holes                       (165 65)              R0
+H3                   MOUNT-PAD-ROUND3.0                  3,0-PAD                      holes                       (193 11)              R0
+H4                   MOUNT-PAD-ROUND3.0                  3,0-PAD                      holes                       (7 11)                MR0
+H5                   MOUNT-PAD-ROUND3.0                  3,0-PAD                      holes                       (193 119)             R0
+H6                   MOUNT-PAD-ROUND3.0                  3,0-PAD                      holes                       (7 119)               R0
+IC1                  PIC24FJ32GA002-X                    SPDIP28_300MC                skorra                      (167 110)             R180
+L1                   7443641500                          74436413300                  7443641500                  (22 89)               R90
+L3                   2112805                             L2825P                       rcl                         (84 40)               MR180
+LED1                                                     SML0805                      led                         (70 6)                R90
+LED2                                                     SML0805                      led                         (52 56)               R180
+LED3                                                     SML0805                      led                         (39 56)               R180
+LED4                                                     SML0805                      led                         (52 71)               R180
+LED5                                                     SML0805                      led                         (39 71)               R180
+LED7                                                     SML0805                      led                         (39 41)               R180
+LED8                                                     SML0805                      led                         (52 41)               R180
+LED12                                                    SML0805                      led                         (91 6)                R90
+LED13                                                    SML0805                      led                         (85 6)                R90
+LED14                                                    SML0805                      led                         (88 6)                R90
+LED15                                                    SML0805                      led                         (109 6)               R90
+LED16                                                    SML0805                      led                         (94 6)                R90
+LED17                                                    SML0805                      led                         (73 6)                R90
+LED18                                                    SML0805                      led                         (76 6)                R90
+LED19                                                    SML0805                      led                         (79 6)                R90
+LED20                                                    SML0805                      led                         (82 6)                R90
+LED21                                                    SML0805                      led                         (112 6)               R90
+LED22                                                    SML0805                      led                         (115 6)               R90
+LED23                                                    SML0805                      led                         (118 6)               R90
+LED24                                                    SML0805                      led                         (97 6)                R90
+LED25                                                    SML0805                      led                         (100 6)               R90
+LED26                                                    SML0805                      led                         (103 6)               R90
+LED27                                                    SML0805                      led                         (106 6)               R90
+LIDAR                LIDAR                               1X08                         pinhead                     (107 56)              R180
+LIDAR_RX             TPB1,27                             B1,27                        testpad                     (109 51)              R0
+LIDAR_TX             TPB1,27                             B1,27                        testpad                     (99 51)               R0
+LIGHT_SENSOR         PHOTORESISTOR LDR5549               1X02                         pinhead                     (59 6)                R180
+LIMIT_SWITCH_DOWN    LIMIT_SWITCH_BOTTOM_MAGNETIC        1X03                         pinhead                     (182 122)             R180
+LIMIT_SWITCH_UP      LIMIT_SWITCH_UPPER_MAGNETIC         1X03                         pinhead                     (171 122)             R180
+MAIN_MOTOR           BLADE MOTOR                         1X04                         pinhead                     (99 115)              R0
+MAIN_MOTOR_CS        TLI4971A050T5UE0001XUMA1            IC_TLI4971A050T5UE0001XUMA1  TLI4971A050T5UE0001XUMA1    (95 85)               R90
+MAIN_SWITCH          MAIN SWITCH                         1X04                         pinhead                     (60 119)              R0
+MCU0_RX              TPB1,27                             B1,27                        testpad                     (76 73)               R0
+MCU0_TX              TPB1,27                             B1,27                        testpad                     (78 73)               R0
+MCU1_RX              TPB1,27                             B1,27                        testpad                     (161 83)              R0
+MCU1_TX              TPB1,27                             B1,27                        testpad                     (161 80)              R0
+MCU3_RX              TPB1,27                             B1,27                        testpad                     (157 66)              R0
+MCU3_SCL             TPB1,27                             B1,27                        testpad                     (155.8 19.2)          R0
+MCU3_SDA             TPB1,27                             B1,27                        testpad                     (153.8 20.5)          R0
+MCU3_TX              TPB1,27                             B1,27                        testpad                     (152 66)              R0
+MCU_0                BM05B-PASS_STANDARD                 BM05B-PASS                   _con-JST-PA                 (192 95)              R90
+MCU_1                BM05B-PASS_STANDARD                 BM05B-PASS                   _con-JST-PA                 (192 112)             R90
+MCU_1_UART_RX_SWITCH MOTOR DRIVER UART RX SWITCH         1X03                         pinhead                     (153 88)              R180
+MCU_1_UART_TX_SWITCH MOTOR DRIVER UART TX SWITCH         1X03                         pinhead                     (153 83)              R180
+MCU_2                BM05B-PASS_STANDARD                 BM05B-PASS                   _con-JST-PA                 (192 78)              R90
+MCU_3_ESP32          ESP-32S                             ESP-32S                      skorra                      (184.8 35)            R270
+MICROUSB             MICROUSB                            MOLEX_47642-0001             skorra                      (167 6.5)             R0
+MPU6050_SCL          TPB1,27                             B1,27                        testpad                     (126 62)              R0
+MPU6050_SDA          TPB1,27                             B1,27                        testpad                     (126 68)              R0
+NAVIGATION_UART      TELEMETRY_UART                      1X02                         pinhead                     (123 56)              R90
+NMOS1                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (100 47)              R180
+NMOS2                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (14 67)               R180
+NMOS3                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (14 58)               R180
+NMOS4                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (14 49)               R180
+NMOS5                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (14 40)               R180
+NMOS6                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (14 31)               R180
+NMOS7                BSC340N08NS3G                       PG-TDSON-8                   transistor-power            (102 106.1)           R90
+PERIM                TPB1,27                             B1,27                        testpad                     (117 34)              R0
+PERIMETER_WIRE       PER.WIRE SENSE                      1X04                         pinhead                     (112 33)              R270
+PPTC                 MP005244 16V 12A                    FUSE_0ZCF0075AF2C            PPTC_0ZCF0075AF2C           (61 102)              R90
+Q1                   FDD4141TO252                        TO252                        transistor-fet              (48 95)               R90
+Q8                   FDD4141TO252                        TO252                        transistor-fet              (32 114)              R180
+R1                   100R                                R0805                        rcl                         (58 92)               R180
+R2                   220k                                R0603                        rcl                         (129 107)             R270
+R3                   220k                                R0603                        rcl                         (112 107)             R270
+R4                   1k                                  R0805                        rcl                         (117 37)              R90
+R5                   4.7k                                R0603                        rcl                         (148 10)              R270
+R6                   1M                                  R0805                        rcl                         (64 80)               R90
+R7                   110k                                R0805                        rcl                         (64 75)               R90
+R8                   10k                                 R0805                        rcl                         (186 101)             R270
+R9                   1k                                  R0805                        rcl                         (186 106)             R90
+R10                  10k                                 R0805                        rcl                         (186 83)              R270
+R11                  100R                                R0805                        rcl                         (186 89)              R90
+R12                  10k                                 R0805                        rcl                         (186 67)              R270
+R13                  1k                                  R0805                        rcl                         (186 72)              R90
+R14                  220R                                R0805                        rcl                         (111 77)              R0
+R15                  220R                                R0805                        rcl                         (119 77)              R0
+R16                  220R                                R0805                        rcl                         (131 77)              R0
+R17                  220R                                R0805                        rcl                         (139 77)              R0
+R18                  220R                                R0805                        rcl                         (91 77)               R0
+R19                  220R                                R0805                        rcl                         (99 77)               R0
+R20                  220R                                R0805                        rcl                         (71.1 77)             R0
+R21                  220R                                R0805                        rcl                         (79 77)               R0
+R22                  200R                                R0805                        rcl                         (25 71)               R180
+R23                  1k                                  R0805                        rcl                         (107 105)             R90
+R24                  100R                                R0805                        rcl                         (22 16)               R180
+R25                  100R                                R0805                        rcl                         (16 16)               R180
+R26                  4.7k                                R0603                        rcl                         (151 10)              R270
+R27                  1k                                  R0603                        rcl                         (172 59)              R270
+R28                  100R                                R0603                        rcl                         (48.5 56.1)           R0
+R29                  100R                                R0603                        rcl                         (35.5 56.1)           R0
+R30                  100R                                R0603                        rcl                         (48.5 71.1)           R0
+R31                  100R                                R0603                        rcl                         (35.5 71.1)           R0
+R32                  1.5k                                R0603                        rcl                         (112 113)             R0
+R33                  10k                                 R0603                        rcl                         (119.9 115)           R90
+R34                  0R                                  R0603                        rcl                         (122 115)             R270
+R35                  39k                                 R0603                        rcl                         (112 110)             R180
+R36                  4.7k                                R0603                        rcl                         (130 63)              R90
+R37                  4.7k                                R0603                        rcl                         (130 67)              R270
+R38                  1.5k                                R0603                        rcl                         (129 113)             R0
+R39                  10k                                 R0603                        rcl                         (136.9 115)           R90
+R40                  0R                                  R0603                        rcl                         (139 115)             R270
+R41                  39k                                 R0603                        rcl                         (129 110)             R180
+R42                  220k                                R0603                        rcl                         (146 107)             R270
+R43                  1.5k                                R0603                        rcl                         (146 113)             R0
+R44                  10k                                 R0603                        rcl                         (153.9 115)           R90
+R45                  0R                                  R0603                        rcl                         (156 115)             R270
+R46                  39k                                 R0603                        rcl                         (146 110)             R180
+R47                  10k                                 R0805                        rcl                         (27 106)              R90
+R48                  100R                                R0805                        rcl                         (96 99)               R180
+R49                  10k                                 R0603                        rcl@1                       (182 11)              R90
+R50                  4.7k                                R0603                        rcl@1                       (179 11)              R270
+R51                  200R                                R0805                        rcl                         (25 62)               R180
+R52                  200R                                R0805                        rcl                         (25 44)               R180
+R53                  200R                                R0805                        rcl                         (25 53)               R180
+R54                  1k                                  R0805                        rcl                         (106 47)              R270
+R55                  500k                                R0805                        rcl                         (57 22)               R0
+R57                  10R                                 R0805                        rcl                         (62 22)               R180
+R61                  100R                                R0603                        rcl                         (35.5 41.1)           R0
+R62                  200R                                R0805                        rcl                         (118 47)              R270
+R63                  1k                                  R0805                        rcl                         (21 62)               R0
+R64                  500k                                R0805                        rcl                         (57 11)               R0
+R65                  1k                                  R0805                        rcl                         (21 53)               R0
+R66                  10R                                 R0805                        rcl                         (62 11)               R180
+R67                  1k                                  R0805                        rcl                         (21 44)               R0
+R68                  1k                                  R0805                        rcl                         (21 35)               R0
+R69                  5k                                  R0805                        rcl                         (49 22)               R180
+R70                  5k                                  R0805                        rcl                         (37 22)               R180
+R71                  5k                                  R0805                        rcl                         (49 11)               R180
+R72                  5k                                  R0805                        rcl                         (36 11)               R180
+R73                  12k                                 R0805                        rcl                         (164 44)              R0
+R74                  12k                                 R0805                        rcl                         (164 26)              R180
+R75                  220R                                R0805                        rcl                         (70 11)               R90
+R76                  1k                                  R0805                        rcl                         (21 71)               R0
+R77                  5K                                  R0805                        rcl                         (30 122)              R0
+R78                  200R                                R0805                        rcl                         (26 118)              R90
+R79                  10k                                 R0805                        rcl                         (23 106)              R270
+R80                  130R                                R0603                        rcl                         (91 11)               R270
+R81                  220R                                R0805                        rcl                         (34 122)              R0
+R82                  130R                                R0603                        rcl                         (85 11)               R270
+R83                  130R                                R0603                        rcl                         (88 11)               R270
+R84                  130R                                R0603                        rcl                         (109 11)              R270
+R85                  130R                                R0603                        rcl                         (94 11)               R270
+R86                  130R                                R0603                        rcl                         (73 11)               R270
+R87                  130R                                R0603                        rcl                         (76 11)               R270
+R88                  130R                                R0603                        rcl                         (79 11)               R270
+R89                  130R                                R0603                        rcl                         (82 11)               R270
+R90                  10k                                 R0603                        rcl                         (112 70)              R180
+R91                  130R                                R0603                        rcl                         (112 11)              R270
+R92                  130R                                R0603                        rcl                         (115 11)              R270
+R93                  130R                                R0603                        rcl                         (118 11)              R270
+R94                  130R                                R0603                        rcl                         (97 11)               R270
+R95                  130R                                R0603                        rcl                         (100 11)              R270
+R96                  130R                                R0603                        rcl                         (103 11)              R270
+R97                  130R                                R0603                        rcl                         (106 11)              R270
+R98                  10k                                 R0603                        rcl                         (63 28)               MR270
+R99                  10k                                 R0603                        rcl                         (97 26)               MR270
+R100                 1M                                  R0603                        rcl                         (63 32)               MR90
+R101                 nc                                  R0603                        rcl                         (97 22)               MR270
+R102                 nc                                  R0603                        rcl                         (63 24)               MR270
+R103                 10k                                 R0603                        rcl                         (91 42)               MR90
+R104                 10k                                 R0603                        rcl                         (94 42)               MR90
+R105                 4.7k                                R0603                        rcl                         (153 26.8)            R270
+R106                 4.7k                                R0603                        rcl                         (153 30.6)            R90
+R107                 10k                                 R0805                        rcl                         (169 117)             R0
+R108                 10k                                 R0805                        rcl                         (184 117)             R180
+R109                 10k                                 R0805                        rcl                         (180 117)             R0
+R110                 10k                                 R0805                        rcl                         (173 117)             R180
+R111                 10k                                 R0603                        rcl                         (192.5 59)            R90
+R112                 10k                                 R0603                        rcl                         (189.9 59)            R90
+R113                 10k                                 R0603                        rcl                         (187.3 59)            R90
+R114                 10k                                 R0603                        rcl                         (184.8 59)            R90
+R115                 10k                                 R0603                        rcl                         (182.3 59)            R90
+R116                 10k                                 R0603                        rcl                         (179.7 59)            R90
+R117                 10k                                 R0603                        rcl                         (177.2 59)            R90
+R118                 10k                                 R0603                        rcl                         (174.6 59)            R90
+R119                 200R                                R0805                        rcl                         (25 35)               R180
+R120                 200R                                R0805                        rcl                         (39 113)              R180
+R121                 100R                                R0603                        rcl                         (48.5 41.1)           R0
+RAIN_SENSOR          RAIN SENSOR                         1X02                         pinhead                     (59 17)               R180
+RGB_LED              RGB_LED                             1X04                         pinhead                     (182 5)               R180
+RTCC                                                     AB-RTCMC-32.768KHZ-B5ZE-S3-T skkumc                      (149 30)              R90
+SD1                  MP6500                              QFN65P500X500X100-25N        skorra                      (118 109)             R0
+SD2                  MP6500                              QFN65P500X500X100-25N        skorra                      (135 109)             R0
+SD3                  MP6500                              QFN65P500X500X100-25N        skorra                      (152 109)             R0
+STEPPER_0            STEPPER_0                           1X04                         pinhead                     (118 122)             R0
+STEPPER_0_CS         TLI4971A050T5UE0001XUMA1            IC_TLI4971A050T5UE0001XUMA1  TLI4971A050T5UE0001XUMA1    (115 85)              R90
+STEPPER_1            STEPPER_1                           1X04                         pinhead                     (135 122)             R0
+STEPPER_1_CS         TLI4971A050T5UE0001XUMA1            IC_TLI4971A050T5UE0001XUMA1  TLI4971A050T5UE0001XUMA1    (135 85)              R90
+STEPPER_2            STEPPER_2                           1X04                         pinhead                     (152 122)             R0
+T2                   2N2222A                             TO92-CBE                     transistor                  (19 21)               R0
+TEMP_SENSOR_0        TEMP SENSOR 0                       1X03                         pinhead                     (47 17)               R0
+TEMP_SENSOR_1        TEMP SENSOR 1                       1X03                         pinhead                     (34 17)               R0
+TEMP_SENSOR_2        TEMP SENSOR 2                       1X03                         pinhead                     (47 6)                R0
+TEMP_SENSOR_3        TEMP SENSOR 3                       1X03                         pinhead                     (34 6)                R0
+TILT                 TPB1,27                             B1,27                        testpad                     (118 72)              R0
+TILT_SENSOR          TILT SENSOR                         1X02                         pinhead                     (112 65)              R0
+TP2                  TPB1,27                             B1,27                        testpad                     (59 29)               R0
+TP3                  TPB1,27                             B1,27                        testpad                     (59 61)               R0
+TVS25V               SUPRESSOR_TVS-UD-SMAJ               SUPRESSOR_SMAJ               52101-101-REV-A_v16         (51 103)              R180
+U1                   PIC18F47J13-I/PT                    TQFP44_10X10MC_MCH           skorra                      (76 60)               R0
+U4                   140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (23 67)               R180
+U5                   MPU-6050                            24-VFQFN                     Sensor                      (135 65)              R0
+U6                   140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (23 58)               R180
+U7                   140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (23 49)               R180
+U8                   140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (23 40)               R180
+U9                   140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (39 119)              R90
+U10                  140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (112 47)              R180
+U11                  140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (96 105)              R90
+U12                  140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (23 31)               R180
+U13                  140357145000                        WL-OCPT_SOP4                 Wurth_Optocoupler_WL-OCPT   (25 112)              R270
+U15                  PIC32MK1024MCM064-I/PTTQFP64_PT_MCH TQFP64_PT_MCH                2022-02-16_10-30-07_Library (135 49)              R180
+UNLIMITED_POWER      V_OUTPUT                            1X05                         pinhead                     (18 6)                R0
+X5                   FPS009-3000                         FPS009-3000                  con-yamaichi                (67.79 20.27)         MR270

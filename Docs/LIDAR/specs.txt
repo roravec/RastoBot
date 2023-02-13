@@ -1,0 +1,23 @@
+Specifications
+General Specifications
+Items	Specifications
+Operating supply voltage	5V DC ±5%
+Light source	Semiconductor Laser Diode(λ=785nm)
+LASER safety	IEC60825-1 Class 1
+Current consumption	400mA or less (Rush current 1A)
+Detection distance	120mm ~ 3,500mm
+Interface	3.3V USART (230,400 bps) 42bytes per 6 degrees, Full Duplex option
+Ambient Light Resistance	10,000 lux or less
+Sampling Rate	1.8kHz
+Dimensions	69.5(W) X 95.5(D) X 39.5(H)mm
+Mass	Under 125g
+Measurement Performance Specifications
+Items	Specifications
+Distance Range	120 ~ 3,500mm
+Distance Accuracy (120mm ~ 499mm)	±15mm
+Distance Accuracy(500mm ~ 3,500mm)	±5.0%
+Distance Precision(120mm ~ 499mm)	±10mm
+Distance Precision(500mm ~ 3,500mm)	±3.5%
+Scan Rate	300±10 rpm
+Angular Range	360°
+Angular Resolution	1°

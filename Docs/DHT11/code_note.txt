@@ -1,0 +1,73 @@
+#define Data_Out LATA0 /* assign Port pin for data*/
+#define Data_In PORTAbits.RA0 /* read data from Port pin*/
+#define Data_Dir TRISAbits.RA0 /* Port direction */
+#define _XTAL_FREQ 8000000 /* define _XTAL_FREQ for using internal delay */
+//OUTPUTS
+#define PUMP LATDbits.LATD0
+#define HEATER LATDbits.LATD1
+#define LAMPS LATDbits.LATD2
+void DHT11_Start();
+void DHT11_CheckResponse();
+char DHT11_ReadData();
+
+void main(void)
+{
+unsigned char RH_Decimal,RH_Integral,T_Decimal,T_Integral;
+unsigned char Checksum;
+unsigned char value[10];
+
+TRISD = 0X00;
+TRISA = 0XFF;
+
+OSCCON = 0x72; /* set internal oscillator with frequency 8 MHz*/
+LAMPS = 0;
+HEATER = 0;
+PUMP = 0;
+
+while(1)
+{
+LAMPS = 1;
+PUMP = 1;
+HEATER = 1;
+
+__delay_ms(500);
+
+LAMPS = 0;
+PUMP = 0;
+HEATER = 0;
+
+__delay_ms(500);
+}
+
+}
+ 
+char DHT11_ReadData()
+{
+char i,data = 0;
+for(i=0;i<8;i++)
+{
+while(!(Data_In & 1)); /* wait till 0 pulse, this is start of data pulse */
+__delay_us(30);
+if(Data_In & 1) /* check whether data is 1 or 0 */
+data = ((data<<1) | 1);
+else
+data = (data<<1);
+while(Data_In & 1);
+}
+return data;
+}
+void DHT11_Start()
+{
+Data_Dir = 0; /* set as output port */
+Data_Out = 0; /* send low pulse of min. 18 ms width */
+__delay_ms(18);
+Data_Out = 1; /* pull data bus high */
+__delay_us(20);
+Data_Dir = 1; /* set as input port */
+}
+void DHT11_CheckResponse()
+{
+while(Data_In & 1); /* wait till bus is High */
+while(!(Data_In & 1)); /* wait till bus is Low */
+while(Data_In & 1); /* wait till bus is High */
+}
