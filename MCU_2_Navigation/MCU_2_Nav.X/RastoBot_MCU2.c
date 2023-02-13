@@ -56,6 +56,7 @@ static void MCU2_DoMessageAction(ECP_Message * msg);
 
 void MCU2_Init(void)
 {
+    ADC_Init();
     MCU2_InitUART();
     MCU2_InitDMA();
     MCU2_InitI2C();
@@ -226,7 +227,7 @@ static void MCU2_TaskReadGyro(void)
 
 static void MCU2_TaskReadPerimeterWire(void)
 {
-    
+    gyroData.perimeterWire = ADC_ReadData_AN19();
 }
 
 static void MCU2_TaskLogData(void)
@@ -259,11 +260,11 @@ static void MCU2_TaskSendStatusData(void)
     ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
     UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
     
-    RastoBot_Encode_Motors_1(&mcu3MsgOut, &sensorsStatus);
+    RastoBot_Encode_Motors_1(&mcu3MsgOut, &motorsStatus);
     ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
     UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
     
-    RastoBot_Encode_Motors_2(&mcu3MsgOut, &sensorsStatus);
+    RastoBot_Encode_Motors_2(&mcu3MsgOut, &motorsStatus);
     ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
     UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
 }

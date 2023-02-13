@@ -16,6 +16,7 @@
       <itemPath>MPU6050.h</itemPath>
       <itemPath>QMC5883L.h</itemPath>
       <itemPath>HMC5883.h</itemPath>
+      <itemPath>ADC_PIC32MK.h</itemPath>
     </logicalFolder>
     <logicalFolder name="libs" displayName="libs" projectFiles="true">
       <itemPath>../../SW/libs/ermaCommProtocol.c</itemPath>
@@ -42,6 +43,7 @@
       <itemPath>MPU6050.c</itemPath>
       <itemPath>QMC5883L.c</itemPath>
       <itemPath>HMC5883.c</itemPath>
+      <itemPath>ADC_PIC32MK.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

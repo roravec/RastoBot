@@ -10,6 +10,7 @@
 
 #include "config.h"
 #include "../../SW/libs/RastoBot.h"
+#include "ADC_PIC32MK.h"
 #include "I2C_PIC32MK.h"
 #include "UART_PIC32MK.h"
 #include "DMA_PIC32MK.h"

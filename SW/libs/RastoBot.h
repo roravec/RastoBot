@@ -114,6 +114,7 @@ ECP_Message *   RastoBot_Encode_Sensors(ECP_Message * out, MCU_0_Sensors * senso
 ECP_Message *   RastoBot_Encode_Sensors_1(ECP_Message * out, MCU_0_Sensors * sensors);
 ECP_Message *   RastoBot_Encode_Sensors_2(ECP_Message * out, MCU_0_Sensors * sensors);
 ECP_Message *   RastoBot_Encode_Sensors_3(ECP_Message * out, MCU_0_Sensors * sensors);
+ECP_Message *   RastoBot_Encode_Sensors_4(ECP_Message * out, MCU_0_Sensors * sensors);
 MCU_0_Sensors * RastoBot_Decode_Sensors(MCU_0_Sensors * sensorsOut, ECP_Message * in);
 ECP_Message *   RastoBot_Encode_Motors(ECP_Message * out, MCU_1_Motors * motors);
 ECP_Message *   RastoBot_Encode_Motors_1(ECP_Message * out, MCU_1_Motors * motors);

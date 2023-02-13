@@ -40,7 +40,7 @@ void InitOscillator(void)
     /* unlock system for clock configuration */
     PMDUnLock();
     /* Peripheral Module Disable Configuration */
-    PMD1 = 0x371;
+    PMD1 = 0x370;   // enable ADC
     PMD2 = 0x17001f;
     PMD3 = 0xffffffff;
     PMD4 = 0xfff01ff;
