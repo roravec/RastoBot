@@ -1,9 +1,9 @@
 #include "ermaCommProtocol.h"
+ECP_Message ecpMessagesQueue[ECP_QUEUE_SIZE];
+
 /* Globals */
 static uint8_t recvBufferArr[ECP_MAX_PACKET_LEN];
 ECP_Buffer ecpRecvBuffer;
-
-ECP_Message ecpMessagesQueue[ECP_QUEUE_SIZE];
 
 /* Statics */
 static void         ECP_BufferMessageEnqueue(ECP_Buffer * ecpRecvBuffer);
@@ -13,21 +13,21 @@ static void         RarrayUnlock(Rarray * buf);
 
 ECP_Message * ECP_CreateMessage(ECP_Message * messOut, uint8_t command, uint8_t subCommand, uint8_t * data, uint8_t dlc)
 {
-    messOut->command = command;
-    messOut->subCommand = subCommand;
+    messOut->command =      command;
+    messOut->subCommand =   subCommand;
     for (uint8_t i=0;i<dlc;i++)
-        messOut->data[i] = data[i];
-    messOut->dlc = dlc;
-    messOut->msgType = ECP_COMDATA;
+        messOut->data[i] =  data[i];
+    messOut->dlc =          dlc;
+    messOut->msgType =      ECP_COMDATA;
     return messOut;
 }
 
 ECP_Message * ECP_CreateMessageCommand(ECP_Message * messOut, uint8_t command, uint8_t subCommand)
 {
-    messOut->command = command;
-    messOut->subCommand = subCommand;
-    messOut->dlc = 0;
-    messOut->msgType = ECP_COMMAND;
+    messOut->command =      command;
+    messOut->subCommand =   subCommand;
+    messOut->dlc =          0;
+    messOut->msgType =      ECP_COMMAND;
     return messOut;
 }
 
@@ -54,18 +54,24 @@ ECP_Message * ECP_DecodeRarray(ECP_Message * messOut, Rarray * ecpRaw) // calls 
 
 Rarray * ECP_Encode(ECP_Message * message, Rarray * out)
 {
+    return ECP_EncodeExtended(message, out, 0);
+}
+Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minDataLen)
+{
     uint16_t currentIndex = 0;
     out->data[currentIndex++] = ECP_START_BYTE;
     out->data[currentIndex++] = message->command;
     out->data[currentIndex++] = ~out->data[(currentIndex-1)];
     out->data[currentIndex++] = message->subCommand;
     out->data[currentIndex++] = ~out->data[(currentIndex-1)];
-    out->data[currentIndex++] = message->dlc;
+    out->data[currentIndex++] = message->dlc > minDataLen ? message->dlc : minDataLen;
     uint8_t dataIndex = 0;
     for (uint8_t j=currentIndex; dataIndex < message->dlc && dataIndex < ECP_MAX_DATA_BYTES;dataIndex++)
         out->data[currentIndex++] = message->data[dataIndex];
-    for (;dataIndex < ECP_FIXED_DATA_SIZE;dataIndex++)
+    for (; dataIndex < minDataLen; dataIndex++)
         out->data[currentIndex++] = ECP_EMPTY_DATA;
+//    for (;dataIndex < ECP_FIXED_DATA_SIZE;dataIndex++)
+//        out->data[currentIndex++] = ECP_EMPTY_DATA;
     uint8_t crc = ECP_CRC_START_VALUE;
     for (uint16_t i=0; i < currentIndex  ;i++)
         crc ^= out->data[i];
@@ -88,7 +94,8 @@ int8_t ECP_FindECPPacket(Rarray * in, Rarray * out)
             // basic pattern confirmed
             // check if we have got all data
             uint8_t dlc = in->data[i+ECP_COMMAND_LEN+ECP_DLC_LEN];  // get DLC from the packet
-            uint8_t packetSize = ECP_FIXED_DATA_SIZE>0 ? ECP_MIN_PACKET_LEN : ECP_MIN_PACKET_LEN+dlc; // if ECP_FIXED_DATA_SIZE is defined then DLC is already included in ECP_MIN_PACKET_LEN
+            //uint8_t packetSize = ECP_FIXED_DATA_SIZE>0 ? ECP_GetMinPacketSize() : ECP_GetMinPacketSize()+dlc; // if ECP_FIXED_DATA_SIZE is defined then DLC is already included in ECP_MIN_PACKET_LEN
+            uint8_t packetSize = ECP_MIN_PACKET_LEN+dlc; // if ECP_FIXED_DATA_SIZE is defined then DLC is already included in ECP_MIN_PACKET_LEN
             if ((i+packetSize) < in->size &&          // packet size is able to collect all data
                 in->data[(i+packetSize-1)] == ECP_STOP_BYTE) // check last byte of packet
             {
@@ -133,7 +140,6 @@ void ECP_ReceivedByte(uint8_t data)
 }
 
 uint8_t * arrRasto;
-uint8_t maxPacketLen = ECP_MAX_PACKET_LEN;
 ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer)
 {
     arrRasto = ecpBuffer->buffer.data;
@@ -165,27 +171,33 @@ ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer)
         }
         else if (ecpBuffer->patternDetected) // head pattern already detected, wait for stop byte after data+crc
         {
-            if (ECP_FIXED_DATA_SIZE == 0 && ecpBuffer->buffer.currentIndex < (ECP_PATTERN_LEN + ecpBuffer->dlc + 2) 
-             || ECP_FIXED_DATA_SIZE > 0  && ecpBuffer->buffer.currentIndex < (ECP_MAX_PACKET_LEN))
+//            if (ECP_FIXED_DATA_SIZE == 0 && ecpBuffer->buffer.currentIndex < (ECP_GetPatternSize() + ecpBuffer->dlc + 2) 
+//             || ECP_FIXED_DATA_SIZE > 0  && ecpBuffer->buffer.currentIndex < (ECP_GetMaxPacketSize())
+//                    )
+            if (ecpBuffer->buffer.currentIndex < (ECP_PATTERN_LEN + ecpBuffer->dlc + 2))
             {
                 // receiving data and waiting for STOP BYTE
             }
             else if (
-                    ((ECP_FIXED_DATA_SIZE == 0 && ecpBuffer->buffer.currentIndex == (ECP_PATTERN_LEN + ecpBuffer->dlc + 2)) 
-                  || (ECP_FIXED_DATA_SIZE > 0  && ecpBuffer->buffer.currentIndex == (ECP_MAX_PACKET_LEN)))
+//                    ((ECP_FIXED_DATA_SIZE == 0 && ecpBuffer->buffer.currentIndex == (ECP_GetPatternSize() + ecpBuffer->dlc + 2)) 
+//                  || (ECP_FIXED_DATA_SIZE > 0  && ecpBuffer->buffer.currentIndex == (ECP_GetMaxPacketSize())))
+//                  && ecpBuffer->buffer.data[(ecpBuffer->buffer.currentIndex-1)] == ECP_STOP_BYTE)
+                    ((ecpBuffer->buffer.currentIndex == (ECP_PATTERN_LEN + ecpBuffer->dlc + 2)) )
                   && ecpBuffer->buffer.data[(ecpBuffer->buffer.currentIndex-1)] == ECP_STOP_BYTE)
             {
                 ecpBuffer->stopByteDetected = 1;
                 // stop byte received, check CRC
                 if (ECP_CheckCRCAtIndex(&ecpBuffer->buffer,
-                        (ECP_FIXED_DATA_SIZE == 0 ? ecpBuffer->dlc : ECP_FIXED_DATA_SIZE), 
+//                        (ECP_FIXED_DATA_SIZE == 0 ? ecpBuffer->dlc : ECP_FIXED_DATA_SIZE), 
+                        ecpBuffer->dlc, 
                         ecpBuffer->buffer.currentIndex-2))
                 {
                     // CRC OK
                     // Packet is valid ECP packet
                     ecpBuffer->command = ecpBuffer->buffer.data[1];
                     ecpBuffer->subCommand = ecpBuffer->buffer.data[3];
-                    ecpBuffer->size = (ECP_FIXED_DATA_SIZE == 0 ? ECP_MIN_PACKET_LEN+ecpBuffer->dlc : ECP_MAX_PACKET_LEN);
+//                    ecpBuffer->size = (ECP_FIXED_DATA_SIZE == 0 ? ECP_GetMinPacketSize()+ecpBuffer->dlc : ECP_GetMaxPacketSize());
+                    ecpBuffer->size = ECP_MIN_PACKET_LEN+ecpBuffer->dlc;
                     ECP_BufferMessageEnqueue(ecpBuffer);
                     return ECP_VALID;
                 }

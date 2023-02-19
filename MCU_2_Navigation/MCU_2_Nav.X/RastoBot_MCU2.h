@@ -17,6 +17,7 @@
 #include "MPU6050.h"
 #include "QMC5883L.h"
 #include "HMC5883.h"
+#include "gps_neo.h"
 
 #define UART_CLOCK              REFO1CLK
 #define UART_MCU0_BAUDRATE      19200
@@ -24,6 +25,14 @@
 #define UART_MCU3_BAUDRATE      115200
 #define UART_LIDAR_BAUDRATE     230400UL
 #define UART_GPS_BAUDRATE       9600
+
+// MCU0, MCU1 and MCU3 share function to receive data so they have to have same datablock sizes on MCU2 recv side.
+#define UART_FROM_MCU0_DATABLOCK_SIZE   8
+#define UART_TO_MCU0_DATABLOCK_SIZE     8
+#define UART_FROM_MCU1_DATABLOCK_SIZE   8
+#define UART_TO_MCU1_DATABLOCK_SIZE     8
+#define UART_FROM_MCU3_DATABLOCK_SIZE   8
+#define UART_TO_MCU3_DATABLOCK_SIZE     64
 
 #define MCU2_LOG_DATA_TO_STRUCT_EVERY   1000
 #define MCU2_CHECK_NEW_MESSAGES_EVERY   1
@@ -51,6 +60,7 @@ void MCU2_InitPerimeterWire(void);
 void MCU2_Loop(void);
 void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule);
 void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data);
+void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule);
 
 
 #ifdef	__cplusplus

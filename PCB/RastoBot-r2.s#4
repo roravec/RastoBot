@@ -54455,9 +54455,9 @@ Emergency light switch</text>
 <instance part="GND60" gate="1" x="27.94" y="116.84" smashed="yes" rot="R270">
 <attribute name="VALUE" x="25.4" y="119.38" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="MCU_2_I2C_EXTENDER" gate="A" x="160.02" y="38.1" smashed="yes">
-<attribute name="NAME" x="153.67" y="46.355" size="1.778" layer="95"/>
-<attribute name="VALUE" x="153.67" y="30.48" size="1.778" layer="96"/>
+<instance part="MCU_2_I2C_EXTENDER" gate="A" x="167.64" y="38.1" smashed="yes">
+<attribute name="NAME" x="148.59" y="46.355" size="1.778" layer="95"/>
+<attribute name="VALUE" x="148.59" y="30.48" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -54583,8 +54583,8 @@ Emergency light switch</text>
 </segment>
 <segment>
 <pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="4"/>
-<wire x1="157.48" y1="35.56" x2="149.86" y2="35.56" width="0.1524" layer="91"/>
-<label x="149.86" y="35.56" size="0.8128" layer="95" rot="R180" xref="yes"/>
+<wire x1="165.1" y1="35.56" x2="157.48" y2="35.56" width="0.1524" layer="91"/>
+<label x="157.48" y="35.56" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="GPS_TXD" class="0">
@@ -54770,8 +54770,8 @@ Emergency light switch</text>
 </segment>
 <segment>
 <pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="3"/>
-<wire x1="157.48" y1="38.1" x2="149.86" y2="38.1" width="0.1524" layer="91"/>
-<label x="149.86" y="38.1" size="0.8128" layer="95" rot="R180" xref="yes"/>
+<wire x1="165.1" y1="38.1" x2="157.48" y2="38.1" width="0.1524" layer="91"/>
+<label x="157.48" y="38.1" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="MCU_0_RAIN_SENSOR" class="0">
@@ -55049,15 +55049,15 @@ Emergency light switch</text>
 <net name="MCU_2_SDA" class="0">
 <segment>
 <pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="1"/>
-<wire x1="157.48" y1="43.18" x2="149.86" y2="43.18" width="0.1524" layer="91"/>
-<label x="149.86" y="43.18" size="0.8128" layer="95" rot="R180" xref="yes"/>
+<wire x1="165.1" y1="43.18" x2="157.48" y2="43.18" width="0.1524" layer="91"/>
+<label x="157.48" y="43.18" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="MCU_2_SCL" class="0">
 <segment>
 <pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="2"/>
-<wire x1="157.48" y1="40.64" x2="149.86" y2="40.64" width="0.1524" layer="91"/>
-<label x="149.86" y="40.64" size="0.8128" layer="95" rot="R180" xref="yes"/>
+<wire x1="165.1" y1="40.64" x2="157.48" y2="40.64" width="0.1524" layer="91"/>
+<label x="157.48" y="40.64" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>

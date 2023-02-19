@@ -70,13 +70,16 @@ extern "C" {
     #define ECP_MAX_DATA_BYTES  32
 #endif
 
-#define ECP_FIXED_DATA_SIZE 8   // dataload will be always X bytes. For DMA size pattern. 
+//#define ECP_FIXED_DATA_SIZE 8   // dataload will be always X bytes. For DMA size pattern. 
                                 //If you do not provide enough data to fill it it will be left as 0x00
 #define ECP_EMPTY_DATA      0x00
 #if ECP_FIXED_DATA_SIZE > 0
     #undef ECP_MAX_DATA_BYTES
     #define ECP_MAX_DATA_BYTES ECP_FIXED_DATA_SIZE
 #endif
+
+#define ECP_CRC_START_VALUE             0x55
+#define ECP_AVOID_CRC_CHECK_ON_RCV      1
 
 #define ECP_QUEUE_SIZE      10   // has to be less than 127!!!
     
@@ -85,14 +88,12 @@ extern "C" {
 #define ECP_COMMAND_LEN     4
 #define ECP_DLC_LEN         1
 #define ECP_CRC_LEN         1
-#define ECP_PATTERN_LEN     1+ECP_COMMAND_LEN+ECP_DLC_LEN
-#define ECP_MIN_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN+ECP_FIXED_DATA_SIZE
-#define ECP_MAX_PACKET_LEN  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_MAX_DATA_BYTES+ECP_CRC_LEN
-#define ECP_PACKET_LEN_WO_DATA  2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN
+#define ECP_PATTERN_LEN     (1+ECP_COMMAND_LEN+ECP_DLC_LEN)
+#define ECP_MIN_PACKET_LEN  (2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN)
+#define ECP_MAX_PACKET_LEN  (2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_MAX_DATA_BYTES+ECP_CRC_LEN)
+#define ECP_PACKET_LEN_WO_DATA  (2+ECP_COMMAND_LEN+ECP_DLC_LEN+ECP_CRC_LEN)
+#define ECP_PACKET_LEN_KNOWN_DLC(dlc)  (2+ECP_COMMAND_LEN+ECP_DLC_LEN+dlc+ECP_CRC_LEN)
     
-#define ECP_CRC_START_VALUE 0x55
-    
-#define ECP_AVOID_CRC_CHECK_ON_RCV    1
     
 typedef enum
 {
@@ -138,6 +139,7 @@ ECP_Message *   ECP_CreateMessageCommand(ECP_Message * messOut, uint8_t command,
 ECP_Message *   ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
 ECP_Message *   ECP_DecodeRarray(ECP_Message * messOut, Rarray * ecpRaw); // calls ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
 Rarray *        ECP_Encode(ECP_Message * message, Rarray * out);
+Rarray *        ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minDataLen);
 int8_t          ECP_FindECPPacket(Rarray * in, Rarray * out);
 
 void            ECP_RecvBufferInit(void);

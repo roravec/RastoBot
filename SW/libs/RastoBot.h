@@ -14,11 +14,31 @@ extern "C" {
 #endif
     
 #include <stdint.h>
+#include <stdbool.h>
 #include "ermaCommProtocol.h"
+    
+#define ECP_GPS_DATA_STRING_MAX_SIZE    200
     
 #define ECP_COMMAND_SENSORS_STATUS     101
 #define ECP_COMMAND_SENSORS_STATUS_DLC 26
 #define ECP_COMMAND_SENSORS_SET        201
+#define MCU1_STEPPERS   3
+#define ECP_COMMAND_MOTORS_STATUS     111
+#define ECP_COMMAND_MOTORS_STATUS_DLC 12
+#define ECP_COMMAND_MOTORS_SET        211
+    
+#define ECP_COMMAND_GYRO_STATUS         121
+#define ECP_COMMAND_GPS_STATUS          122
+#define ECP_COMMAND_LIDAR_STATUS        123
+
+#define ECP_COMMAND_WHEELS_SET_DLC    14
+    
+#define ECP_DATA_SIZE_MCU0_TO_MCU2      8
+#define ECP_DATA_SIZE_MCU1_TO_MCU2      8
+#define ECP_DATA_SIZE_MCU3_TO_MCU2      8
+#define ECP_DATA_SIZE_MCU2_TO_MCU0      8
+#define ECP_DATA_SIZE_MCU2_TO_MCU1      8
+#define ECP_DATA_SIZE_MCU2_TO_MCU3      64
 
 typedef struct
 {
@@ -38,14 +58,6 @@ typedef struct
 } MCU_0_Sensors;
 
 /* MCU1 */
-#define MCU1_STEPPERS   3
-
-#define ECP_COMMAND_MOTORS_STATUS     111
-#define ECP_COMMAND_MOTORS_STATUS_DLC 12
-#define ECP_COMMAND_MOTORS_SET        211
-
-#define ECP_COMMAND_WHEELS_SET_DLC    14
-
 typedef struct
 {
     uint8_t     mainMotorSpeed; // percent
@@ -103,6 +115,21 @@ typedef struct
 
 typedef struct
 {
+    uint8_t seconds;
+    uint8_t minutes;
+    uint8_t hours;
+    uint8_t day;
+    uint8_t month;
+    uint8_t year;
+    float   latitude;
+    bool    latDir;
+    float   longitude;
+    bool    lonDir;
+    float   altitude;
+    uint8_t satellites;
+    float   speed;
+    float   course;
+    uint8_t dataString[ECP_GPS_DATA_STRING_MAX_SIZE];
 } MCU_2_GPSData;
 
 typedef struct

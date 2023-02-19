@@ -3,6 +3,13 @@
 /* GLOBALS */
 uint32_t loopCounter = 0;
 
+// const uint8_t DataFromMCU0Size = ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE);
+//static const uint8_t DataFromMCU1Size = ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU1_DATABLOCK_SIZE);
+//static const uint8_t DataFromMCU3Size = ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU3_DATABLOCK_SIZE);
+//static const uint8_t DataToMCU0Size = ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU0_DATABLOCK_SIZE);
+//static const uint8_t DataToMCU1Size = ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU1_DATABLOCK_SIZE);
+//static const uint8_t DataToMCU3Size = ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU3_DATABLOCK_SIZE);
+
 I2C i2c;
 
 UART uartMCU0;  // U3; RX TX
@@ -22,25 +29,25 @@ DMA dmaMcu1IN;
 DMA dmaMcu3IN;
 DMA dmaMcu3OUT;
 
-uint8_t mcu0dataIN[ECP_MAX_PACKET_LEN];
-uint8_t mcu1dataIN[ECP_MAX_PACKET_LEN];
-uint8_t mcu3dataIN[ECP_MAX_PACKET_LEN];
+uint8_t mcu0dataIN[ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE)];
+uint8_t mcu1dataIN[ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU1_DATABLOCK_SIZE)];
+uint8_t mcu3dataIN[ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU3_DATABLOCK_SIZE)];
 
-static uint8_t uartMCU0recvBufferArr[ECP_MAX_PACKET_LEN];
+static uint8_t uartMCU0recvBufferArr[ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE)];
 ECP_Buffer uartMCU0ecpRecvBuffer;
 ECP_Message mcu0MsgOut;
 
-static uint8_t uartMCU1recvBufferArr[ECP_MAX_PACKET_LEN];
+static uint8_t uartMCU1recvBufferArr[ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU1_DATABLOCK_SIZE)];
 ECP_Buffer uartMCU1ecpRecvBuffer;
 ECP_Message mcu1MsgOut;
 
-static uint8_t uartMCU3recvBufferArr[ECP_MAX_PACKET_LEN];
+static uint8_t uartMCU3recvBufferArr[ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU3_DATABLOCK_SIZE)];
 ECP_Buffer uartMCU3ecpRecvBuffer;
 ECP_Message mcu3MsgOut;
 
-uint8_t uartMCU0_OUTarr[ECP_MAX_PACKET_LEN];
-static uint8_t uartMCU1_OUTarr[ECP_MAX_PACKET_LEN];
-uint8_t uartMCU3_OUTarr[ECP_MAX_PACKET_LEN];
+uint8_t uartMCU0_OUTarr[ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU0_DATABLOCK_SIZE)];
+static uint8_t uartMCU1_OUTarr[ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU1_DATABLOCK_SIZE)];
+uint8_t uartMCU3_OUTarr[ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU3_DATABLOCK_SIZE)];
 static Rarray uartMCU0_OUT;
 static Rarray uartMCU1_OUT;
 static Rarray uartMCU3_OUT;
@@ -70,13 +77,13 @@ void MCU2_Init(void)
 
 void MCU2_InitUART(void)
 {
-    ECP_BufferInit(&uartMCU0ecpRecvBuffer, uartMCU0recvBufferArr, ECP_MAX_PACKET_LEN);
-    ECP_BufferInit(&uartMCU1ecpRecvBuffer, uartMCU1recvBufferArr, ECP_MAX_PACKET_LEN);
-    ECP_BufferInit(&uartMCU3ecpRecvBuffer, uartMCU3recvBufferArr, ECP_MAX_PACKET_LEN);
+    ECP_BufferInit(&uartMCU0ecpRecvBuffer, uartMCU0recvBufferArr, ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE));
+    ECP_BufferInit(&uartMCU1ecpRecvBuffer, uartMCU1recvBufferArr, ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU1_DATABLOCK_SIZE));
+    ECP_BufferInit(&uartMCU3ecpRecvBuffer, uartMCU3recvBufferArr, ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU3_DATABLOCK_SIZE));
     
-    RarrayCreate(&uartMCU0_OUT, uartMCU0_OUTarr, ECP_MAX_PACKET_LEN);
-    RarrayCreate(&uartMCU1_OUT, uartMCU1_OUTarr, ECP_MAX_PACKET_LEN);
-    RarrayCreate(&uartMCU3_OUT, uartMCU3_OUTarr, ECP_MAX_PACKET_LEN);
+    RarrayCreate(&uartMCU0_OUT, uartMCU0_OUTarr, ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU0_DATABLOCK_SIZE));
+    RarrayCreate(&uartMCU1_OUT, uartMCU1_OUTarr, ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU1_DATABLOCK_SIZE));
+    RarrayCreate(&uartMCU3_OUT, uartMCU3_OUTarr, ECP_PACKET_LEN_KNOWN_DLC(UART_TO_MCU3_DATABLOCK_SIZE));
     
     UART_Create(&uartMCU0, UART_MODULE_3, UART_CLOCK, UART_MCU0_BAUDRATE, 1);
     UART_Create(&uartMCU1, UART_MODULE_5, UART_CLOCK, UART_MCU1_BAUDRATE, 1);
@@ -91,7 +98,7 @@ void MCU2_InitUART(void)
     UART_Initialize(&uartMCU0);
     UART_Initialize(&uartMCU1);
     UART_Initialize(&uartMCU3);
-//    UART_Initialize(&uartGPS);
+    UART_Initialize(&uartGPS);
 //    UART_Initialize(&uartLIDAR); 
 }
 
@@ -102,7 +109,7 @@ void MCU2_InitDMA(void)
             (uint32_t*)uartMCU0.registers.UxRXREG, 
             (uint32_t*)mcu0dataIN,
             1, 
-            ECP_MAX_PACKET_LEN, 
+            ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE), 
             1, UART3_RX_IRQ_ID, 1);
     dmaMcu0IN.InterruptTriggerFnc = &MCU2_UART_ECP_ReceivedDataBlock;
     DMA_Initialize(&dmaMcu0IN);
@@ -113,7 +120,7 @@ void MCU2_InitDMA(void)
             (uint32_t*)uartMCU1.registers.UxRXREG, 
             (uint32_t*)mcu1dataIN,
             1, 
-            ECP_MAX_PACKET_LEN, 
+            ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU1_DATABLOCK_SIZE), 
             1, UART5_RX_IRQ_ID, 1);
     dmaMcu1IN.InterruptTriggerFnc = &MCU2_UART_ECP_ReceivedDataBlock;
     DMA_Initialize(&dmaMcu1IN);
@@ -140,7 +147,7 @@ void MCU2_InitLidar(void)
 }
 void MCU2_InitGPS(void)
 {
-    
+    GPS_Init();
 }
 void MCU2_InitPerimeterWire(void)
 {
@@ -179,13 +186,21 @@ void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule)
 void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data)
 {
     // interrupt receiving. Check for one packet and then start DMA transfer for faster receiving
-    if (ECP_CheckPacketValidity(data, ECP_MAX_PACKET_LEN) == ECP_VALID)
+    if (ECP_CheckPacketValidity(data, ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE)) == ECP_VALID)
     {
-        ECP_ParseEnqueueRawDataBlock(data, ECP_MAX_PACKET_LEN);
+        ECP_ParseEnqueueRawDataBlock(data, ECP_PACKET_LEN_KNOWN_DLC(UART_FROM_MCU0_DATABLOCK_SIZE));
     }
     else
     {
         DMA_TurnOffListeningForInterrupt(&dmaMcu0IN);
+    }
+}
+
+void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule)
+{
+    if (GPS_Read(data)) // whole string received and decoded
+    {
+        // get data from GPS data struct
     }
 }
 
@@ -227,7 +242,7 @@ static void MCU2_TaskReadGyro(void)
 
 static void MCU2_TaskReadPerimeterWire(void)
 {
-    gyroData.perimeterWire = ADC_ReadData_AN19();
+    gyroData.perimeterWire = (ADC_ReadData_AN19() << 1) >> 21;
 }
 
 static void MCU2_TaskLogData(void)
@@ -244,29 +259,15 @@ static void MCU2_TaskSendStatusData(void)
 //    ECP_Encode(&sendMessage, &sendPacket);
 //    UART_WriteData(sendPacket.data, sendPacket.size);
     
-    RastoBot_Encode_Sensors_1(&mcu3MsgOut, &sensorsStatus);
-    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    RastoBot_Encode_Sensors(&mcu3MsgOut, &sensorsStatus);
+    ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
     UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
     
-    RastoBot_Encode_Sensors_2(&mcu3MsgOut, &sensorsStatus);
-    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
+    RastoBot_Encode_Motors(&mcu3MsgOut, &motorsStatus);
+    ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
     UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
     
-    RastoBot_Encode_Sensors_3(&mcu3MsgOut, &sensorsStatus);
-    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
-    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
     
-    RastoBot_Encode_Sensors_4(&mcu3MsgOut, &sensorsStatus);
-    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
-    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
-    
-    RastoBot_Encode_Motors_1(&mcu3MsgOut, &motorsStatus);
-    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
-    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
-    
-    RastoBot_Encode_Motors_2(&mcu3MsgOut, &motorsStatus);
-    ECP_Encode(&mcu3MsgOut, &uartMCU3_OUT);
-    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
 }
 
 static ECP_Message * msg;  // pointer to message to process

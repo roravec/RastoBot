@@ -364,3 +364,42 @@ MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorSteps(MCU_1_WheelsMotorCon
 /******************************************************************************/
 /* MCU2 Messages **************************************************************/
 /******************************************************************************/
+
+ECP_Message * RastoBot_Encode_Gyro(ECP_Message * out, MCU_2_GyroData * data)
+{
+    out->command = ECP_COMMAND_MOTORS_SET;
+    out->subCommand = 201;
+    /* Steps */
+    
+    out->data[0] = (uint8_t)(wheelsControl->stepperSteps[0]>>24);
+    out->data[1] = (uint8_t)(wheelsControl->stepperSteps[0]>>16);
+    out->data[2] = (uint8_t)(wheelsControl->stepperSteps[0]>>8);
+    out->data[3] = (uint8_t)wheelsControl->stepperSteps[0];
+    
+    out->data[4] = (uint8_t)(wheelsControl->stepperSteps[1]>>24);
+    out->data[5] = (uint8_t)(wheelsControl->stepperSteps[1]>>16);
+    out->data[6] = (uint8_t)(wheelsControl->stepperSteps[1]>>8);
+    out->data[7] = (uint8_t)wheelsControl->stepperSteps[1];
+    
+    out->dlc = 8;
+    
+    return out;
+}
+
+//typedef struct
+//{
+//    int16_t     magnetX;
+//    int16_t     magnetY;
+//    int16_t     magnetZ;
+//    int16_t     accelX;
+//    int16_t     accelY;
+//    int16_t     accelZ;
+//    int16_t     gyroX;
+//    int16_t     gyroY;
+//    int16_t     gyroZ;
+//    int16_t     azimuth;
+//    int16_t     temperature;
+//    uint16_t    perimeterWire;
+//} MCU_2_GyroData;
+
+

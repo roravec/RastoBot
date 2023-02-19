@@ -11523,7 +11523,6 @@ design rules under a new name.</description>
 <contactref element="C66" pad="1"/>
 <contactref element="PERIMETER_WIRE" pad="4"/>
 <contactref element="PERIMETER_WIRE" pad="3"/>
-<contactref element="D2" pad="C"/>
 <contactref element="LIMIT_SWITCH_UP" pad="3"/>
 <contactref element="R110" pad="1"/>
 <contactref element="LIMIT_SWITCH_DOWN" pad="3"/>
@@ -12560,6 +12559,7 @@ design rules under a new name.</description>
 <contactref element="C16" pad="2"/>
 <contactref element="MCU_2_I2C_EXTENDER" pad="4"/>
 <contactref element="U5" pad="1"/>
+<contactref element="D2" pad="A"/>
 <wire x1="145.15" y1="110" x2="141.85" y2="112" width="0" layer="19" extent="1-1"/>
 <wire x1="146" y1="107.85" x2="145.15" y2="110" width="0" layer="19" extent="1-1"/>
 <wire x1="149.55" y1="108.675" x2="146" y2="107.85" width="0" layer="19" extent="1-1"/>
@@ -13313,8 +13313,8 @@ design rules under a new name.</description>
 <wire x1="119" y1="39" x2="124" y2="39" width="0" layer="19" extent="1-1"/>
 <wire x1="119" y1="34" x2="119" y2="39" width="0" layer="19" extent="1-1"/>
 <wire x1="119" y1="31.9" x2="119" y2="34" width="0" layer="19" extent="1-1"/>
-<wire x1="117" y1="28.6" x2="119" y2="31.9" width="0" layer="19" extent="1-1"/>
-<wire x1="115" y1="28" x2="117" y2="28.6" width="0" layer="19" extent="1-1"/>
+<wire x1="117" y1="32" x2="119" y2="31.9" width="0" layer="19" extent="1-1"/>
+<wire x1="115" y1="28" x2="117" y2="32" width="0" layer="19" extent="1-1"/>
 <wire x1="112" y1="29.19" x2="115" y2="28" width="0" layer="19" extent="1-1"/>
 <wire x1="112" y1="31.73" x2="112" y2="29.19" width="0" layer="19" extent="1-1"/>
 <wire x1="114" y1="39" x2="119" y2="39" width="0" layer="19" extent="1-1"/>
@@ -16364,11 +16364,7 @@ design rules under a new name.</description>
 <wire x1="130" y1="39" x2="124.5" y2="33.5" width="0.3" layer="1"/>
 </signal>
 <signal name="PERIMETER_WIRE_SENSE">
-<contactref element="R4" pad="1"/>
-<contactref element="D2" pad="A"/>
 <contactref element="U15" pad="4"/>
-<wire x1="117" y1="36.05" x2="117" y2="32" width="0.3" layer="1"/>
-<wire x1="117" y1="36.05" x2="117.05" y2="36" width="0.3" layer="1"/>
 <wire x1="117.05" y1="36" x2="120" y2="36" width="0.3" layer="1"/>
 <via x="120" y="36" extent="1-16" drill="0.35"/>
 <wire x1="120" y1="36" x2="123" y2="36" width="0.3" layer="1"/>
@@ -16382,7 +16378,11 @@ design rules under a new name.</description>
 <wire x1="138.75" y1="46.75" x2="140.6769" y2="46.75" width="0.28" layer="1"/>
 <wire x1="137.6706" y1="45.6706" x2="138.75" y2="46.75" width="0.28" layer="1"/>
 <contactref element="PERIM" pad="TP"/>
-<wire x1="117" y1="34" x2="117" y2="32" width="0.1524" layer="1"/>
+<contactref element="D2" pad="C"/>
+<contactref element="R4" pad="1"/>
+<wire x1="117" y1="36.05" x2="117.05" y2="36" width="0" layer="19" extent="1-1"/>
+<wire x1="117" y1="34" x2="117.05" y2="36" width="0" layer="19" extent="1-1"/>
+<wire x1="117" y1="28.6" x2="117" y2="34" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$79">
 <contactref element="R73" pad="2"/>

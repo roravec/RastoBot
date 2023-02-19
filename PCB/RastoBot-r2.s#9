@@ -51824,7 +51824,7 @@ ESP32</text>
 CP2102 USB</text>
 <text x="38.1" y="157.48" size="1.778" layer="91">MPU6050 gyro</text>
 <text x="177.8" y="154.94" size="1.778" layer="91">CP2102 USB-UART interface</text>
-<text x="160.02" y="86.36" size="1.778" layer="91">CP2102 USB-UART interface</text>
+<text x="165.1" y="86.36" size="1.778" layer="91">LIS3MDLTR - Compass</text>
 </plain>
 <instances>
 <instance part="FRAME7" gate="G$1" x="0" y="0" smashed="yes">
