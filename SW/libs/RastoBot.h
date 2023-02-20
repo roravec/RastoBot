@@ -17,28 +17,32 @@ extern "C" {
 #include <stdbool.h>
 #include "ermaCommProtocol.h"
     
-#define ECP_GPS_DATA_STRING_MAX_SIZE    200
+#define ECP_GPS_DATA_STRING_MAX_SIZE        200
     
-#define ECP_COMMAND_SENSORS_STATUS     101
-#define ECP_COMMAND_SENSORS_STATUS_DLC 26
-#define ECP_COMMAND_SENSORS_SET        201
-#define MCU1_STEPPERS   3
-#define ECP_COMMAND_MOTORS_STATUS     111
-#define ECP_COMMAND_MOTORS_STATUS_DLC 12
-#define ECP_COMMAND_MOTORS_SET        211
+#define ECP_COMMAND_SENSORS_STATUS          101
+#define ECP_COMMAND_SENSORS_STATUS_DLC      26
+#define ECP_COMMAND_SENSORS_SET             201
+#define MCU1_STEPPERS                       3
+#define ECP_COMMAND_MOTORS_STATUS           111
+#define ECP_COMMAND_MOTORS_STATUS_DLC       12
+#define ECP_COMMAND_MOTORS_SET              211
     
-#define ECP_COMMAND_GYRO_STATUS         121
-#define ECP_COMMAND_GPS_STATUS          122
-#define ECP_COMMAND_LIDAR_STATUS        123
+#define ECP_COMMAND_GYRO_STATUS             121
+#define ECP_COMMAND_GPS_STATUS              122
+#define ECP_COMMAND_LIDAR_STATUS            123
+#define ECP_COMMAND_POSITION_STATUS         124     // combined position data LIDAR, compass, gyro
+#define ECP_COMMAND_SENSORSMOTORS_STATUS    125     // combined sensors and motors status data
 
-#define ECP_COMMAND_WHEELS_SET_DLC    14
+#define ECP_COMMAND_WHEELS_SET_DLC          14
     
-#define ECP_DATA_SIZE_MCU0_TO_MCU2      8
-#define ECP_DATA_SIZE_MCU1_TO_MCU2      8
-#define ECP_DATA_SIZE_MCU3_TO_MCU2      8
-#define ECP_DATA_SIZE_MCU2_TO_MCU0      8
-#define ECP_DATA_SIZE_MCU2_TO_MCU1      8
-#define ECP_DATA_SIZE_MCU2_TO_MCU3      64
+#define ECP_DATA_SIZE_MCU0_TO_MCU2          8
+#define ECP_DATA_SIZE_MCU1_TO_MCU2          8
+#define ECP_DATA_SIZE_MCU3_TO_MCU2          8
+#define ECP_DATA_SIZE_MCU2_TO_MCU0          8
+#define ECP_DATA_SIZE_MCU2_TO_MCU1          8
+#define ECP_DATA_SIZE_MCU2_TO_MCU3          64
+    
+#define LIDAR_FIX_DATALOAD                  42
 
 typedef struct
 {
@@ -134,6 +138,10 @@ typedef struct
 
 typedef struct
 {
+    uint16_t    angleIndex;
+    uint16_t    rpm;
+    uint16_t    intensity[6];
+    uint16_t    distance[6];
 } MCU_2_LidarData;
 
 
@@ -151,7 +159,23 @@ ECP_Message *   RastoBot_Encode_WheelsMotorControl(ECP_Message * out, MCU_1_Whee
 ECP_Message *   RastoBot_Encode_WheelsMotorSteps(ECP_Message * out, MCU_1_WheelsMotorControl * wheelsControl);
 MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorControl(MCU_1_WheelsMotorControl * wheelsControl, ECP_Message * in);
 MCU_1_WheelsMotorControl * RastoBot_Decode_WheelsMotorSteps(MCU_1_WheelsMotorControl * wheelsControl, ECP_Message * in);
-
+ECP_Message * RastoBot_Encode_Gyro(ECP_Message * out, MCU_2_GyroData * data);
+MCU_2_GyroData * RastoBot_Decode_Gyro(MCU_2_GyroData * gyro, ECP_Message * in);
+ECP_Message * RastoBot_Encode_Lidar(ECP_Message * out, MCU_2_LidarData * data);
+MCU_2_LidarData * RastoBot_Decode_Lidar(MCU_2_LidarData * lidar, ECP_Message * in);
+ECP_Message * RastoBot_Encode_Position(
+        ECP_Message * out, 
+        MCU_2_LidarData * lidar, 
+        MCU_2_GyroData * gyro, 
+        MCU_2_GPSData * gps);
+void RastoBot_Decode_Position(
+        MCU_2_LidarData * lidar, 
+        MCU_2_GyroData * gyro, 
+        MCU_2_GPSData * gps, 
+        ECP_Message * in);
+ECP_Message * RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors * sensors, MCU_1_Motors * motors);
+MCU_0_Sensors * RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in);
+void Lidar_ParseData(MCU_2_LidarData * lidarDataOut, uint8_t * data, uint8_t size);
 
 #ifdef	__cplusplus
 }

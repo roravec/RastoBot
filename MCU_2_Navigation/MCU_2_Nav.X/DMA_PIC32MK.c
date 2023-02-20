@@ -57,8 +57,8 @@ void DMA_Initialize(DMA * dmaObj)
         dmaObj->registers.DCHxDSAbits->CHDSA = KVA_TO_PA(dmaObj->destination);
         dmaObj->registers.DCHxECONbits->CHSIRQ = dmaObj->triggerOnInterruptId;      
         if (dmaObj->interruptEnabled) DMA_InitInterrupts(dmaObj);
-        dmaObj->registers.DCHxCONbits->CHAEN = 1;
-        dmaObj->registers.DCHxCONbits->CHBUSY = 1; // channel is active
+        dmaObj->registers.DCHxCONbits->CHAEN = 1;   //  Channel Automatic Enable bit
+        dmaObj->registers.DCHxCONbits->CHBUSY = 1;  // channel is active
         
         //dmaObj->registers.DCHxINTbits->CHBCIE = 1; // block complete interrupt
         //dmaObj->registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
