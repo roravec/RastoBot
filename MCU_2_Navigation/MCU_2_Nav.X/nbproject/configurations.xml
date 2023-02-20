@@ -18,7 +18,6 @@
       <itemPath>HMC5883.h</itemPath>
       <itemPath>ADC_PIC32MK.h</itemPath>
       <itemPath>gps_neo.h</itemPath>
-      <itemPath>Lidar.h</itemPath>
     </logicalFolder>
     <logicalFolder name="libs" displayName="libs" projectFiles="true">
       <itemPath>../../SW/libs/ermaCommProtocol.c</itemPath>
@@ -47,7 +46,6 @@
       <itemPath>HMC5883.c</itemPath>
       <itemPath>ADC_PIC32MK.c</itemPath>
       <itemPath>gps_neo.c</itemPath>
-      <itemPath>Lidar.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

@@ -146,10 +146,11 @@ void MCU2_InitDMA(void)
             (uint32_t*)uartMCU3.registers.UxTXREG,
             ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
             1, 
-            1, UART1_TX_IRQ_ID, 1);
-    dmaMcu3OUT.InterruptTriggerFnc = &MCU2_UART_ECP_ReceivedDataBlock;
+            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
+            UART1_TX_IRQ_ID, 1);
+    dmaMcu3OUT.InterruptTriggerFnc = &MCU2_TransferToMCU3Complete;
     DMA_Initialize(&dmaMcu3OUT);
-    // Writing the CFORCE bit (DCHxECON<7>) will trigger transfer
+    dmaMcu3OUT.registers.DCHxCONbits->CHAEN = 0;   //  Channel Automatic is turned off
     //dmaMcu3OUT.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
     
     /* DMA GPS IN *************************************/
@@ -192,7 +193,7 @@ void MCU2_InitCompass(void)
 }
 void MCU2_InitLidar(void)
 {
-    
+    MCU2_LidarDisable();
 }
 void MCU2_InitGPS(void)
 {
@@ -285,6 +286,40 @@ void MCU2_DMA_ReceivedLIDARData(uint8_t * data)
     UART * uart = &uartLIDAR;
     DMA * dma = &dmaLidarIn;
     Lidar_ParseData(&lidarData, data, LIDAR_FIX_DATALOAD);
+    MCU2_SendPositionData();
+}
+
+static uint8_t dmaTransferToMcu3Status = 0;
+void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size)
+{
+    while (dmaTransferToMcu3Status);        // wait until previous transfer is completed
+    dmaTransferToMcu3Status = 1;            // signal that transfer is in progress
+    memcpy(uartMCU3_OUT.data, data, size);  // copy data from source to DMA container
+    //dmaMcu3OUT.registers.DCHxECONbits->CFORCE = 1; // force transfer
+    DMA_EnableChannel(&dmaMcu3OUT); // TX flag is 1, transfer will start automatically
+}
+
+void MCU2_TransferToMCU3Complete(uint8_t * data)
+{
+    dmaTransferToMcu3Status = 0; // signal that transfer was completed
+}
+
+void MCU2_SendPositionData(void)
+{
+    RastoBot_Encode_Position(&mcu3MsgOut, &lidarData, &gyroData, &gpsData);
+    ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
+    //UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size);
+}
+
+void MCU2_LidarEnable(void)
+{
+    LIDAR_ENABLE_LAT = 1;
+}
+
+void MCU2_LidarDisable(void)
+{
+    LIDAR_ENABLE_LAT = 0;
 }
 
 /************************************************************************/
@@ -337,14 +372,8 @@ static void MCU2_TaskSendStatusData(void)
 {
     RastoBot_Encode_SensorsMotors(&mcu3MsgOut, &sensorsStatus,&motorsStatus);
     ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
-    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
-}
-
-static void MCU2_TaskSendPositionData(void)
-{
-    RastoBot_Encode_Position(&mcu3MsgOut, &lidarData, &gyroData, &gpsData);
-    ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
-    UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    //UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
+    MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size);
 }
 
 static ECP_Message * msg;  // pointer to message to process

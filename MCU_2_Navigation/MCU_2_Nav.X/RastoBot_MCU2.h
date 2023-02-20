@@ -58,7 +58,11 @@ void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule);
 void MCU2_DMA_ReceivedGPSData(uint8_t * data);
 void MCU2_UART_ReceiveLIDARData(uint8_t data, UartModule uartModule);
 void MCU2_DMA_ReceivedLIDARData(uint8_t * data);
-
+void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size);
+void MCU2_TransferToMCU3Complete(uint8_t * data);
+void MCU2_SendPositionData(void);
+void MCU2_LidarDisable(void);
+void MCU2_LidarEnable(void);
 
 #ifdef	__cplusplus
 }

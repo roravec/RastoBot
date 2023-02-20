@@ -70,7 +70,14 @@ void DMA_Initialize(DMA * dmaObj)
         //DMA_TurnOnListeningForInterrupt(dmaObj);
     }
 }
-
+void DMA_EnableChannel(DMA * dmaObj)
+{
+    dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
+}
+void DMA_DisableChannel(DMA * dmaObj)
+{
+    dmaObj->registers.DCHxCONbits->CHEN = 0;    // enable channel
+}
 void DMA_TurnOnListeningForInterrupt(DMA * dmaObj)
 {
     dmaObj->registers.DCHxECONbits->SIRQEN = 1; // enable with interrupt
