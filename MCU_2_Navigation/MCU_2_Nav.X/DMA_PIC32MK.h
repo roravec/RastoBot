@@ -46,4 +46,3 @@ extern "C" {
 #endif
 
 #endif	/* DMA_PIC32MK_H */
-

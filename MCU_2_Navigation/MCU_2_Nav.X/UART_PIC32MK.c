@@ -134,8 +134,8 @@ void UART_InitInterrupts(UART * uartObj,_Bool rxInt, _Bool txInt)
             IFS1bits.U2TXIF = 0; // reset TX flag
             IPC14bits.U2TXIP = 7; // TX interrupt priority 7
             IPC14bits.U2TXIS = 2; // TX interrupt sub-priority 3
-            IPC14bits.U2RXIP = 6; // TX interrupt priority 6
-            IPC14bits.U2RXIS = 2; // TX interrupt sub-priority 3
+            IPC14bits.U2RXIP = 6; // RX interrupt priority 6
+            IPC14bits.U2RXIS = 2; // RX interrupt sub-priority 3
             IEC1bits.U2RXIE = rxInt; // RX interrupt
             IEC1bits.U2TXIE = txInt; // TX interrupt
             break;
@@ -147,8 +147,8 @@ void UART_InitInterrupts(UART * uartObj,_Bool rxInt, _Bool txInt)
             IFS2bits.U3TXIF = 0; // reset TX flag
             IPC16bits.U3TXIP = 7; // TX interrupt priority 7
             IPC16bits.U3TXIS = 3; // TX interrupt sub-priority 3
-            IPC15bits.U3RXIP = 6; // TX interrupt priority 6
-            IPC15bits.U3RXIS = 3; // TX interrupt sub-priority 3
+            IPC15bits.U3RXIP = 6; // RX interrupt priority 6
+            IPC15bits.U3RXIS = 3; // RX interrupt sub-priority 3
             IEC1bits.U3RXIE = rxInt; // RX interrupt
             IEC2bits.U3TXIE = txInt; // TX interrupt
             break;
@@ -160,8 +160,8 @@ void UART_InitInterrupts(UART * uartObj,_Bool rxInt, _Bool txInt)
             IFS2bits.U4TXIF = 0; // reset TX flag
             IPC16bits.U4TXIP = 6; // TX interrupt priority 7
             IPC16bits.U4TXIS = 1; // TX interrupt sub-priority 3
-            IPC16bits.U4RXIP = 7; // TX interrupt priority 6
-            IPC16bits.U4RXIS = 1; // TX interrupt sub-priority 3
+            IPC16bits.U4RXIP = 7; // RX interrupt priority 6
+            IPC16bits.U4RXIS = 1; // RX interrupt sub-priority 3
             IEC2bits.U4RXIE = rxInt; // RX interrupt
             IEC2bits.U4TXIE = txInt; // TX interrupt
             break;
@@ -173,8 +173,8 @@ void UART_InitInterrupts(UART * uartObj,_Bool rxInt, _Bool txInt)
             IFS2bits.U5TXIF = 0; // reset TX flag
             IPC17bits.U5TXIP = 6; // TX interrupt priority 7
             IPC17bits.U5TXIS = 2; // TX interrupt sub-priority 3
-            IPC17bits.U5RXIP = 7; // TX interrupt priority 6
-            IPC17bits.U5RXIS = 2; // TX interrupt sub-priority 3
+            IPC17bits.U5RXIP = 7; // RX interrupt priority 6
+            IPC17bits.U5RXIS = 2; // RX interrupt sub-priority 3
             IEC2bits.U5RXIE = rxInt; // RX interrupt
             IEC2bits.U5TXIE = txInt; // TX interrupt
             break;
@@ -186,8 +186,8 @@ void UART_InitInterrupts(UART * uartObj,_Bool rxInt, _Bool txInt)
             IFS5bits.U6TXIF = 0; // reset TX flag
             IPC41bits.U6TXIP = 6; // TX interrupt priority 7
             IPC41bits.U6TXIS = 3; // TX interrupt sub-priority 3
-            IPC41bits.U6RXIP = 7; // TX interrupt priority 6
-            IPC41bits.U6RXIS = 3; // TX interrupt sub-priority 3
+            IPC41bits.U6RXIP = 7; // RX interrupt priority 6
+            IPC41bits.U6RXIS = 3; // RX interrupt sub-priority 3
             IEC5bits.U6RXIE = rxInt; // RX interrupt
             IEC5bits.U6TXIE = txInt; // TX interrupt
             break;
@@ -300,41 +300,41 @@ void UART_SendBreak(UART * uartObj)
 }
 
 /* Interrupt handlers */
-void __attribute__((interrupt(ipl7auto), at_vector(_UART1_RX_VECTOR), aligned(16))) UART1_RX_Handler (void)
+void __attribute__((interrupt(ipl6auto), at_vector(_UART1_RX_VECTOR), aligned(16))) UART1_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_1, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART1_TX_VECTOR), aligned(16))) UART1_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_1, UART_VECTOR_TX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART1_FAULT_VECTOR), aligned(16))) UART1_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_1, UART_VECTOR_FAULT);   }
-void __attribute__((interrupt(ipl7auto), at_vector(_UART2_RX_VECTOR), aligned(16))) UART2_RX_Handler (void)
+void __attribute__((interrupt(ipl6auto), at_vector(_UART2_RX_VECTOR), aligned(16))) UART2_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_2, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART2_TX_VECTOR), aligned(16))) UART2_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_2, UART_VECTOR_TX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART2_FAULT_VECTOR), aligned(16))) UART2_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_2, UART_VECTOR_FAULT);   }
-void __attribute__((interrupt(ipl7auto), at_vector(_UART3_RX_VECTOR), aligned(16))) UART3_RX_Handler (void)
+void __attribute__((interrupt(ipl6auto), at_vector(_UART3_RX_VECTOR), aligned(16))) UART3_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_3, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART3_TX_VECTOR), aligned(16))) UART3_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_3, UART_VECTOR_TX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART3_FAULT_VECTOR), aligned(16))) UART3_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_3, UART_VECTOR_FAULT);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART4_RX_VECTOR), aligned(16))) UART4_RX_Handler (void)
+void __attribute__((interrupt(ipl7auto), at_vector(_UART4_RX_VECTOR), aligned(16))) UART4_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_4, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl6auto), at_vector(_UART4_TX_VECTOR), aligned(16))) UART4_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_4, UART_VECTOR_TX);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART4_FAULT_VECTOR), aligned(16))) UART4_Fault_Handler (void)
+void __attribute__((interrupt(ipl7auto), at_vector(_UART4_FAULT_VECTOR), aligned(16))) UART4_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_4, UART_VECTOR_FAULT);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART5_RX_VECTOR), aligned(16))) UART5_RX_Handler (void)
+void __attribute__((interrupt(ipl7auto), at_vector(_UART5_RX_VECTOR), aligned(16))) UART5_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_5, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl6auto), at_vector(_UART5_TX_VECTOR), aligned(16))) UART5_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_5, UART_VECTOR_TX);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART5_FAULT_VECTOR), aligned(16))) UART5_Fault_Handler (void)
+void __attribute__((interrupt(ipl7auto), at_vector(_UART5_FAULT_VECTOR), aligned(16))) UART5_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_5, UART_VECTOR_FAULT);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART6_RX_VECTOR), aligned(16))) UART6_RX_Handler (void)
+void __attribute__((interrupt(ipl7auto), at_vector(_UART6_RX_VECTOR), aligned(16))) UART6_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_6, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl6auto), at_vector(_UART6_TX_VECTOR), aligned(16))) UART6_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_6, UART_VECTOR_TX);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART6_FAULT_VECTOR), aligned(16))) UART6_Fault_Handler (void)
+void __attribute__((interrupt(ipl7auto), at_vector(_UART6_FAULT_VECTOR), aligned(16))) UART6_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_6, UART_VECTOR_FAULT);   }
 /*********************************/
 

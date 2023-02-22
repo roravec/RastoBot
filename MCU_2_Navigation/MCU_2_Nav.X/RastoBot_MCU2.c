@@ -61,13 +61,13 @@ static void MCU2_DoMessageAction(ECP_Message * msg);
 void MCU2_Init(void)
 {
     ADC_Init();
+    MCU2_InitGPS();
     MCU2_InitUART();
     MCU2_InitDMA();
     MCU2_InitI2C();
     MCU2_InitGyroMPU6050();
     MCU2_InitCompass();
     MCU2_InitLidar();
-    MCU2_InitGPS();
     MCU2_InitPerimeterWire();
 }
 
@@ -87,7 +87,7 @@ void MCU2_InitUART(void)
     UART_Create(&uartMCU0,  UART_MODULE_3, UART_CLOCK, UART_MCU0_BAUDRATE, 1);
     UART_Create(&uartMCU1,  UART_MODULE_5, UART_CLOCK, UART_MCU1_BAUDRATE, 1);
     UART_Create(&uartMCU3,  UART_MODULE_1, UART_CLOCK, UART_MCU3_BAUDRATE, 1);
-    UART_Create(&uartGPS,   UART_MODULE_6, UART_CLOCK, UART_MCU3_BAUDRATE, 1);
+    UART_Create(&uartGPS,   UART_MODULE_6, UART_CLOCK, UART_GPS_BAUDRATE, 1);
     UART_Create(&uartLIDAR, UART_MODULE_2, UART_CLOCK, UART_LIDAR_BAUDRATE, 1);
     
     // setup function which that be called on data receive
@@ -101,8 +101,8 @@ void MCU2_InitUART(void)
     UART_Initialize(&uartMCU0);
     UART_Initialize(&uartMCU1);
     UART_Initialize(&uartMCU3);
-    UART_Initialize(&uartGPS);
-    UART_Initialize(&uartLIDAR); 
+    //UART_Initialize(&uartGPS);
+    //UART_Initialize(&uartLIDAR); 
 }
 
 void MCU2_InitDMA(void)
@@ -142,7 +142,7 @@ void MCU2_InitDMA(void)
     
     /* DMA MCU3 OUT *************************************/
     DMA_Create(&dmaMcu3OUT, DMA_CHANNEL_3, 
-            (uint32_t*)uartMCU3_OUT.data, 
+            (uint32_t*)uartMCU3_OUT.data,
             (uint32_t*)uartMCU3.registers.UxTXREG,
             ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
             1, 
@@ -151,36 +151,36 @@ void MCU2_InitDMA(void)
     dmaMcu3OUT.InterruptTriggerFnc = &MCU2_TransferToMCU3Complete;
     DMA_Initialize(&dmaMcu3OUT);
     dmaMcu3OUT.registers.DCHxCONbits->CHAEN = 0;   //  Channel Automatic is turned off
-    //dmaMcu3OUT.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
+    dmaMcu3OUT.registers.DCHxINTbits->CHBCIE = 1; //  Channel Block Transfer Complete Interrupt Enable bit
     
-    /* DMA GPS IN *************************************/
-    DMA_Create(&dmaGPSIn, DMA_CHANNEL_4, 
-            (uint32_t*)uartGPS.registers.UxRXREG, 
-            (uint32_t*)gpsDataIN,
-            1, 
-            GPS_MAX_DATALOAD, 
-            1, UART6_RX_IRQ_ID, 1);
-    dmaGPSIn.InterruptTriggerFnc = &MCU2_DMA_ReceivedGPSData;
-    DMA_Initialize(&dmaGPSIn);
-    dmaGPSIn.registers.DCHxDATbits->CHPDAT = '\r'; // end byte of string
-    //dmaGPSIn.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
+//    /* DMA GPS IN *************************************/
+//    DMA_Create(&dmaGPSIn, DMA_CHANNEL_4, 
+//            (uint32_t*)uartGPS.registers.UxRXREG, 
+//            (uint32_t*)gpsDataIN,
+//            1, 
+//            GPS_MAX_DATALOAD, 
+//            1, UART6_RX_IRQ_ID, 1);
+//    dmaGPSIn.InterruptTriggerFnc = &MCU2_DMA_ReceivedGPSData;
+//    DMA_Initialize(&dmaGPSIn);
+//    dmaGPSIn.registers.DCHxDATbits->CHPDAT = '\r'; // end byte of string
+//    //dmaGPSIn.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
     
-    /* DMA LIDAR IN *************************************/
-    DMA_Create(&dmaLidarIn, DMA_CHANNEL_5, 
-            (uint32_t*)uartLIDAR.registers.UxRXREG, 
-            (uint32_t*)lidarDataIN,
-            1, 
-            LIDAR_FIX_DATALOAD, 
-            1, UART2_RX_IRQ_ID, 1);
-    dmaLidarIn.InterruptTriggerFnc = &MCU2_DMA_ReceivedLIDARData;
-    DMA_Initialize(&dmaLidarIn);
-    dmaLidarIn.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
+//    /* DMA LIDAR IN *************************************/
+//    DMA_Create(&dmaLidarIn, DMA_CHANNEL_5, 
+//            (uint32_t*)uartLIDAR.registers.UxRXREG, 
+//            (uint32_t*)lidarDataIN,
+//            1, 
+//            LIDAR_FIX_DATALOAD, 
+//            1, UART2_RX_IRQ_ID, 1);
+//    dmaLidarIn.InterruptTriggerFnc = &MCU2_DMA_ReceivedLIDARData;
+//    DMA_Initialize(&dmaLidarIn);
+//    dmaLidarIn.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
 }
 void MCU2_InitI2C(void)
 {
     I2C_Create(&i2c, I2C_MODULE_4, PBCLK3, 100000, 0);
     I2C_Init(&i2c,PBCLK3,100000);
-    Delay_ms(500);
+    //Delay_ms(500);
 }
 void MCU2_InitGyroMPU6050(void)
 {
@@ -194,6 +194,7 @@ void MCU2_InitCompass(void)
 void MCU2_InitLidar(void)
 {
     MCU2_LidarDisable();
+    MCU2_LidarEnable();
 }
 void MCU2_InitGPS(void)
 {
@@ -209,7 +210,6 @@ void MCU2_Loop(void)
 {
     loopCounter++;
     MCU2_DoTasks();
-    //UART_SendByte(&uartMCU3, 0x55);
 }
 /******************************************************************************/
 void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule)
@@ -254,7 +254,7 @@ void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule)
     if (data == '$') // start of string
     {
         //UART_DisableInterrupts(uart);
-        DMA_TurnOnListeningForInterrupt(dma);
+        //DMA_TurnOnListeningForInterrupt(dma);
     }
 }
 // DMA interrupt
@@ -294,7 +294,8 @@ void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size)
 {
     while (dmaTransferToMcu3Status);        // wait until previous transfer is completed
     dmaTransferToMcu3Status = 1;            // signal that transfer is in progress
-    memcpy(uartMCU3_OUT.data, data, size);  // copy data from source to DMA container
+    if ((uint8_t*)&uartMCU3_OUT.data != (uint8_t*)data)         // if pointer to data container we can skip memcpy
+        memcpy(uartMCU3_OUT.data, data, size);  // copy data from source to DMA container
     //dmaMcu3OUT.registers.DCHxECONbits->CFORCE = 1; // force transfer
     DMA_EnableChannel(&dmaMcu3OUT); // TX flag is 1, transfer will start automatically
 }

@@ -3,6 +3,8 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <HardwareSerial.h>
+#include "libs/RastoBot.h"
+#include "libs/ermaCommProtocol.h"
 
 #define MCU3_MCU1_UART_BAUDRATE 115200
 #define MCU3_MCU2_UART_BAUDRATE 115200
@@ -172,5 +174,26 @@ void MCU1_RX_handler()
   if (bytesCounter > 0)
   {
     Serial.println("MCU1 bytes received: " + bytesCounter);
+  }
+}
+void EXT_RX_handler()
+{
+  uint16_t bytesCounter = 0;
+  // read UART buffer
+  while (Serial.available() > 0)
+  {
+    if (bytesCounter == 0)
+    {
+      Serial.print("EXT RX:");
+    }
+    uint8_t receivedByte = Serial.read();
+    //Serial.write(receivedByte);
+    Serial.print(String(receivedByte) + " ");
+    bytesCounter++;
+  }
+  if (bytesCounter > 0)
+  {
+    Serial.println("");
+    Serial.println("EXT bytes received: " + bytesCounter);
   }
 }
