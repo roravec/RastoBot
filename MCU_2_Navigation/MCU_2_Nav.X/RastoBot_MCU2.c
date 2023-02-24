@@ -101,7 +101,7 @@ void MCU2_InitUART(void)
     UART_Initialize(&uartMCU0);
     UART_Initialize(&uartMCU1);
     UART_Initialize(&uartMCU3);
-    //UART_Initialize(&uartGPS);
+    UART_Initialize(&uartGPS);
     //UART_Initialize(&uartLIDAR); 
 }
 
@@ -146,24 +146,25 @@ void MCU2_InitDMA(void)
             (uint32_t*)uartMCU3.registers.UxTXREG,
             ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
             1, 
-            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
+//            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
+            1,
             UART1_TX_IRQ_ID, 1);
     dmaMcu3OUT.InterruptTriggerFnc = &MCU2_TransferToMCU3Complete;
     DMA_Initialize(&dmaMcu3OUT);
     dmaMcu3OUT.registers.DCHxCONbits->CHAEN = 0;   //  Channel Automatic is turned off
-    dmaMcu3OUT.registers.DCHxINTbits->CHBCIE = 1; //  Channel Block Transfer Complete Interrupt Enable bit
+    dmaMcu3OUT.registers.DCHxINTbits->CHSDIE = 1; //  Channel Source Done Interrupt Enable bit
     
-//    /* DMA GPS IN *************************************/
-//    DMA_Create(&dmaGPSIn, DMA_CHANNEL_4, 
-//            (uint32_t*)uartGPS.registers.UxRXREG, 
-//            (uint32_t*)gpsDataIN,
-//            1, 
-//            GPS_MAX_DATALOAD, 
-//            1, UART6_RX_IRQ_ID, 1);
-//    dmaGPSIn.InterruptTriggerFnc = &MCU2_DMA_ReceivedGPSData;
-//    DMA_Initialize(&dmaGPSIn);
-//    dmaGPSIn.registers.DCHxDATbits->CHPDAT = '\r'; // end byte of string
-//    //dmaGPSIn.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
+    /* DMA GPS IN *************************************/
+    DMA_Create(&dmaGPSIn, DMA_CHANNEL_4, 
+            (uint32_t*)uartGPS.registers.UxRXREG, 
+            (uint32_t*)gpsDataIN,
+            1, 
+            GPS_MAX_DATALOAD, 
+            1, UART6_RX_IRQ_ID, 1);
+    dmaGPSIn.InterruptTriggerFnc = &MCU2_DMA_ReceivedGPSData;
+    DMA_Initialize(&dmaGPSIn);
+    dmaGPSIn.registers.DCHxDATbits->CHPDAT = '\r'; // end byte of string
+    //dmaGPSIn.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
     
 //    /* DMA LIDAR IN *************************************/
 //    DMA_Create(&dmaLidarIn, DMA_CHANNEL_5, 
@@ -296,8 +297,9 @@ void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size)
     dmaTransferToMcu3Status = 1;            // signal that transfer is in progress
     if ((uint8_t*)&uartMCU3_OUT.data != (uint8_t*)data)         // if pointer to data container we can skip memcpy
         memcpy(uartMCU3_OUT.data, data, size);  // copy data from source to DMA container
+    DMA_TurnOnListeningForInterrupt(&dmaMcu3OUT);
     //dmaMcu3OUT.registers.DCHxECONbits->CFORCE = 1; // force transfer
-    DMA_EnableChannel(&dmaMcu3OUT); // TX flag is 1, transfer will start automatically
+    //DMA_EnableChannel(&dmaMcu3OUT); // TX flag is 1, transfer will start automatically
 }
 
 void MCU2_TransferToMCU3Complete(uint8_t * data)

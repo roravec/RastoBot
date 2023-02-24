@@ -7,6 +7,9 @@
  */ 
 #include "config.h"
 
+uint32_t rcon = 0;
+uint32_t rswrst = 0;
+
 void Config_Init(void)
 {
     __builtin_disable_interrupts();
@@ -82,6 +85,11 @@ void InitOscillator(void)
     REFO4CONbits.RODIV = 0;
     REFO4TRIMbits.ROTRIM = 0;
     REFO4CONSET = 0x00008000;
+    
+    rcon = RCON;
+    rswrst = RSWRST;
+    RCON = 0;
+    RSWRST = 0;
 }
 
 void InitInterrupts(void)

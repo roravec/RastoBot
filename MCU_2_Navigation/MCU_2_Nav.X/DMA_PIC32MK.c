@@ -250,7 +250,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
             DCH0INT = 0;
             IFS2bits.DMA0IF = 0; // interrupt flag reset
             IPC18bits.DMA0IP = 5; // interrupt priority
-            IPC18bits.DMA0IS = 2; // interrupt sub priority
+            IPC18bits.DMA0IS = 1; // interrupt sub priority
             IEC2bits.DMA0IE = 1; // interrupt
             break;
         }
@@ -267,8 +267,8 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH2INT = 0;
             IFS2bits.DMA2IF = 0; // interrupt flag reset
-            IPC18bits.DMA2IP = 5; // interrupt priority
-            IPC18bits.DMA2IS = 2; // interrupt sub priority
+            IPC18bits.DMA2IP = 4; // interrupt priority
+            IPC18bits.DMA2IS = 1; // interrupt sub priority
             IEC2bits.DMA2IE = 1; // interrupt
             break;
         }
@@ -276,7 +276,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH3INT = 0;
             IFS2bits.DMA3IF = 0; // interrupt flag reset
-            IPC18bits.DMA3IP = 5; // interrupt priority
+            IPC18bits.DMA3IP = 4; // interrupt priority
             IPC18bits.DMA3IS = 2; // interrupt sub priority
             IEC2bits.DMA3IE = 1; // interrupt
             break;
@@ -285,8 +285,8 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH4INT = 0;
             IFS5bits.DMA4IF = 0; // interrupt flag reset
-            IPC45bits.DMA4IP = 5; // interrupt priority
-            IPC45bits.DMA4IS = 2; // interrupt sub priority
+            IPC45bits.DMA4IP = 3; // interrupt priority
+            IPC45bits.DMA4IS = 1; // interrupt sub priority
             IEC5bits.DMA4IE = 1; // interrupt
             break;
         }
@@ -294,7 +294,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH5INT = 0;
             IFS5bits.DMA5IF = 0; // interrupt flag reset
-            IPC45bits.DMA5IP = 5; // interrupt priority
+            IPC45bits.DMA5IP = 3; // interrupt priority
             IPC45bits.DMA5IS = 2; // interrupt sub priority
             IEC5bits.DMA5IE = 1; // interrupt
             break;
@@ -303,8 +303,8 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH6INT = 0;
             IFS5bits.DMA6IF = 0; // interrupt flag reset
-            IPC46bits.DMA6IP = 5; // interrupt priority
-            IPC46bits.DMA6IS = 2; // interrupt sub priority
+            IPC46bits.DMA6IP = 2; // interrupt priority
+            IPC46bits.DMA6IS = 1; // interrupt sub priority
             IEC5bits.DMA6IE = 1; // interrupt
             break;
         }
@@ -312,7 +312,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH7INT = 0;
             IFS5bits.DMA7IF = 0; // interrupt flag reset
-            IPC46bits.DMA7IP = 5; // interrupt priority
+            IPC46bits.DMA7IP = 2; // interrupt priority
             IPC46bits.DMA7IS = 2; // interrupt sub priority
             IEC5bits.DMA7IE = 1; // interrupt
             break;
@@ -376,7 +376,14 @@ void DMA_Deactivate(DMA * dmaObj)
 
 void DMA_ClearIRQFlags(DMA * dmaObj)
 {
+    dmaObj->registers.DCHxINTbits->CHSDIF = 0;
+    dmaObj->registers.DCHxINTbits->CHSHIF = 0;
     dmaObj->registers.DCHxINTbits->CHDDIF = 0;
+    dmaObj->registers.DCHxINTbits->CHDHIF = 0;
+    dmaObj->registers.DCHxINTbits->CHBCIF = 0;
+    dmaObj->registers.DCHxINTbits->CHCCIF = 0;
+    dmaObj->registers.DCHxINTbits->CHTAIF = 0;
+    dmaObj->registers.DCHxINTbits->CHERIF = 0;
     switch (dmaObj->channel)
     {
         case DMA_CHANNEL_0:
@@ -427,17 +434,17 @@ void __attribute__((interrupt(ipl5auto), at_vector(_DMA0_VECTOR), aligned(16))) 
 {   DMA_InterruptHandler(DMA_CHANNEL_0);   }
 void __attribute__((interrupt(ipl5auto), at_vector(_DMA1_VECTOR), aligned(16))) DMA1_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_1);   }
-void __attribute__((interrupt(ipl5auto), at_vector(_DMA2_VECTOR), aligned(16))) DMA2_IRQ_Handler (void)
+void __attribute__((interrupt(ipl4auto), at_vector(_DMA2_VECTOR), aligned(16))) DMA2_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_2);   }
-void __attribute__((interrupt(ipl5auto), at_vector(_DMA3_VECTOR), aligned(16))) DMA3_IRQ_Handler (void)
+void __attribute__((interrupt(ipl4auto), at_vector(_DMA3_VECTOR), aligned(16))) DMA3_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_3);   }
-void __attribute__((interrupt(ipl5auto), at_vector(_DMA4_VECTOR), aligned(16))) DMA4_IRQ_Handler (void)
+void __attribute__((interrupt(ipl3auto), at_vector(_DMA4_VECTOR), aligned(16))) DMA4_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_4);   }
-void __attribute__((interrupt(ipl5auto), at_vector(_DMA5_VECTOR), aligned(16))) DMA5_IRQ_Handler (void)
+void __attribute__((interrupt(ipl3auto), at_vector(_DMA5_VECTOR), aligned(16))) DMA5_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_5);   }
-void __attribute__((interrupt(ipl5auto), at_vector(_DMA6_VECTOR), aligned(16))) DMA6_IRQ_Handler (void)
+void __attribute__((interrupt(ipl2auto), at_vector(_DMA6_VECTOR), aligned(16))) DMA6_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_6);   }
-void __attribute__((interrupt(ipl5auto), at_vector(_DMA7_VECTOR), aligned(16))) DMA7_IRQ_Handler (void)
+void __attribute__((interrupt(ipl2auto), at_vector(_DMA7_VECTOR), aligned(16))) DMA7_IRQ_Handler (void)
 {   DMA_InterruptHandler(DMA_CHANNEL_7);   }
 
 
