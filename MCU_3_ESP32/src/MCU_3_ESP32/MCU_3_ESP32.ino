@@ -7,8 +7,8 @@
 #include "libs/ermaCommProtocol.h"
 
 #define MCU3_MCU1_UART_BAUDRATE 115200
-#define MCU3_MCU2_UART_BAUDRATE 115200
-#define SERIAL_BAUDRATE         115200
+#define MCU3_MCU2_UART_BAUDRATE 256000
+#define SERIAL_BAUDRATE         256000
 
 #define BUFFER_SIZE 100
 
@@ -24,7 +24,7 @@ const char* ssid = "RMFamily";
 const char* password = "1957288451";
 
 HardwareSerial UART_MCU3_MCU2(2);
-HardwareSerial UART_MCU3_MCU1(1);
+//HardwareSerial UART_MCU3_MCU1(1);
 
 void Setup_GPIOs()
 {
@@ -96,10 +96,11 @@ void setup() {
 }
 
 void loop() {
-  delay(1);
+  //delay(1);
   ArduinoOTA.handle();
   LED_Blink();
   MCU2_RX_handler();
+  EXT_RX_handler();
   //MCU1_RX_handler();
 }
 
@@ -127,10 +128,10 @@ void LED_Blink()
   }
 }
 
-void MCU1_TX(uint8_t msg, uint16_t len)
-{
-  UART_MCU3_MCU1.write(&msg, len);
-}
+//void MCU1_TX(uint8_t msg, uint16_t len)
+//{
+//  UART_MCU3_MCU1.write(&msg, len);
+//}
 void MCU2_TX(uint8_t msg, uint16_t len)
 {
   UART_MCU3_MCU2.write(&msg, len);
@@ -144,36 +145,17 @@ void MCU2_RX_handler()
   {
     if (bytesCounter == 0)
     {
-      Serial.print("MCU2 RX:");
+      //Serial.print("MCU2 RX:");
     }
     uint8_t receivedByte = UART_MCU3_MCU2.read();
-    //Serial.write(receivedByte);
-    Serial.print(String(receivedByte) + " ");
-    bytesCounter++;
-  }
-  if (bytesCounter > 0)
-  {
-    Serial.println("");
-    Serial.println("MCU2 bytes received: " + bytesCounter);
-  }
-}
-void MCU1_RX_handler()
-{
-  uint16_t bytesCounter = 0;
-  // read UART buffer
-  while (UART_MCU3_MCU1.available() > 0)
-  {
-    if (bytesCounter == 0)
-    {
-      Serial.print("MCU1 RX:");
-    }
-    uint8_t receivedByte = UART_MCU3_MCU1.read();
     Serial.write(receivedByte);
+    //Serial.print(String(receivedByte) + " ");
     bytesCounter++;
   }
   if (bytesCounter > 0)
   {
-    Serial.println("MCU1 bytes received: " + bytesCounter);
+    //Serial.println("");
+    //Serial.println("MCU2 bytes received: " + bytesCounter);
   }
 }
 void EXT_RX_handler()
@@ -184,16 +166,16 @@ void EXT_RX_handler()
   {
     if (bytesCounter == 0)
     {
-      Serial.print("EXT RX:");
+      //Serial.print("EXT RX:");
     }
     uint8_t receivedByte = Serial.read();
-    //Serial.write(receivedByte);
-    Serial.print(String(receivedByte) + " ");
+    UART_MCU3_MCU2.write(receivedByte);
+    //Serial.print(String(receivedByte) + " ");
     bytesCounter++;
   }
   if (bytesCounter > 0)
   {
-    Serial.println("");
-    Serial.println("EXT bytes received: " + bytesCounter);
+    //Serial.println("");
+    //Serial.println("EXT bytes received: " + bytesCounter);
   }
 }

@@ -20,13 +20,13 @@ namespace RastoBot_ControlPanel
         /// </summary>
         public bool PortOpen { get => _portOpen; set => _portOpen = value; }
 
-        public delegate void delMessageReceived(string text);
+        public delegate void delMessageReceived(string text, uint size);
         public event delMessageReceived? eventMessageReceived = null;
 
         public SerialPortComm()
         {
         }
-        public SerialPortComm(string portName, int baudRate)
+        public SerialPortComm(string portName, uint baudRate)
         {
             OpenedPort = portName;
             OpenPort(portName, baudRate);
@@ -41,13 +41,13 @@ namespace RastoBot_ControlPanel
                 Ports.Add(PortName);
             }
         }
-        public bool OpenPort(string portName, int baudRate)
+        public bool OpenPort(string portName, uint baudRate)
         {
             if (_portOpen) // port is already open
                 return false;
             try
             {
-                _serialPort = new SerialPort(portName, baudRate, Parity.None, 8, StopBits.One);
+                _serialPort = new SerialPort(portName, (Int32)baudRate, Parity.None, 8, StopBits.One);
                 _serialPort.Handshake = Handshake.None;
                 _serialPort.Open();
                 if (_serialPort.IsOpen) // port was open successfuly
@@ -127,10 +127,11 @@ namespace RastoBot_ControlPanel
             byte[] bdata = new byte[bytesReceived];
             _serialPort.Read(bdata, 0, bytesReceived);
             string data = ByteArrayToHexString(bdata, bytesReceived);
+            //string data = BitConverter.ToString(bdata);
 
             //string data = _serialPort.ReadLine();
             if (eventMessageReceived != null)
-                eventMessageReceived(data);
+                eventMessageReceived(data, (uint)bytesReceived);
         }
 
         public static string ByteArrayToHexString(byte[] Bytes, int length)

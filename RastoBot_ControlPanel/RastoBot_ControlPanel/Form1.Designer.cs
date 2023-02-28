@@ -79,6 +79,7 @@
             // 
             this.combo_Speeds.FormattingEnabled = true;
             this.combo_Speeds.Items.AddRange(new object[] {
+            "256000",
             "9600",
             "19200",
             "38400",
@@ -99,6 +100,7 @@
             // 
             // button_Disconnect
             // 
+            this.button_Disconnect.Enabled = false;
             this.button_Disconnect.Location = new System.Drawing.Point(457, 6);
             this.button_Disconnect.Name = "button_Disconnect";
             this.button_Disconnect.Size = new System.Drawing.Size(75, 23);
@@ -106,7 +108,6 @@
             this.button_Disconnect.Text = "Disconnect";
             this.button_Disconnect.UseVisualStyleBackColor = true;
             this.button_Disconnect.Click += new System.EventHandler(this.button_Disconnect_Click);
-            button_Disconnect.Enabled = false;
             // 
             // Form1
             // 
@@ -121,10 +122,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "RastoBot Control Panel";
             this.ResumeLayout(false);
             this.PerformLayout();
-            
 
         }
 
@@ -137,5 +137,7 @@
         private ComboBox combo_Speeds;
         private TextBox textBox_Log;
         private Button button_Disconnect;
+
+        private RastoBot rastoBot = new RastoBot();
     }
 }

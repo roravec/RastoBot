@@ -20,9 +20,10 @@
 #include "gps_neo.h"
 
 #define UART_CLOCK              REFO1CLK
+#define UART_1_2_CLOCK          REFO1CLK
 #define UART_MCU0_BAUDRATE      19200
 #define UART_MCU1_BAUDRATE      115200
-#define UART_MCU3_BAUDRATE      230400UL
+#define UART_MCU3_BAUDRATE      256000UL
 #define UART_LIDAR_BAUDRATE     230400UL
 #define UART_GPS_BAUDRATE       9600
 
@@ -31,6 +32,7 @@
 #define MCU2_LOG_DATA_TO_STRUCT_EVERY   1000
 #define MCU2_CHECK_NEW_MESSAGES_EVERY   1
 #define MCU2_SEND_STATUS_DATA_EVERY     1000
+#define MCU2_SEND_POSITION_DATA_EVERY   500
 #define MCU2_READ_GYRO_DATA_EVERY       100
 #define MCU2_READ_COMPASS_DATA_EVERY    250
 #define MCU2_READ_PERIMETER_WIRE_EVERY  100
@@ -56,11 +58,14 @@ void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule);
 void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data);
 void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule);
 void MCU2_DMA_ReceivedGPSData(uint8_t * data);
+void MCU2_UART_LIDARDataFailure(UartModule uartModule);
 void MCU2_UART_ReceiveLIDARData(uint8_t data, UartModule uartModule);
+void MCU2_ReceivedLIDARData(uint8_t * data);
 void MCU2_DMA_ReceivedLIDARData(uint8_t * data);
-void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size);
+void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size, bool skippable);
 void MCU2_TransferToMCU3Complete(uint8_t * data);
 void MCU2_SendPositionData(void);
+void MCU2_SendRawPositionData(void);
 void MCU2_LidarDisable(void);
 void MCU2_LidarEnable(void);
 

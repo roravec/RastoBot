@@ -132,6 +132,7 @@ typedef struct {
         _Bool           enablePin;
         void            (*DataReceived)(uint8_t, UartModule); // event data received
         void            (*DataSent)(void); // event data sent
+        void            (*FailureEvent)(UartModule); // event failure
     } UART;
 
 #endif	/* UART_COMMON_H */

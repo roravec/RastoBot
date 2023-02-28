@@ -70,6 +70,11 @@ void DMA_Initialize(DMA * dmaObj)
         //DMA_TurnOnListeningForInterrupt(dmaObj);
     }
 }
+void DMA_Abort(DMA * dmaObj)
+{
+    dmaObj->registers.DCHxECONbits->CABORT = 1;
+    DMA_ClearIRQFlags(dmaObj);
+}
 void DMA_EnableChannel(DMA * dmaObj)
 {
     dmaObj->registers.DCHxCONbits->CHEN = 1;    // enable channel
@@ -276,8 +281,8 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH3INT = 0;
             IFS2bits.DMA3IF = 0; // interrupt flag reset
-            IPC18bits.DMA3IP = 4; // interrupt priority
-            IPC18bits.DMA3IS = 2; // interrupt sub priority
+            IPC18bits.DMA3IP = 1; // interrupt priority
+            IPC18bits.DMA3IS = 1; // interrupt sub priority
             IEC2bits.DMA3IE = 1; // interrupt
             break;
         }
@@ -294,7 +299,7 @@ void DMA_InitInterrupts(DMA * dmaObj)
         {
             DCH5INT = 0;
             IFS5bits.DMA5IF = 0; // interrupt flag reset
-            IPC45bits.DMA5IP = 3; // interrupt priority
+            IPC45bits.DMA5IP = 1; // interrupt priority
             IPC45bits.DMA5IS = 2; // interrupt sub priority
             IEC5bits.DMA5IE = 1; // interrupt
             break;

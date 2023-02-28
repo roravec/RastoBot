@@ -47,6 +47,7 @@ void InitOscillator(void)
     PMD2 = 0x17001f;
     PMD3 = 0xffffffff;
     PMD4 = 0xfff01ff;
+    PMD4bits.T2MD = 0;
     PMD5 = 0xf3073f08;
     //PMD5 = 0xFFF7FFC8; // I2C4, U1, U2, U3, U5, U6 // documentation page 643, table 33-1, 0 to enable clock to periphery
     PMD6 = 0xf0d0000;
@@ -66,13 +67,14 @@ void InitOscillator(void)
     //REFO1CONbits.ROSEL = 7;
     REFO1CON = 0x200;
     /* Selecting the REFO4 prescaler to 3*/
-    REFO1CONbits.RODIV = 1;
+    REFO1CONbits.RODIV = 0;
+//    REFO1CONbits.RODIV = 1;
     REFO1TRIMbits.ROTRIM = 0;
     REFO1CONSET = 0x00008000;
     
-    PB2DIVbits.PBDIV = 2;
-    PB2DIVbits.ON = 1;
-    PB3DIVbits.PBDIV = 2;
+    PB2DIVbits.PBDIV = 2; // U1, U2, I2C1, I2C2
+    PB2DIVbits.ON = 1; 
+    PB3DIVbits.PBDIV = 2; // U3, U4, U5, U6, I2C3, I2C4
     PB3DIVbits.ON = 1;
     PB4DIVbits.PBDIV = 2;
     PB4DIVbits.ON = 1;
@@ -88,8 +90,16 @@ void InitOscillator(void)
     
     rcon = RCON;
     rswrst = RSWRST;
-    RCON = 0;
-    RSWRST = 0;
+    //RCON = 0;
+    //RSWRST = 0;
+    
+    // free-running timer
+    T2CON = 0;
+    TMR2 = 0;
+    PR2 = PBCLK2;
+    T2CONbits.T32 = 0;
+    T2CONbits.TCS = 0;
+    T2CONbits.ON = 1;
 }
 
 void InitInterrupts(void)

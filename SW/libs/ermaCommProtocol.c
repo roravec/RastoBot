@@ -56,7 +56,7 @@ Rarray * ECP_Encode(ECP_Message * message, Rarray * out)
 {
     return ECP_EncodeExtended(message, out, 0);
 }
-Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minDataLen)
+Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint16_t minDataLen)
 {
     uint16_t currentIndex = 0;
     out->data[currentIndex++] = ECP_START_BYTE;
@@ -65,8 +65,8 @@ Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minData
     out->data[currentIndex++] = message->subCommand;
     out->data[currentIndex++] = ~out->data[(currentIndex-1)];
     out->data[currentIndex++] = message->dlc > minDataLen ? message->dlc : minDataLen;
-    uint8_t dataIndex = 0;
-    for (uint8_t j=currentIndex; dataIndex < message->dlc && dataIndex < ECP_MAX_DATA_BYTES;dataIndex++)
+    uint16_t dataIndex = 0;
+    for (uint16_t j=currentIndex; dataIndex < message->dlc && dataIndex < ECP_MAX_DATA_BYTES;dataIndex++)
         out->data[currentIndex++] = message->data[dataIndex];
     for (; dataIndex < minDataLen; dataIndex++)
         out->data[currentIndex++] = ECP_EMPTY_DATA;

@@ -31,6 +31,7 @@ extern "C" {
             _Bool enInterrupt
     );
     void DMA_Initialize(DMA * dmaObj);
+    void DMA_Abort(DMA * dmaObj);
     void DMA_EnableChannel(DMA * dmaObj);
     void DMA_DisableChannel(DMA * dmaObj);
     void DMA_TurnOnListeningForInterrupt(DMA * dmaObj);

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ErmaCommProtocol;
+using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,13 +28,12 @@ namespace RastoBot_ControlPanel
         /// <param name="baudRate"></param>
         private void OpenPort(string comPort, string baudRate)
         {
-            int iBaudRate = int.Parse(baudRate);
-            //Ncv = new NCV78343ns.NCV78343(comPort, iBaudRate);
+            uint iBaudRate = uint.Parse(baudRate);
             if (serialPort.OpenPort(comPort, iBaudRate)) // port was opened successful
-            //if (Ncv.UART.PortOpen) // port was opened successful
             {
-                AddLogMessage("Port " + comPort + " is open.");
+                AddLogMessage("Port " + comPort + " is open with baudrate " + iBaudRate + ".");
                 serialPort.eventMessageReceived += SerialMessageReceived;
+                serialPort.eventMessageReceived += rastoBot.SerialMessageReceived;
                 button_Open.Enabled = false;
                 combo_Speeds.Enabled = false;
                 combo_Ports.Enabled = false;
@@ -52,7 +53,8 @@ namespace RastoBot_ControlPanel
         {
             serialPort.ClosePort();
             AddLogMessage("Port " + serialPort.OpenedPort + " was closed.");
-            serialPort.eventMessageReceived += SerialMessageReceived;
+            serialPort.eventMessageReceived -= SerialMessageReceived;
+            serialPort.eventMessageReceived -= rastoBot.SerialMessageReceived;
             button_Open.Enabled = true;
             combo_Speeds.Enabled = true;
             combo_Ports.Enabled = true;
@@ -83,9 +85,9 @@ namespace RastoBot_ControlPanel
             }
         }
 
-        private void SerialMessageReceived(string text)
+        private void SerialMessageReceived(string text, uint size)
         {
-            AddLogMessage("Received: " + text);
+            AddLogMessage("Received (" + size + "B): " + text);
         }
         public static string ByteArrayToHexString(byte[] Bytes, int length)
         {

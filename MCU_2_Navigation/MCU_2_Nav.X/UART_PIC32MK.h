@@ -46,6 +46,7 @@ extern "C" {
     void UART_SendBreak(UART * uartObj);      // prepares bus for incoming message
     void UART_InitInterrupts(UART * uartObj, _Bool rxInt, _Bool txInt); // 
     void UART_SetTXInterrupt(UART * uartObj, uint8_t value);
+    void UART_EnableInterrupts(UART * uartObj);
     void UART_DisableInterrupts(UART * uartObj);  // 
     
         /* Interrupt handlers */
