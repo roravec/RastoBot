@@ -22,7 +22,7 @@
 #define UART_CLOCK              REFO1CLK
 #define UART_1_2_CLOCK          REFO1CLK
 #define UART_MCU0_BAUDRATE      19200
-#define UART_MCU1_BAUDRATE      115200
+#define UART_MCU1_BAUDRATE      115200UL
 #define UART_MCU3_BAUDRATE      256000UL
 #define UART_LIDAR_BAUDRATE     230400UL
 #define UART_GPS_BAUDRATE       9600
@@ -55,15 +55,19 @@ void MCU2_InitPerimeterWire(void);
 // Main loop. Should be called every 10ms
 void MCU2_Loop(void);
 void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule);
-void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data);
+void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data, DmaChannel dmaChannel);
 void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule);
-void MCU2_DMA_ReceivedGPSData(uint8_t * data);
+void MCU2_DMA_ReceivedGPSData(uint8_t * data, DmaChannel dma);
 void MCU2_UART_LIDARDataFailure(UartModule uartModule);
 void MCU2_UART_ReceiveLIDARData(uint8_t data, UartModule uartModule);
 void MCU2_ReceivedLIDARData(uint8_t * data);
-void MCU2_DMA_ReceivedLIDARData(uint8_t * data);
+void MCU2_DMA_ReceivedLIDARData(uint8_t * data, DmaChannel dma);
+void MCU2_DMATransferToMCU0(uint8_t * data, uint8_t size, bool skippable);
+void MCU2_DMATransferToMCU1(uint8_t * data, uint8_t size, bool skippable);
 void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size, bool skippable);
-void MCU2_TransferToMCU3Complete(uint8_t * data);
+void MCU2_TransferToMCU0Complete(uint8_t * data, DmaChannel dma);
+void MCU2_TransferToMCU1Complete(uint8_t * data, DmaChannel dma);
+void MCU2_TransferToMCU3Complete(uint8_t * data, DmaChannel dma);
 void MCU2_SendPositionData(void);
 void MCU2_SendRawPositionData(void);
 void MCU2_LidarDisable(void);

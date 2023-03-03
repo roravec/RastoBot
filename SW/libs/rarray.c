@@ -27,8 +27,7 @@ void RarrayReset(Rarray * buf)
 {
     RarrayLock(buf);        // lock buffer for reset
     buf->currentIndex = 0;
-    for (uint32_t i=0;i<buf->size;i++)
-        buf->data[i] = 0x00;
+    memset(buf->data,0x00,buf->size);// clear data
     RarrayUnlock(buf);      // unlock buffer
 }
 

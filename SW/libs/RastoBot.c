@@ -695,10 +695,10 @@ ECP_Message *   RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors *
     out->data[1] = (uint8_t)sensors->batteryVoltage;
     out->data[2] = (uint8_t)(sensors->externalVoltage>>8);
     out->data[3] = (uint8_t)sensors->externalVoltage;
-    out->data[4] = (uint8_t)sensors->temperatures[0];
-    out->data[5] = (uint8_t)sensors->temperatures[1];
-    out->data[6] = (uint8_t)sensors->temperatures[2];
-    out->data[7] = (uint8_t)sensors->temperatures[3];
+    out->data[4] = (int8_t)sensors->temperatures[0];
+    out->data[5] = (int8_t)sensors->temperatures[1];
+    out->data[6] = (int8_t)sensors->temperatures[2];
+    out->data[7] = (int8_t)sensors->temperatures[3];
     out->data[8] = (uint8_t)sensors->humidities[0];
     out->data[9] = (uint8_t)sensors->humidities[1];
     out->data[10] = (uint8_t)sensors->humidities[2];
@@ -760,7 +760,7 @@ ECP_Message *   RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors *
     return out;
 }
 
-MCU_2_Sensors * RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in)
+void RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in)
 {
     uint8_t index = 0;
     // sensors

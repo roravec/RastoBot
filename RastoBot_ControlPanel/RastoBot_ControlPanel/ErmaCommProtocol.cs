@@ -25,15 +25,15 @@ namespace ErmaCommProtocol
 
     internal class ECP_Buffer
     {
-        public bool         startByteDetected;
-        public bool         stopByteDetected;
-        public bool         patternDetected;
+        public bool         startByteDetected = false;
+        public bool         stopByteDetected = false;
+        public bool         patternDetected = false ;
         public uint8_t[]    buffer = new uint8_t[ErmaCommProtocol.ECP_MAX_DATA_BYTES];
-        public uint8_t      command;
-        public uint8_t      subCommand;
-        public uint8_t      dlc;
-        public uint8_t      crc;
-        public uint16_t     size;
+        public uint8_t      command = 0;
+        public uint8_t      subCommand = 0;
+        public uint8_t      dlc = 0 ;
+        public uint8_t      crc = 0;
+        public uint16_t     size = 0;
     }
 
     internal class ECP_Message
@@ -131,8 +131,8 @@ namespace ErmaCommProtocol
 
         public static ECP_PacketValidity ECP_CheckPacketValidity(uint8_t [] packet, uint16_t len)
         {
-            uint8_t dlc = ECP_GetDLCFromPacket(packet, 0);
             if (len < ECP_MIN_PACKET_LEN) return ECP_PacketValidity.ECP_INVALID_PACKET_SIZE;
+            uint8_t dlc = ECP_GetDLCFromPacket(packet, 0);
             if (dlc != len - (ECP_PATTERN_LEN + ECP_CRC_LEN + 1)) return ECP_PacketValidity.ECP_INVALID_DATA_SIZE;
             if (!ECP_DetectHeadPatternAtIndexArr(packet, ECP_PATTERN_LEN)) return ECP_PacketValidity.ECP_INVALID_HEADER;
             if (packet[len - 1] != ECP_STOP_BYTE) return ECP_PacketValidity.ECP_INVALID_FOOTER;
@@ -142,6 +142,8 @@ namespace ErmaCommProtocol
 
         private static uint8_t ECP_GetDLCFromPacket(uint8_t[] data, uint16_t packetStartIndex)
         {
+            if (data.Length < ECP_PATTERN_LEN - 1)
+                return 0;
             return data[ECP_PATTERN_LEN - 1 + packetStartIndex];
         }
 

@@ -22,6 +22,8 @@ MCU_2_LidarData lidarData;
 DMA dmaMcu0IN;
 DMA dmaMcu1IN;
 DMA dmaMcu3IN;
+DMA dmaMcu0OUT;
+DMA dmaMcu1OUT;
 DMA dmaMcu3OUT;
 DMA dmaGPSIn;
 DMA dmaLidarIn;
@@ -238,22 +240,33 @@ void MCU2_UART_ECP_ReceiveData(uint8_t data, UartModule uartModule)
     // interrupt receiving. Check for one packet and then start DMA transfer for faster receiving
     if (ECP_ReceivedByteCust(data, ecpBuff) == ECP_VALID)
     {
-        //UART_DisableInterrupts(uart);
+        UART_DisableInterrupts(uart);
         DMA_TurnOnListeningForInterrupt(dma);
     }
 }
 
 // DMA interrupt handler
-void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data)
+void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data, DmaChannel dmaModule)
 {
+    UART * uart;
+    DMA * dma;
+    switch (dmaModule)
+    {
+        case DMA_CHANNEL_3: uart = &uartMCU3; dma = &dmaMcu3IN; break;
+        case DMA_CHANNEL_0: uart = &uartMCU0; dma = &dmaMcu0IN; break;
+        case DMA_CHANNEL_1: uart = &uartMCU1; dma = &dmaMcu1IN; break;
+        default: return;
+    }
     // interrupt receiving. Check for one packet and then start DMA transfer for faster receiving
     if (ECP_CheckPacketValidity(data, ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU0_TO_MCU2)) == ECP_VALID)
     {
         ECP_ParseEnqueueRawDataBlock(data, ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU0_TO_MCU2));
+        DMA_TurnOnListeningForInterrupt(dma);
     }
     else
     {
-        DMA_TurnOffListeningForInterrupt(&dmaMcu0IN);
+        UART_EnableInterrupts(uart);
+        DMA_TurnOffListeningForInterrupt(dma);
     }
 }
 
@@ -269,7 +282,7 @@ void MCU2_UART_ReceiveGPSData(uint8_t data, UartModule uartModule)
     }
 }
 // DMA interrupt
-void MCU2_DMA_ReceivedGPSData(uint8_t * data)
+void MCU2_DMA_ReceivedGPSData(uint8_t * data, DmaChannel dmach)
 {
     UART * uart = &uartGPS;
     DMA * dma = &dmaGPSIn;
@@ -324,7 +337,7 @@ void MCU2_ReceivedLIDARData(uint8_t * data)
     MCU2_SendPositionData();
 }
 // DMA interrupt
-void MCU2_DMA_ReceivedLIDARData(uint8_t * data)
+void MCU2_DMA_ReceivedLIDARData(uint8_t * data, DmaChannel dmach)
 {
     memcpy(lidarDataINprocess,data,LIDAR_FIX_DATALOAD);
     UART * uart = &uartLIDAR;
@@ -338,6 +351,38 @@ void MCU2_DMA_ReceivedLIDARData(uint8_t * data)
     //MCU2_SendRawPositionData();
 }
 
+static uint8_t dmaTransferToMcu0Status = 0;
+void MCU2_DMATransferToMCU0(uint8_t * data, uint8_t size, bool skippable)
+{
+    if (skippable && dmaTransferToMcu0Status) // if message is skippable and UART is busy we will skip it
+        return;
+    while (dmaTransferToMcu0Status);        // wait until previous transfer is completed
+    dmaTransferToMcu0Status = 1;            // signal that transfer is in progress
+    if ((uint8_t*)&uartMCU0_OUT.data != (uint8_t*)data)         // if pointer to data container we can skip memcpy
+        memcpy(uartMCU0_OUT.data, data, size);  // copy data from source to DMA container
+    DMA_TurnOnListeningForInterrupt(&dmaMcu0OUT);
+}
+void MCU2_TransferToMCU0Complete(uint8_t * data, DmaChannel dma)
+{
+    dmaTransferToMcu0Status = 0; // signal that transfer was completed
+}
+
+static uint8_t dmaTransferToMcu1Status = 0;
+void MCU2_DMATransferToMCU1(uint8_t * data, uint8_t size, bool skippable)
+{
+    if (skippable && dmaTransferToMcu1Status) // if message is skippable and UART is busy we will skip it
+        return;
+    while (dmaTransferToMcu1Status);        // wait until previous transfer is completed
+    dmaTransferToMcu1Status = 1;            // signal that transfer is in progress
+    if ((uint8_t*)&uartMCU1_OUT.data != (uint8_t*)data)         // if pointer to data container we can skip memcpy
+        memcpy(uartMCU1_OUT.data, data, size);  // copy data from source to DMA container
+    DMA_TurnOnListeningForInterrupt(&dmaMcu1OUT);
+}
+void MCU2_TransferToMCU1Complete(uint8_t * data, DmaChannel dma)
+{
+    dmaTransferToMcu1Status = 0; // signal that transfer was completed
+}
+
 static uint8_t dmaTransferToMcu3Status = 0;
 void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size, bool skippable)
 {
@@ -349,8 +394,7 @@ void MCU2_DMATransferToMCU3(uint8_t * data, uint8_t size, bool skippable)
         memcpy(uartMCU3_OUT.data, data, size);  // copy data from source to DMA container
     DMA_TurnOnListeningForInterrupt(&dmaMcu3OUT);
 }
-
-void MCU2_TransferToMCU3Complete(uint8_t * data)
+void MCU2_TransferToMCU3Complete(uint8_t * data, DmaChannel dma)
 {
     dmaTransferToMcu3Status = 0; // signal that transfer was completed
 }
@@ -439,8 +483,8 @@ static void MCU2_TaskSendStatusData(void)
 {
     if (SEND_STATUS_DATA)
     {
-        RastoBot_Encode_SensorsMotors(&mcu3MsgOut, &sensorsStatus,&motorsStatus);
-        ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
+        RastoBot_Encode_SensorsMotors   (&mcu3MsgOut, &sensorsStatus,&motorsStatus);
+        ECP_EncodeExtended              (&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
         //UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
         MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size, 0);
     }
@@ -470,12 +514,24 @@ static void MCU2_TaskCheckForNewReceivedData(void)
 /* MESSAGE ACTION*/
 static void MCU2_DoMessageAction(ECP_Message * msg)
 {  
-    if (msg->command == ECP_COMMAND_SENSORS_STATUS)
+    if (msg->command == ECP_COMMAND_SENSORS_STATUS) // MSG from MCU0
     {
         RastoBot_Decode_Sensors(&sensorsStatus, msg);
     }
-    else if (msg->command == ECP_COMMAND_MOTORS_STATUS)
+    else if (msg->command == ECP_COMMAND_MOTORS_STATUS) // MSG FROM MCU1
     {
         RastoBot_Decode_Motors(&motorsStatus, msg);
+    }
+    else if (msg->command == ECP_COMMAND_SENSORS_SET) // MSG from MCU3 to MCU0
+    {
+        
+    }
+    else if (msg->command == ECP_COMMAND_MOTORS_SET) // MSG from MCU3 to MCU1
+    {
+        
+    }
+    else if (msg->command == ECP_COMMAND_NAVIGATION_SET) // MSG from MCU3 to MCU2
+    {
+        
     }
 }

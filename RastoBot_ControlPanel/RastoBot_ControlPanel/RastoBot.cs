@@ -9,15 +9,19 @@ namespace RastoBot_ControlPanel
 {
     public class RastoBot
     {
-        MCU_0_Sensors   sensors = new MCU_0_Sensors();
-        MCU_1_Motors    motors = new MCU_1_Motors();
-        MCU_2_GyroData  gyro = new MCU_2_GyroData();
-        MCU_2_GPSData   gps = new MCU_2_GPSData();
-        MCU_2_LidarData lidar = new MCU_2_LidarData();
+        public delegate void delMessageDecoded(uint command);
+        public event delMessageDecoded? eventMessageDecoded = null;
+        public enum MessageCommand { ECP_COMMAND_POSITION_STATUS=124, ECP_COMMAND_SENSORSMOTORS_STATUS, ECP_COMMAND_MAPUPDATE };
 
-        public void SerialMessageReceived(string text, uint size)
+        public MCU_0_Sensors sensors = new MCU_0_Sensors();
+        public MCU_1_Motors motors = new MCU_1_Motors();
+        public MCU_2_GyroData gyro = new MCU_2_GyroData();
+        public MCU_2_GPSData gps = new MCU_2_GPSData();
+        public MCU_2_LidarData lidar = new MCU_2_LidarData();
+
+        public void SerialMessageReceived(byte [] packet, uint size)
         {
-            byte[] packet = GetByteArray(text, (ushort)size);
+            //byte[] packet = GetByteArray(text, (ushort)size);
             if (ErmaCommProtocol.ErmaCommProtocol.ECP_CheckPacketValidity(packet, (ushort)size) == ECP_PacketValidity.ECP_VALID)
             {
                 // packet is valid
@@ -26,6 +30,8 @@ namespace RastoBot_ControlPanel
                 {
                     // msg decoded correctly
                     MakeAction(msg);
+                    if (eventMessageDecoded != null)
+                        eventMessageDecoded(msg.command);
                 }
             }
         }
@@ -33,6 +39,23 @@ namespace RastoBot_ControlPanel
         private void MakeAction(ECP_Message msg)
         {
             if (msg == null) { return; }
+            switch (msg.command)
+            {
+                case (byte)MessageCommand.ECP_COMMAND_POSITION_STATUS:
+                    RastoBot_Decode_Position(lidar, gyro, gps, msg);
+                    lidar.UpdateLastTimeReceived();
+                    gyro.UpdateLastTimeReceived();
+                    gps.UpdateLastTimeReceived();
+                    break;
+                case (byte)MessageCommand.ECP_COMMAND_SENSORSMOTORS_STATUS:
+                    RastoBot_Decode_SensorsMotors(sensors, motors, msg);
+                    sensors.UpdateLastTimeReceived();
+                    motors.UpdateLastTimeReceived();
+                    break;
+                case (byte)MessageCommand.ECP_COMMAND_MAPUPDATE:
+                    break;
+                default: break;
+            }
         }
 
         private byte[] GetByteArray(string str, ushort size)
@@ -45,7 +68,7 @@ namespace RastoBot_ControlPanel
             return bytes;
         }
 
-        void RastoBot_Decode_SensorsMotors(ref MCU_0_Sensors sensorsOut, ref MCU_1_Motors motorsOut, ECP_Message msg)
+        void RastoBot_Decode_SensorsMotors(MCU_0_Sensors sensorsOut, MCU_1_Motors motorsOut, ECP_Message msg)
         {
             byte index = 0;
             // sensors
@@ -112,10 +135,10 @@ namespace RastoBot_ControlPanel
         }
 
         void RastoBot_Decode_Position(
-        ref MCU_2_LidarData lidar,
-        ref MCU_2_GyroData gyro,
-        ref MCU_2_GPSData gps,
-        ref ECP_Message msg)
+        MCU_2_LidarData lidar,
+        MCU_2_GyroData gyro,
+        MCU_2_GPSData gps,
+        ECP_Message msg)
         {
             // Lidar
             lidar.angleIndex = (ushort)(msg.data[1] | (msg.data[0] << 8));
@@ -166,7 +189,7 @@ namespace RastoBot_ControlPanel
             gps.hours = msg.data[63];
         }
     }
-    public class MCU_0_Sensors
+    public class MCU_0_Sensors : CyclicDataPacket
     {
         public Int16 batteryVoltage;
         public Int16 externalVoltage;
@@ -183,7 +206,7 @@ namespace RastoBot_ControlPanel
         public bool fanManualControl;
     }
 
-    public class MCU_1_Motors
+    public class MCU_1_Motors : CyclicDataPacket
     {
         public byte mainMotorSpeed; // percent
         public bool[] stepperEnabled =      new bool[3];
@@ -194,7 +217,7 @@ namespace RastoBot_ControlPanel
         public UInt16 levelingPosition;
     }
 
-    public class MCU_2_GyroData
+    public class MCU_2_GyroData : CyclicDataPacket
     {
         public Int16 magnetX;
         public Int16 magnetY;
@@ -210,7 +233,7 @@ namespace RastoBot_ControlPanel
         public UInt16 perimeterWire;
     }
 
-    public class MCU_2_GPSData
+    public class MCU_2_GPSData : CyclicDataPacket
     {
         public const UInt16 ECP_GPS_DATA_STRING_MAX_SIZE = 200;
 
@@ -231,11 +254,18 @@ namespace RastoBot_ControlPanel
         public byte[] dataString = new byte[ECP_GPS_DATA_STRING_MAX_SIZE];
     }
 
-    public class MCU_2_LidarData 
+    public class MCU_2_LidarData : CyclicDataPacket
     {
         public UInt16 angleIndex;
         public UInt16 rpm;
         public UInt16 [] intensity = new UInt16[6];
         public UInt16 [] distance = new UInt16[6];
+    }
+
+    public class CyclicDataPacket
+    {
+        private DateTime lastTimeReceived = DateTime.MinValue;
+        public void UpdateLastTimeReceived() { lastTimeReceived = DateTime.Now; }
+        public DateTime GetLastTimeReceived() { return lastTimeReceived; }
     }
 }

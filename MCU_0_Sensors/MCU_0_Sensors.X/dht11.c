@@ -15,9 +15,9 @@ _Bool DHT11_CheckResponse(uint8_t module)
     TMR1H = 0;  // reset Timer1
     TMR1L = 0;
     TMR1ON = 1; // enable Timer1 module
-    while(!DHT11_GetData(module) && TMR1L < 100);  // wait until DHT11_PIN becomes high (checking of 80µs low time response)
+    while(!DHT11_GetData(module) && TMR1L < DHT11_100US_TIMEOUT);  // wait until DHT11_PIN becomes high (checking of 80µs low time response)
  
-    if(TMR1L > 99)  // if response time > 99µS  ==> Response error
+    if(TMR1L > DHT11_99US_TIMEOUT)  // if response time > 99µS  ==> Response error
         return 0;   // return 0 (Device has a problem with response)
 
     else
@@ -25,9 +25,9 @@ _Bool DHT11_CheckResponse(uint8_t module)
         TMR1H = 0;  // reset Timer1
         TMR1L = 0;
 
-        while(DHT11_GetData(module) && TMR1L < 100); // wait until DHT11_PIN becomes low (checking of 80µs high time response)
+        while(DHT11_GetData(module) && TMR1L < DHT11_100US_TIMEOUT); // wait until DHT11_PIN becomes low (checking of 80µs high time response)
 
-        if(TMR1L > 99)  // if response time > 99µS  ==> Response error
+        if(TMR1L > DHT11_99US_TIMEOUT)  // if response time > 99µS  ==> Response error
           return 0; // return 0 (Device has a problem with response)
 
         else
@@ -88,7 +88,7 @@ _Bool DHT11_ReadSensorData(uint8_t module, int8_t * dataOut)
         TMR1L = 0;
         while(!DHT11_GetData(module))      // wait until DHT11_PIN becomes high
         {
-            if(TMR1L > 100) {    // if low time > 100  ==>  Time out error (Normally it takes 50µs)
+            if(TMR1L > DHT11_100US_TIMEOUT) {    // if low time > 100  ==>  Time out error (Normally it takes 50µs)
                 return 1;
             }
         }
@@ -96,12 +96,12 @@ _Bool DHT11_ReadSensorData(uint8_t module, int8_t * dataOut)
         TMR1L = 0;
         while(DHT11_GetData(module))       // wait until DHT11_PIN becomes low
         {
-            if(TMR1L > 100) {    // if high time > 100  ==>  Time out error (Normally it takes 26-28µs for 0 and 70µs for 1)
+            if(TMR1L > DHT11_100US_TIMEOUT) {    // if high time > 100  ==>  Time out error (Normally it takes 26-28µs for 0 and 70µs for 1)
                 return 1;          // return 1 (timeout error)
             }
         }
 
-         if(TMR1L > 50)                  // if high time > 50  ==>  Sensor sent 1
+         if(TMR1L > DHT11_50US_TIMEOUT)                  // if high time > 50  ==>  Sensor sent 1
             *dataOut |= (1 << (7 - i));  // set bit (7 - i)
     }
     return 0;                          // return 0 (data read OK)

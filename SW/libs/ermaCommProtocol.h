@@ -64,6 +64,7 @@ extern "C" {
 #endif
 
 #include "rarray.h"
+    
 #define ECP_MAX_DATA_BYTES  255
 #ifdef PIC18F47J13         // PIC18F47J13
     #undef ECP_MAX_DATA_BYTES

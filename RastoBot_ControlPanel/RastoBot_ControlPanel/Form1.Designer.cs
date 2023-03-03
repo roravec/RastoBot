@@ -37,6 +37,12 @@
             this.combo_Speeds = new System.Windows.Forms.ComboBox();
             this.textBox_Log = new System.Windows.Forms.TextBox();
             this.button_Disconnect = new System.Windows.Forms.Button();
+            this.tempBox = new System.Windows.Forms.GroupBox();
+            this.tb_temperature0 = new System.Windows.Forms.TextBox();
+            this.tb_temperature1 = new System.Windows.Forms.TextBox();
+            this.tb_temperature2 = new System.Windows.Forms.TextBox();
+            this.tb_temperature3 = new System.Windows.Forms.TextBox();
+            this.tempBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -109,11 +115,57 @@
             this.button_Disconnect.UseVisualStyleBackColor = true;
             this.button_Disconnect.Click += new System.EventHandler(this.button_Disconnect_Click);
             // 
+            // tempBox
+            // 
+            this.tempBox.Controls.Add(this.tb_temperature3);
+            this.tempBox.Controls.Add(this.tb_temperature2);
+            this.tempBox.Controls.Add(this.tb_temperature1);
+            this.tempBox.Controls.Add(this.tb_temperature0);
+            this.tempBox.Location = new System.Drawing.Point(19, 120);
+            this.tempBox.Name = "tempBox";
+            this.tempBox.Size = new System.Drawing.Size(200, 330);
+            this.tempBox.TabIndex = 7;
+            this.tempBox.TabStop = false;
+            this.tempBox.Text = "Temperature";
+            // 
+            // tb_temperature0
+            // 
+            this.tb_temperature0.Location = new System.Drawing.Point(79, 32);
+            this.tb_temperature0.Name = "tb_temperature0";
+            this.tb_temperature0.ReadOnly = true;
+            this.tb_temperature0.Size = new System.Drawing.Size(100, 23);
+            this.tb_temperature0.TabIndex = 0;
+            // 
+            // tb_temperature1
+            // 
+            this.tb_temperature1.Location = new System.Drawing.Point(79, 61);
+            this.tb_temperature1.Name = "tb_temperature1";
+            this.tb_temperature1.ReadOnly = true;
+            this.tb_temperature1.Size = new System.Drawing.Size(100, 23);
+            this.tb_temperature1.TabIndex = 1;
+            // 
+            // tb_temperature2
+            // 
+            this.tb_temperature2.Location = new System.Drawing.Point(79, 90);
+            this.tb_temperature2.Name = "tb_temperature2";
+            this.tb_temperature2.ReadOnly = true;
+            this.tb_temperature2.Size = new System.Drawing.Size(100, 23);
+            this.tb_temperature2.TabIndex = 2;
+            // 
+            // tb_temperature3
+            // 
+            this.tb_temperature3.Location = new System.Drawing.Point(79, 119);
+            this.tb_temperature3.Name = "tb_temperature3";
+            this.tb_temperature3.ReadOnly = true;
+            this.tb_temperature3.Size = new System.Drawing.Size(100, 23);
+            this.tb_temperature3.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 647);
+            this.Controls.Add(this.tempBox);
             this.Controls.Add(this.button_Disconnect);
             this.Controls.Add(this.textBox_Log);
             this.Controls.Add(this.combo_Speeds);
@@ -123,9 +175,13 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "RastoBot Control Panel";
+            this.tempBox.ResumeLayout(false);
+            this.tempBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
+            rastoBot.eventMessageDecoded += RastoBotMsgDecoded;
+            uiUpdater.Start();
         }
 
         #endregion
@@ -139,5 +195,12 @@
         private Button button_Disconnect;
 
         private RastoBot rastoBot = new RastoBot();
+        private GroupBox tempBox;
+        private TextBox tb_temperature3;
+        private TextBox tb_temperature2;
+        private TextBox tb_temperature1;
+        private TextBox tb_temperature0;
+
+        Thread uiUpdater = new Thread(UiUpdater);
     }
 }

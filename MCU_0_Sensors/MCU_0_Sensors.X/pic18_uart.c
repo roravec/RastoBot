@@ -19,6 +19,7 @@ void UART_Init(void)
     U1TX_TRIS = 0;
     U1RX_TRIS = 1;
     SPBRGH1 = 0; // SPBRG high byte
+    //SPBRG1 = UART_CalculateSPBRG(UART_BAUDRATE);
     SPBRG1 = UART_CalculateSPBRG(UART_BAUDRATE);
     //serial port enable
     RCSTA1bits.SPEN = 1;
@@ -53,6 +54,8 @@ uint8_t UART_CalculateSPBRG(uint32_t desiredBaudrate)
     spb1 = spb1 / 64;
     uint8_t spbrg = spb1 - 1;
     return spbrg;
+    
+    // 38 for 19200@48MHz
 }
 
 // writes byte to UART TX

@@ -20,7 +20,7 @@ namespace RastoBot_ControlPanel
         /// </summary>
         public bool PortOpen { get => _portOpen; set => _portOpen = value; }
 
-        public delegate void delMessageReceived(string text, uint size);
+        public delegate void delMessageReceived(byte [] text, uint size);
         public event delMessageReceived? eventMessageReceived = null;
 
         public SerialPortComm()
@@ -126,12 +126,12 @@ namespace RastoBot_ControlPanel
             int bytesReceived = _serialPort.BytesToRead;
             byte[] bdata = new byte[bytesReceived];
             _serialPort.Read(bdata, 0, bytesReceived);
-            string data = ByteArrayToHexString(bdata, bytesReceived);
+            //string data = ByteArrayToHexString(bdata, bytesReceived);
             //string data = BitConverter.ToString(bdata);
 
             //string data = _serialPort.ReadLine();
             if (eventMessageReceived != null)
-                eventMessageReceived(data, (uint)bytesReceived);
+                eventMessageReceived(bdata, (uint)bytesReceived);
         }
 
         public static string ByteArrayToHexString(byte[] Bytes, int length)

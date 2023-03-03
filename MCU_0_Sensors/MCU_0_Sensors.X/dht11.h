@@ -9,6 +9,16 @@
 #ifndef DHT11_H
 #define	DHT11_H
 
+// Fcy: 48MHz Timer prescaler 1:8
+#define DHT11_99US_TIMEOUT      148
+#define DHT11_50US_TIMEOUT      75
+#define DHT11_100US_TIMEOUT     150
+
+// Fcy: 8MHz Timer prescaler 1:2
+//#define DHT11_99US_TIMEOUT      99
+//#define DHT11_50US_TIMEOUT      50
+//#define DHT11_100US_TIMEOUT     100
+
 #ifdef	__cplusplus
 extern "C" {
 #endif

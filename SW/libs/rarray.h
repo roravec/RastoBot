@@ -16,17 +16,19 @@
 #ifndef RARRAY_H
 #define	RARRAY_H
 
+#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
-#include <stdint.h>
 
 #define RARRAY_SIZE_MAX  1000
     
 #ifdef PIC18F47J13
     #undef  RARRAY_SIZE_MAX
-    #define RARRAY_SIZE_MAX  50
+    #define RARRAY_SIZE_MAX  100
 //#else
 //    #define RARRAY_SIZE_MAX  1000
 #endif

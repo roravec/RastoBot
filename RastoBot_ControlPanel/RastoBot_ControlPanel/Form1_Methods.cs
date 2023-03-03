@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RastoBot_ControlPanel
 {
@@ -84,10 +86,29 @@ namespace RastoBot_ControlPanel
                 textBox_Log.Text = message + "\r\n" + textBox_Log.Text;
             }
         }
-
-        private void SerialMessageReceived(string text, uint size)
+        delegate void ChangeTextBoxValueCallback(TextBox tb, string text);
+        public void ChangeTextBoxValue(TextBox tb, string text)
         {
-            AddLogMessage("Received (" + size + "B): " + text);
+            if (tb == null)
+                return;
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (tb.InvokeRequired)
+            {
+                ChangeTextBoxValueCallback d = new ChangeTextBoxValueCallback(ChangeTextBoxValue);
+                this.Invoke(d, new object[] { tb, text });
+            }
+            else
+            {
+                tb.Text = text;
+            }
+        }
+
+        private void SerialMessageReceived(byte [] text, uint size)
+        {
+            string data = ByteArrayToHexString(text, (int)size);
+            AddLogMessage("Received (" + size + "B): " + data);
         }
         public static string ByteArrayToHexString(byte[] Bytes, int length)
         {
@@ -98,8 +119,35 @@ namespace RastoBot_ControlPanel
             {
                 Result.Append(HexAlphabet[(int)(B >> 4)]);
                 Result.Append(HexAlphabet[(int)(B & 0xF)]);
+                Result.Append(' ');
             }
             return Result.ToString();
+        }
+        public void RastoBotMsgDecoded(uint command)
+        {
+            UpdateUI();
+        }
+        public void UpdateUI()
+        {
+            UpdateSensors(rastoBot.sensors);
+        }
+        public void UpdateSensors(MCU_0_Sensors sensors)
+        {
+            if (sensors == null)
+                return;
+            ChangeTextBoxValue(tb_temperature0, sensors.temperatures[0].ToString());
+            ChangeTextBoxValue(tb_temperature1, sensors.temperatures[1].ToString());
+            ChangeTextBoxValue(tb_temperature2, sensors.temperatures[2].ToString());
+            ChangeTextBoxValue(tb_temperature3, sensors.temperatures[3].ToString());
+        }
+
+        public static void UiUpdater()
+        {
+            Thread.Sleep(100);
+            if (Program.form1 != null)
+            {
+            }
+
         }
     }
 }

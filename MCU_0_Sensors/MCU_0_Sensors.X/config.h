@@ -11,10 +11,12 @@
 #include <xc.h>
 #include "hwinterface.h"
 
+//#define FCY          24000000UL // CPU frequency
+//#define PCLK         24000000UL // peripheral frequency 
 #define FCY          48000000UL // CPU frequency
 #define PCLK         48000000UL // peripheral frequency 
-//#define FCY         8000000UL // CPU frequency
-//#define PCLK        8000000UL // peripheral frequency 
+//#define FCY           8000000UL // CPU frequency
+//#define PCLK          8000000UL // peripheral frequency 
 #define _XTAL_FREQ  FCY
 #define _DI()		__builtin_disable_interrupts()
 #define _EI()		__builtin_enable_interrupts()

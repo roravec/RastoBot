@@ -46,7 +46,18 @@ void InitOscillator(void)
     
     REFOCONbits.ROON = 0; // disable REFO on RB2
     
-    T1CON  = 0x10; // set Timer1 clock source to internal with 1:2 prescaler (Timer1 clock = 1MHz)
+    // TIMER
+    // Clock source is Fosc/4
+    // 8MHz / 4 = 2MHz
+    // Alternative 48MHz / 4 = 12MHz
+    //
+    // Prescaler
+    // 1:1 = 2MHz or 12MHz
+    // 1:2 = 1MHz or 6MHz
+    // 1:4 = xMHz or 3MHz
+    //T1CON  = 0x10; // set Timer1 clock source to internal with 1:2 prescaler (Timer1 clock = 1MHz@8MHz or 6MHz@48MHz)
+    //T1CON  = 0x20; // set Timer1 clock source to internal with 1:4 prescaler (Timer1 clock = 3MHz@48MHz)
+    T1CON  = 0x30; // set Timer1 clock source to internal with 1:8 prescaler (Timer1 clock = 1.5MHz@48MHz)
     TMR1H  = 0;           // reset Timer1
     TMR1L  = 0;
     

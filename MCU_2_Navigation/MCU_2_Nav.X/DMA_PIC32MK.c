@@ -458,6 +458,6 @@ static void DMA_InterruptHandler(DmaChannel module)
 {
     DMA * dmaObj = DmaActiveChannels[module];
     if (dmaObj->InterruptTriggerFnc != 0)
-        dmaObj->InterruptTriggerFnc((uint8_t*)dmaObj->destination);
+        dmaObj->InterruptTriggerFnc((uint8_t*)dmaObj->destination, module);
     DMA_ClearIRQFlags(dmaObj);
 }
