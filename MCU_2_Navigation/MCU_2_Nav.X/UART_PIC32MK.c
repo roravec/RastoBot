@@ -347,11 +347,11 @@ void UART_SendBreak(UART * uartObj)
 /* Interrupt handlers */
 void __attribute__((interrupt(ipl6auto), at_vector(_UART1_RX_VECTOR), aligned(16))) UART1_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_1, UART_VECTOR_RX);   }
-void __attribute__((interrupt(ipl7auto), at_vector(_UART1_TX_VECTOR), aligned(16))) UART1_TX_Handler (void)
+void __attribute__((interrupt(ipl2auto), at_vector(_UART1_TX_VECTOR), aligned(16))) UART1_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_1, UART_VECTOR_TX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART1_FAULT_VECTOR), aligned(16))) UART1_Fault_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_1, UART_VECTOR_FAULT);   }
-void __attribute__((interrupt(ipl6auto), at_vector(_UART2_RX_VECTOR), aligned(16))) UART2_RX_Handler (void)
+void __attribute__((interrupt(ipl2auto), at_vector(_UART2_RX_VECTOR), aligned(16))) UART2_RX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_2, UART_VECTOR_RX);   }
 void __attribute__((interrupt(ipl7auto), at_vector(_UART2_TX_VECTOR), aligned(16))) UART2_TX_Handler (void)
 {   UART_InterruptHandler(UART_MODULE_2, UART_VECTOR_TX);   }

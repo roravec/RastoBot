@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RastoBot_ControlPanel
 {
-    internal class SerialPortComm
+    public class SerialPortComm
     {
         public String OpenedPort = "";
         private List<string> _ports = new List<string>();
@@ -20,7 +20,7 @@ namespace RastoBot_ControlPanel
         /// </summary>
         public bool PortOpen { get => _portOpen; set => _portOpen = value; }
 
-        public delegate void delMessageReceived(byte [] text, uint size);
+        public delegate void delMessageReceived(byte[] text, uint size);
         public event delMessageReceived? eventMessageReceived = null;
 
         public SerialPortComm()
@@ -95,7 +95,7 @@ namespace RastoBot_ControlPanel
                 return;
             _serialPort.WriteLine(message);
         }
-        public void SendMessage(byte[] message, uint length)
+        public void SendData(byte[] message, uint length)
         {
             if (message == null || _serialPort is null || !PortOpen)
                 return;
@@ -109,7 +109,7 @@ namespace RastoBot_ControlPanel
             byte[] message = new byte[lengthBytes];
             for (int i = 0; i < lengthBytes; i++)
                 message[i] = 0x00;
-            SendMessage(message, lengthBytes);
+            SendData(message, lengthBytes);
         }
         static void udelay(long us)
         {

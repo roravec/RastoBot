@@ -104,8 +104,27 @@ namespace RastoBot_ControlPanel
                 tb.Text = text;
             }
         }
+        delegate void ChangeCheckBoxValueCallback(CheckBox tb, bool value);
+        public void ChangeCheckBoxValue(CheckBox tb, bool value)
+        {
+            if (tb == null)
+                return;
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (tb.InvokeRequired)
+            {
+                ChangeCheckBoxValueCallback d = new ChangeCheckBoxValueCallback(ChangeCheckBoxValue);
+                this.Invoke(d, new object[] { tb, value });
+            }
+            else
+            {
+                //tb.Text = text;
+                tb.Checked = value;
+            }
+        }
 
-        private void SerialMessageReceived(byte [] text, uint size)
+        public void SerialMessageReceived(byte [] text, uint size)
         {
             string data = ByteArrayToHexString(text, (int)size);
             AddLogMessage("Received (" + size + "B): " + data);
@@ -139,6 +158,29 @@ namespace RastoBot_ControlPanel
             ChangeTextBoxValue(tb_temperature1, sensors.temperatures[1].ToString());
             ChangeTextBoxValue(tb_temperature2, sensors.temperatures[2].ToString());
             ChangeTextBoxValue(tb_temperature3, sensors.temperatures[3].ToString());
+
+            ChangeTextBoxValue(tb_humid0, sensors.humidities[0].ToString());
+            ChangeTextBoxValue(tb_humid1, sensors.humidities[1].ToString());
+            ChangeTextBoxValue(tb_humid2, sensors.humidities[2].ToString());
+            ChangeTextBoxValue(tb_humid3, sensors.humidities[3].ToString());
+
+            ChangeTextBoxValue(textBox_battVoltage, sensors.batteryVoltage.ToString());
+            ChangeTextBoxValue(textBox_ExtVoltage, sensors.externalVoltage.ToString());
+
+            ChangeTextBoxValue(textBox_rain, sensors.rainSensor.ToString());
+            ChangeTextBoxValue(textBox_light, sensors.lightSensor.ToString());
+
+            ChangeTextBoxValue(textBox_current0, sensors.currentSensors[0].ToString());
+            ChangeTextBoxValue(textBox_current1, sensors.currentSensors[1].ToString());
+            ChangeTextBoxValue(textBox_current2, sensors.currentSensors[2].ToString());
+            ChangeTextBoxValue(textBox_current3, sensors.currentSensors[3].ToString());
+
+            ChangeCheckBoxValue(checkBox_TiltSensor, sensors.tiltSensor);
+            ChangeCheckBoxValue(checkBox_powerOut0, sensors.powerOutputs[0]);
+            ChangeCheckBoxValue(checkBox_powerOut1, sensors.powerOutputs[1]);
+            ChangeCheckBoxValue(checkBox_powerOut2, sensors.powerOutputs[2]);
+            ChangeCheckBoxValue(checkBox_powerOut3, sensors.powerOutputs[3]);
+            ChangeCheckBoxValue(checkBox_powerOut4, sensors.powerOutputs[4]);
         }
 
         public static void UiUpdater()

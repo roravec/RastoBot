@@ -8,6 +8,7 @@ namespace RastoBot_ControlPanel
             if (combo_Speeds.Items.Count > 0)
                 combo_Speeds.SelectedIndex = 0;
             ReloadComPorts();
+            rastoBot.eventMessageDecoded += RastoBotMsgDecoded;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -29,6 +30,11 @@ namespace RastoBot_ControlPanel
         private void button_Disconnect_Click(object sender, EventArgs e)
         {
             ClosePort();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_BeepBuzzer();
         }
     }
 }

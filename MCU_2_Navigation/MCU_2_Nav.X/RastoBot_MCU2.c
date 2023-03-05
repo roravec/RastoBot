@@ -3,7 +3,7 @@
 /* GLOBALS */
 uint32_t loopCounter = 0;
 const bool SEND_STATUS_DATA = 1;
-const bool SEND_POSITION_DATA = 0;
+const bool SEND_POSITION_DATA = 1;
 
 I2C i2c;
 
@@ -150,6 +150,34 @@ void MCU2_InitDMA(void)
     DMA_Initialize(&dmaMcu3IN);
     dmaMcu3IN.registers.DCHxINTbits->CHDDIE = 1; // destination is full interrupt
     
+    /* DMA MCU0 OUT *************************************/
+    DMA_Create(&dmaMcu0OUT, DMA_CHANNEL_6, 
+            (uint32_t*)uartMCU0_OUT.data,
+            (uint32_t*)uartMCU0.registers.UxTXREG,
+            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU0), 
+            1, 
+//            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
+            1,
+            UART3_TX_IRQ_ID, 1);
+    dmaMcu0OUT.InterruptTriggerFnc = &MCU2_TransferToMCU0Complete;
+    DMA_Initialize(&dmaMcu0OUT);
+    dmaMcu0OUT.registers.DCHxCONbits->CHAEN = 0;   //  Channel Automatic is turned off
+    dmaMcu0OUT.registers.DCHxINTbits->CHSDIE = 1; //  Channel Source Done Interrupt Enable bit
+    
+    /* DMA MCU1 OUT *************************************/
+    DMA_Create(&dmaMcu1OUT, DMA_CHANNEL_7, 
+            (uint32_t*)uartMCU1_OUT.data,
+            (uint32_t*)uartMCU1.registers.UxTXREG,
+            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU1), 
+            1, 
+//            ECP_PACKET_LEN_KNOWN_DLC(ECP_DATA_SIZE_MCU2_TO_MCU3), 
+            1,
+            UART5_TX_IRQ_ID, 1);
+    dmaMcu1OUT.InterruptTriggerFnc = &MCU2_TransferToMCU1Complete;
+    DMA_Initialize(&dmaMcu1OUT);
+    dmaMcu1OUT.registers.DCHxCONbits->CHAEN = 0;   //  Channel Automatic is turned off
+    dmaMcu1OUT.registers.DCHxINTbits->CHSDIE = 1; //  Channel Source Done Interrupt Enable bit
+    
     /* DMA MCU3 OUT *************************************/
     DMA_Create(&dmaMcu3OUT, DMA_CHANNEL_3, 
             (uint32_t*)uartMCU3_OUT.data,
@@ -252,7 +280,7 @@ void MCU2_UART_ECP_ReceivedDataBlock(uint8_t * data, DmaChannel dmaModule)
     DMA * dma;
     switch (dmaModule)
     {
-        case DMA_CHANNEL_3: uart = &uartMCU3; dma = &dmaMcu3IN; break;
+        case DMA_CHANNEL_2: uart = &uartMCU3; dma = &dmaMcu3IN; break;
         case DMA_CHANNEL_0: uart = &uartMCU0; dma = &dmaMcu0IN; break;
         case DMA_CHANNEL_1: uart = &uartMCU1; dma = &dmaMcu1IN; break;
         default: return;
@@ -443,8 +471,8 @@ static void MCU2_DoTasks(void)
         MCU2_TaskCheckForNewReceivedData();
     if (loopCounter % MCU2_SEND_STATUS_DATA_EVERY == 0)
         MCU2_TaskSendStatusData();
-    if (loopCounter % MCU2_SEND_POSITION_DATA_EVERY == 0)
-        MCU2_TaskSendPositionData();
+//    if (loopCounter % MCU2_SEND_POSITION_DATA_EVERY == 0)
+//        MCU2_TaskSendPositionData();
     if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
         MCU2_TaskReadPerimeterWire();
     if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
@@ -483,20 +511,23 @@ static void MCU2_TaskSendStatusData(void)
 {
     if (SEND_STATUS_DATA)
     {
+        while (dmaTransferToMcu3Status);        // wait until previous transfer is completed
         RastoBot_Encode_SensorsMotors   (&mcu3MsgOut, &sensorsStatus,&motorsStatus);
         ECP_EncodeExtended              (&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
         //UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
         MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size, 0);
     }
+    MCU2_TaskSendPositionData();
 }
 static void MCU2_TaskSendPositionData(void)
 {
     if (SEND_POSITION_DATA)
     {
+        while (dmaTransferToMcu3Status);        // wait until previous transfer is completed
         RastoBot_Encode_Position(&mcu3MsgOut, &lidarData, &gyroData, &gpsData);
         ECP_EncodeExtended(&mcu3MsgOut, &uartMCU3_OUT, ECP_DATA_SIZE_MCU2_TO_MCU3);
         //UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
-        MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size, 1);
+        MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size, 0);
     }
 }
 
@@ -524,14 +555,16 @@ static void MCU2_DoMessageAction(ECP_Message * msg)
     }
     else if (msg->command == ECP_COMMAND_SENSORS_SET) // MSG from MCU3 to MCU0
     {
-        
+        ECP_EncodeExtended(msg, &uartMCU0_OUT, ECP_DATA_SIZE_MCU2_TO_MCU0);
+        MCU2_DMATransferToMCU0(uartMCU0_OUT.data, uartMCU0_OUT.size, 0);
     }
     else if (msg->command == ECP_COMMAND_MOTORS_SET) // MSG from MCU3 to MCU1
     {
-        
+        ECP_EncodeExtended(msg, &uartMCU1_OUT, ECP_DATA_SIZE_MCU2_TO_MCU1);
+        MCU2_DMATransferToMCU1(uartMCU1_OUT.data, uartMCU1_OUT.size, 0);
     }
     else if (msg->command == ECP_COMMAND_NAVIGATION_SET) // MSG from MCU3 to MCU2
     {
-        
+        // commands to be done on this MCU
     }
 }

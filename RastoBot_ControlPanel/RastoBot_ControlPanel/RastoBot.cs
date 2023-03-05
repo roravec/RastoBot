@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,27 +12,44 @@ namespace RastoBot_ControlPanel
     {
         public delegate void delMessageDecoded(uint command);
         public event delMessageDecoded? eventMessageDecoded = null;
-        public enum MessageCommand { ECP_COMMAND_POSITION_STATUS=124, ECP_COMMAND_SENSORSMOTORS_STATUS, ECP_COMMAND_MAPUPDATE };
+        public const UInt16 fixedPacketSizeFromMCU3 = 72;
+        public const UInt16 fixedDataSizeToMCU3 = 8;
+        public byte[] defaultDataMCU3 = { 0, 0, 0, 0, 0, 0, 0, 0, };
+        public enum MessageCommand { ECP_COMMAND_POSITION_STATUS = 124, ECP_COMMAND_SENSORSMOTORS_STATUS, ECP_COMMAND_MAPUPDATE };
 
+        private SerialPortComm comPort = null;
         public MCU_0_Sensors sensors = new MCU_0_Sensors();
         public MCU_1_Motors motors = new MCU_1_Motors();
         public MCU_2_GyroData gyro = new MCU_2_GyroData();
         public MCU_2_GPSData gps = new MCU_2_GPSData();
         public MCU_2_LidarData lidar = new MCU_2_LidarData();
 
-        public void SerialMessageReceived(byte [] packet, uint size)
+        public RastoBot(SerialPortComm comPort)
         {
-            //byte[] packet = GetByteArray(text, (ushort)size);
-            if (ErmaCommProtocol.ErmaCommProtocol.ECP_CheckPacketValidity(packet, (ushort)size) == ECP_PacketValidity.ECP_VALID)
+            this.comPort = comPort;
+        }
+
+        public void SerialMessageReceived(byte[] rawpacket, uint size)
+        {
+            ushort countPackets = (ushort)(size / fixedPacketSizeFromMCU3);
+            var packets = rawpacket.Split((int)fixedPacketSizeFromMCU3);
+            if (size < fixedPacketSizeFromMCU3) // invalid packet
+                return;
+            foreach (var packeta in packets)
             {
-                // packet is valid
-                ECP_Message msg = ErmaCommProtocol.ErmaCommProtocol.ECP_Decode(packet, (ushort)size);
-                if (msg != null) 
+                var packet = packeta.ToArray<byte>();
+                //byte[] packet = GetByteArray(text, (ushort)size);
+                if (ErmaCommProtocol.ErmaCommProtocol.ECP_CheckPacketValidity(packet, (ushort)packet.Length) == ECP_PacketValidity.ECP_VALID)
                 {
-                    // msg decoded correctly
-                    MakeAction(msg);
-                    if (eventMessageDecoded != null)
-                        eventMessageDecoded(msg.command);
+                    // packet is valid
+                    ECP_Message msg = ErmaCommProtocol.ErmaCommProtocol.ECP_Decode(packet, (ushort)packet.Length);
+                    if (msg != null)
+                    {
+                        // msg decoded correctly
+                        MakeAction(msg);
+                        if (eventMessageDecoded != null)
+                            eventMessageDecoded(msg.command);
+                    }
                 }
             }
         }
@@ -61,7 +79,7 @@ namespace RastoBot_ControlPanel
         private byte[] GetByteArray(string str, ushort size)
         {
             byte[] bytes = new byte[size];
-            for (UInt16 i = 0; i < size ;i++)
+            for (UInt16 i = 0; i < size; i++)
             {
                 bytes[i] = (byte)str[i];
             }
@@ -183,10 +201,29 @@ namespace RastoBot_ControlPanel
 
             gps.satellites = (byte)(msg.data[60] >> 2);
             gps.latDir = Convert.ToBoolean(msg.data[60] & 1);
-            gps.lonDir = Convert.ToBoolean((msg.data[60] >> 1) &1);
+            gps.lonDir = Convert.ToBoolean((msg.data[60] >> 1) & 1);
             gps.seconds = msg.data[61];
             gps.minutes = msg.data[62];
             gps.hours = msg.data[63];
+        }
+
+        public void Task_BeepBuzzer()
+        {
+            byte command = 201;
+            byte subCommand = 102;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+
+        public ECP_Message CreateMessage(byte command, byte subCommand, byte[] data, byte dlc)
+        {
+            return ErmaCommProtocol.ErmaCommProtocol.CreateMessage(command, subCommand, data, dlc);
+        }
+        public void SendMessage(ECP_Message msg, SerialPortComm comPort)
+        {
+            if (comPort == null) { return; }
+            var packet = ErmaCommProtocol.ErmaCommProtocol.ECP_EncodeExtended(msg, (byte)fixedDataSizeToMCU3);
+            comPort.SendData(packet, (uint)packet.Length);
         }
     }
     public class MCU_0_Sensors : CyclicDataPacket

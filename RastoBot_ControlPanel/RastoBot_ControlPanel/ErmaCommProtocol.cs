@@ -10,10 +10,9 @@ namespace ErmaCommProtocol
     using uint8_t = Byte;
     using uint16_t = UInt16;
     using uint32_t = UInt32;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
 
-    enum ECP_MessageType { ECP_COMDATA=0, ECP_COMMAND };
-    enum ECP_PacketValidity { 
+    public enum ECP_MessageType { ECP_COMDATA=0, ECP_COMMAND };
+    public enum ECP_PacketValidity { 
         ECP_UNKNOWN = 0,
         ECP_VALID,
         ECP_INVALID_CRC,
@@ -36,7 +35,7 @@ namespace ErmaCommProtocol
         public uint16_t     size = 0;
     }
 
-    internal class ECP_Message
+    public class ECP_Message
     {
         public uint8_t      command;
         public uint8_t      subCommand;
@@ -103,7 +102,7 @@ namespace ErmaCommProtocol
 
         public static uint8_t[] ECP_EncodeExtended(ECP_Message message, uint8_t minDataLen)
         {
-            uint8_t[] outArr = new uint8_t[] { };
+            uint8_t[] outArr = new uint8_t[ECP_MAX_DATA_BYTES+8];
             uint16_t currentIndex = 0;
             outArr[currentIndex++] = ECP_START_BYTE;
             outArr[currentIndex++] = message.command;
@@ -194,6 +193,14 @@ namespace ErmaCommProtocol
                 actualCrc ^= data[i];
             }
             return actualCrc;
+        }
+
+        public static IEnumerable<IEnumerable<T>> Split<T>(this T[] arr, int size)
+        {
+            for (var i = 0; i < arr.Length / size + 1; i++)
+            {
+                yield return arr.Skip(i * size).Take(size);
+            }
         }
     }
 }

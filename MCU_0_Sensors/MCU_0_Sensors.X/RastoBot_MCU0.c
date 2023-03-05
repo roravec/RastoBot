@@ -247,6 +247,7 @@ static void MCU0_TaskLogPowerOutputs(void)
 
 static void MCU0_TaskSendSensorsData(void)
 {
+    MCU0_TaskLogPowerOutputs();
     //RastoBot_Encode_Sensors(&sensorsMessage, &sensors);
     RastoBot_Encode_Sensors_1(&sensorsMessage, &sensors);
     ECP_EncodeExtended(&sensorsMessage, &sendPacket, ECP_DATA_SIZE_MCU0_TO_MCU2);
@@ -257,6 +258,10 @@ static void MCU0_TaskSendSensorsData(void)
     UART_WriteData(sendPacket.data, sendPacket.size);
     __delay_ms(100);
     RastoBot_Encode_Sensors_3(&sensorsMessage, &sensors);
+    ECP_EncodeExtended(&sensorsMessage, &sendPacket, ECP_DATA_SIZE_MCU0_TO_MCU2);
+    UART_WriteData(sendPacket.data, sendPacket.size);
+    __delay_ms(100);
+    RastoBot_Encode_Sensors_4(&sensorsMessage, &sensors);
     ECP_EncodeExtended(&sensorsMessage, &sendPacket, ECP_DATA_SIZE_MCU0_TO_MCU2);
     UART_WriteData(sendPacket.data, sendPacket.size);
 }
