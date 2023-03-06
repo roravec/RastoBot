@@ -36,5 +36,35 @@ namespace RastoBot_ControlPanel
         {
             rastoBot.Task_BeepBuzzer();
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            rastoBot.Task_ToggleFanManualControl();
+        }
+
+        private void checkBox_powerOut4_CheckedChanged(object sender, EventArgs e)
+        {
+            rastoBot.Task_ToggleEmergencyLight();
+        }
+
+        private void checkBox_led0_CheckedChanged(object sender, EventArgs e)
+        {
+            rastoBot.Task_ToggleMCU0LED0();
+        }
+
+        private void checkBox_led1_CheckedChanged(object sender, EventArgs e)
+        {
+            rastoBot.Task_ToggleMCU0LED1();
+        }
+
+        private void checkBox_led2_CheckedChanged(object sender, EventArgs e)
+        {
+            rastoBot.Task_ToggleMCU0LED2();
+        }
+
+        private void button_setMainMotorSpeed_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMainMotorSpeed(trackBar_mainMotorSpeed.Value);
+        }
     }
 }

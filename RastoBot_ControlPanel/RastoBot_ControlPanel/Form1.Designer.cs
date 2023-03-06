@@ -68,8 +68,37 @@
             this.checkBox_powerOut3 = new System.Windows.Forms.CheckBox();
             this.checkBox_powerOut4 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkBox_led0 = new System.Windows.Forms.CheckBox();
+            this.checkBox_led2 = new System.Windows.Forms.CheckBox();
+            this.checkBox_led1 = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.progressBar_mainMotor = new System.Windows.Forms.ProgressBar();
+            this.trackBar_mainMotorSpeed = new System.Windows.Forms.TrackBar();
+            this.button_setMainMotorSpeed = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tempBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_mainMotorSpeed)).BeginInit();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -159,7 +188,7 @@
             this.tempBox.Controls.Add(this.tb_temperature2);
             this.tempBox.Controls.Add(this.tb_temperature1);
             this.tempBox.Controls.Add(this.tb_temperature0);
-            this.tempBox.Location = new System.Drawing.Point(12, 109);
+            this.tempBox.Location = new System.Drawing.Point(180, 184);
             this.tempBox.Name = "tempBox";
             this.tempBox.Size = new System.Drawing.Size(258, 172);
             this.tempBox.TabIndex = 7;
@@ -301,7 +330,7 @@
             // 
             // textBox_battVoltage
             // 
-            this.textBox_battVoltage.Location = new System.Drawing.Point(385, 129);
+            this.textBox_battVoltage.Location = new System.Drawing.Point(61, 26);
             this.textBox_battVoltage.Name = "textBox_battVoltage";
             this.textBox_battVoltage.ReadOnly = true;
             this.textBox_battVoltage.Size = new System.Drawing.Size(51, 23);
@@ -309,7 +338,7 @@
             // 
             // textBox_ExtVoltage
             // 
-            this.textBox_ExtVoltage.Location = new System.Drawing.Point(385, 158);
+            this.textBox_ExtVoltage.Location = new System.Drawing.Point(61, 55);
             this.textBox_ExtVoltage.Name = "textBox_ExtVoltage";
             this.textBox_ExtVoltage.ReadOnly = true;
             this.textBox_ExtVoltage.Size = new System.Drawing.Size(51, 23);
@@ -317,7 +346,7 @@
             // 
             // textBox_current0
             // 
-            this.textBox_current0.Location = new System.Drawing.Point(385, 187);
+            this.textBox_current0.Location = new System.Drawing.Point(82, 27);
             this.textBox_current0.Name = "textBox_current0";
             this.textBox_current0.ReadOnly = true;
             this.textBox_current0.Size = new System.Drawing.Size(51, 23);
@@ -325,7 +354,7 @@
             // 
             // textBox_current1
             // 
-            this.textBox_current1.Location = new System.Drawing.Point(385, 216);
+            this.textBox_current1.Location = new System.Drawing.Point(82, 53);
             this.textBox_current1.Name = "textBox_current1";
             this.textBox_current1.ReadOnly = true;
             this.textBox_current1.Size = new System.Drawing.Size(51, 23);
@@ -333,7 +362,7 @@
             // 
             // textBox_current2
             // 
-            this.textBox_current2.Location = new System.Drawing.Point(385, 245);
+            this.textBox_current2.Location = new System.Drawing.Point(82, 82);
             this.textBox_current2.Name = "textBox_current2";
             this.textBox_current2.ReadOnly = true;
             this.textBox_current2.Size = new System.Drawing.Size(51, 23);
@@ -341,7 +370,7 @@
             // 
             // textBox_current3
             // 
-            this.textBox_current3.Location = new System.Drawing.Point(385, 274);
+            this.textBox_current3.Location = new System.Drawing.Point(82, 111);
             this.textBox_current3.Name = "textBox_current3";
             this.textBox_current3.ReadOnly = true;
             this.textBox_current3.Size = new System.Drawing.Size(51, 23);
@@ -351,7 +380,7 @@
             // 
             this.checkBox_TiltSensor.AutoSize = true;
             this.checkBox_TiltSensor.Enabled = false;
-            this.checkBox_TiltSensor.Location = new System.Drawing.Point(12, 306);
+            this.checkBox_TiltSensor.Location = new System.Drawing.Point(339, 102);
             this.checkBox_TiltSensor.Name = "checkBox_TiltSensor";
             this.checkBox_TiltSensor.Size = new System.Drawing.Size(80, 19);
             this.checkBox_TiltSensor.TabIndex = 21;
@@ -360,7 +389,7 @@
             // 
             // textBox_rain
             // 
-            this.textBox_rain.Location = new System.Drawing.Point(385, 304);
+            this.textBox_rain.Location = new System.Drawing.Point(92, 26);
             this.textBox_rain.Name = "textBox_rain";
             this.textBox_rain.ReadOnly = true;
             this.textBox_rain.Size = new System.Drawing.Size(51, 23);
@@ -368,7 +397,7 @@
             // 
             // textBox_light
             // 
-            this.textBox_light.Location = new System.Drawing.Point(385, 333);
+            this.textBox_light.Location = new System.Drawing.Point(92, 55);
             this.textBox_light.Name = "textBox_light";
             this.textBox_light.ReadOnly = true;
             this.textBox_light.Size = new System.Drawing.Size(51, 23);
@@ -378,7 +407,7 @@
             // 
             this.checkBox_powerOut0.AutoSize = true;
             this.checkBox_powerOut0.Enabled = false;
-            this.checkBox_powerOut0.Location = new System.Drawing.Point(12, 335);
+            this.checkBox_powerOut0.Location = new System.Drawing.Point(17, 52);
             this.checkBox_powerOut0.Name = "checkBox_powerOut0";
             this.checkBox_powerOut0.Size = new System.Drawing.Size(54, 19);
             this.checkBox_powerOut0.TabIndex = 24;
@@ -389,7 +418,7 @@
             // 
             this.checkBox_powerOut1.AutoSize = true;
             this.checkBox_powerOut1.Enabled = false;
-            this.checkBox_powerOut1.Location = new System.Drawing.Point(12, 360);
+            this.checkBox_powerOut1.Location = new System.Drawing.Point(17, 77);
             this.checkBox_powerOut1.Name = "checkBox_powerOut1";
             this.checkBox_powerOut1.Size = new System.Drawing.Size(54, 19);
             this.checkBox_powerOut1.TabIndex = 25;
@@ -400,7 +429,7 @@
             // 
             this.checkBox_powerOut2.AutoSize = true;
             this.checkBox_powerOut2.Enabled = false;
-            this.checkBox_powerOut2.Location = new System.Drawing.Point(12, 385);
+            this.checkBox_powerOut2.Location = new System.Drawing.Point(17, 102);
             this.checkBox_powerOut2.Name = "checkBox_powerOut2";
             this.checkBox_powerOut2.Size = new System.Drawing.Size(54, 19);
             this.checkBox_powerOut2.TabIndex = 26;
@@ -411,7 +440,7 @@
             // 
             this.checkBox_powerOut3.AutoSize = true;
             this.checkBox_powerOut3.Enabled = false;
-            this.checkBox_powerOut3.Location = new System.Drawing.Point(12, 410);
+            this.checkBox_powerOut3.Location = new System.Drawing.Point(17, 127);
             this.checkBox_powerOut3.Name = "checkBox_powerOut3";
             this.checkBox_powerOut3.Size = new System.Drawing.Size(54, 19);
             this.checkBox_powerOut3.TabIndex = 27;
@@ -421,44 +450,272 @@
             // checkBox_powerOut4
             // 
             this.checkBox_powerOut4.AutoSize = true;
-            this.checkBox_powerOut4.Enabled = false;
-            this.checkBox_powerOut4.Location = new System.Drawing.Point(12, 435);
+            this.checkBox_powerOut4.Location = new System.Drawing.Point(595, 33);
             this.checkBox_powerOut4.Name = "checkBox_powerOut4";
             this.checkBox_powerOut4.Size = new System.Drawing.Size(112, 19);
             this.checkBox_powerOut4.TabIndex = 28;
             this.checkBox_powerOut4.Text = "Emergency light";
             this.checkBox_powerOut4.UseVisualStyleBackColor = true;
+            this.checkBox_powerOut4.CheckedChanged += new System.EventHandler(this.checkBox_powerOut4_CheckedChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(529, 119);
+            this.button1.Location = new System.Drawing.Point(609, 78);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 29;
-            this.button1.Text = "button1";
+            this.button1.Text = "Beep";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(11, 29);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 15);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Battery";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 60);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(49, 15);
+            this.label10.TabIndex = 30;
+            this.label10.Text = "External";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.textBox_battVoltage);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.textBox_ExtVoltage);
+            this.groupBox2.Location = new System.Drawing.Point(12, 78);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(133, 90);
+            this.groupBox2.TabIndex = 31;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Voltages";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label14);
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.textBox_current3);
+            this.groupBox3.Controls.Add(this.textBox_current0);
+            this.groupBox3.Controls.Add(this.textBox_current1);
+            this.groupBox3.Controls.Add(this.textBox_current2);
+            this.groupBox3.Location = new System.Drawing.Point(12, 184);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(152, 143);
+            this.groupBox3.TabIndex = 32;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Current sensors";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(44, 114);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(32, 15);
+            this.label14.TabIndex = 34;
+            this.label14.Text = "Total";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 85);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(70, 15);
+            this.label13.TabIndex = 33;
+            this.label13.Text = "Main motor";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(20, 56);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(56, 15);
+            this.label12.TabIndex = 32;
+            this.label12.Text = "Stepper 1";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(21, 30);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(56, 15);
+            this.label11.TabIndex = 31;
+            this.label11.Text = "Stepper 0";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(19, 29);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(67, 15);
+            this.label15.TabIndex = 35;
+            this.label15.Text = "Rain sensor";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(15, 58);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(71, 15);
+            this.label16.TabIndex = 36;
+            this.label16.Text = "Light sensor";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label15);
+            this.groupBox4.Controls.Add(this.label16);
+            this.groupBox4.Controls.Add(this.textBox_rain);
+            this.groupBox4.Controls.Add(this.textBox_light);
+            this.groupBox4.Location = new System.Drawing.Point(161, 78);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(160, 90);
+            this.groupBox4.TabIndex = 37;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Voltage div. sensors";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(17, 22);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(107, 19);
+            this.checkBox1.TabIndex = 38;
+            this.checkBox1.Text = "Manual control";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.checkBox1);
+            this.groupBox5.Controls.Add(this.checkBox_powerOut1);
+            this.groupBox5.Controls.Add(this.checkBox_powerOut0);
+            this.groupBox5.Controls.Add(this.checkBox_powerOut2);
+            this.groupBox5.Controls.Add(this.checkBox_powerOut3);
+            this.groupBox5.Location = new System.Drawing.Point(12, 345);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(136, 160);
+            this.groupBox5.TabIndex = 39;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Fans";
+            // 
+            // checkBox_led0
+            // 
+            this.checkBox_led0.AutoSize = true;
+            this.checkBox_led0.Enabled = false;
+            this.checkBox_led0.Location = new System.Drawing.Point(6, 22);
+            this.checkBox_led0.Name = "checkBox_led0";
+            this.checkBox_led0.Size = new System.Drawing.Size(57, 19);
+            this.checkBox_led0.TabIndex = 40;
+            this.checkBox_led0.Text = "LED_0";
+            this.checkBox_led0.UseVisualStyleBackColor = true;
+            this.checkBox_led0.CheckedChanged += new System.EventHandler(this.checkBox_led0_CheckedChanged);
+            // 
+            // checkBox_led2
+            // 
+            this.checkBox_led2.AutoSize = true;
+            this.checkBox_led2.Location = new System.Drawing.Point(6, 72);
+            this.checkBox_led2.Name = "checkBox_led2";
+            this.checkBox_led2.Size = new System.Drawing.Size(57, 19);
+            this.checkBox_led2.TabIndex = 41;
+            this.checkBox_led2.Text = "LED_2";
+            this.checkBox_led2.UseVisualStyleBackColor = true;
+            this.checkBox_led2.CheckedChanged += new System.EventHandler(this.checkBox_led2_CheckedChanged);
+            // 
+            // checkBox_led1
+            // 
+            this.checkBox_led1.AutoSize = true;
+            this.checkBox_led1.Enabled = false;
+            this.checkBox_led1.Location = new System.Drawing.Point(6, 47);
+            this.checkBox_led1.Name = "checkBox_led1";
+            this.checkBox_led1.Size = new System.Drawing.Size(57, 19);
+            this.checkBox_led1.TabIndex = 42;
+            this.checkBox_led1.Text = "LED_1";
+            this.checkBox_led1.UseVisualStyleBackColor = true;
+            this.checkBox_led1.CheckedChanged += new System.EventHandler(this.checkBox_led1_CheckedChanged);
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.checkBox_led1);
+            this.groupBox6.Controls.Add(this.checkBox_led0);
+            this.groupBox6.Controls.Add(this.checkBox_led2);
+            this.groupBox6.Location = new System.Drawing.Point(713, 12);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(71, 100);
+            this.groupBox6.TabIndex = 43;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "LEDs";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(534, 397);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 23);
+            this.comboBox1.TabIndex = 44;
+            // 
+            // progressBar_mainMotor
+            // 
+            this.progressBar_mainMotor.Location = new System.Drawing.Point(13, 62);
+            this.progressBar_mainMotor.Name = "progressBar_mainMotor";
+            this.progressBar_mainMotor.Size = new System.Drawing.Size(201, 32);
+            this.progressBar_mainMotor.Step = 1;
+            this.progressBar_mainMotor.TabIndex = 45;
+            // 
+            // trackBar_mainMotorSpeed
+            // 
+            this.trackBar_mainMotorSpeed.Location = new System.Drawing.Point(13, 22);
+            this.trackBar_mainMotorSpeed.Maximum = 100;
+            this.trackBar_mainMotorSpeed.Name = "trackBar_mainMotorSpeed";
+            this.trackBar_mainMotorSpeed.Size = new System.Drawing.Size(104, 45);
+            this.trackBar_mainMotorSpeed.TabIndex = 46;
+            // 
+            // button_setMainMotorSpeed
+            // 
+            this.button_setMainMotorSpeed.Location = new System.Drawing.Point(139, 22);
+            this.button_setMainMotorSpeed.Name = "button_setMainMotorSpeed";
+            this.button_setMainMotorSpeed.Size = new System.Drawing.Size(75, 23);
+            this.button_setMainMotorSpeed.TabIndex = 47;
+            this.button_setMainMotorSpeed.Text = "Set speed";
+            this.button_setMainMotorSpeed.UseVisualStyleBackColor = true;
+            this.button_setMainMotorSpeed.Click += new System.EventHandler(this.button_setMainMotorSpeed_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.button_setMainMotorSpeed);
+            this.groupBox7.Controls.Add(this.progressBar_mainMotor);
+            this.groupBox7.Controls.Add(this.trackBar_mainMotorSpeed);
+            this.groupBox7.Location = new System.Drawing.Point(180, 367);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(226, 100);
+            this.groupBox7.TabIndex = 48;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Main motor";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 647);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox_powerOut4);
-            this.Controls.Add(this.checkBox_powerOut3);
-            this.Controls.Add(this.checkBox_powerOut2);
-            this.Controls.Add(this.checkBox_powerOut1);
-            this.Controls.Add(this.checkBox_powerOut0);
-            this.Controls.Add(this.textBox_light);
-            this.Controls.Add(this.textBox_rain);
             this.Controls.Add(this.checkBox_TiltSensor);
-            this.Controls.Add(this.textBox_current3);
-            this.Controls.Add(this.textBox_current2);
-            this.Controls.Add(this.textBox_current1);
-            this.Controls.Add(this.textBox_current0);
-            this.Controls.Add(this.textBox_ExtVoltage);
-            this.Controls.Add(this.textBox_battVoltage);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tempBox);
             this.Controls.Add(this.textBox_Log);
@@ -468,6 +725,19 @@
             this.tempBox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar_mainMotorSpeed)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -517,5 +787,27 @@
         private CheckBox checkBox_powerOut3;
         private CheckBox checkBox_powerOut4;
         private Button button1;
+        private Label label9;
+        private Label label10;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private Label label12;
+        private Label label11;
+        private Label label14;
+        private Label label13;
+        private Label label15;
+        private Label label16;
+        private GroupBox groupBox4;
+        private CheckBox checkBox1;
+        private GroupBox groupBox5;
+        private CheckBox checkBox_led0;
+        private CheckBox checkBox_led2;
+        private CheckBox checkBox_led1;
+        private GroupBox groupBox6;
+        private ComboBox comboBox1;
+        private ProgressBar progressBar_mainMotor;
+        private TrackBar trackBar_mainMotorSpeed;
+        private Button button_setMainMotorSpeed;
+        private GroupBox groupBox7;
     }
 }

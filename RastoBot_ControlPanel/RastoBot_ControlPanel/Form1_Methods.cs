@@ -124,6 +124,26 @@ namespace RastoBot_ControlPanel
             }
         }
 
+        delegate void ChangeProgressBarValueCallback(ProgressBar tb, int value);
+        public void ChangeProgressBarValue(ProgressBar tb, int value)
+        {
+            if (tb == null)
+                return;
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (tb.InvokeRequired)
+            {
+                ChangeProgressBarValueCallback d = new ChangeProgressBarValueCallback(ChangeProgressBarValue);
+                this.Invoke(d, new object[] { tb, value });
+            }
+            else
+            {
+                //tb.Text = text;
+                tb.Value = value;
+            }
+        }
+
         public void SerialMessageReceived(byte [] text, uint size)
         {
             string data = ByteArrayToHexString(text, (int)size);
@@ -148,9 +168,9 @@ namespace RastoBot_ControlPanel
         }
         public void UpdateUI()
         {
-            UpdateSensors(rastoBot.sensors);
+            UpdateSensors(rastoBot.sensors, rastoBot.motors);
         }
-        public void UpdateSensors(MCU_0_Sensors sensors)
+        public void UpdateSensors(MCU_0_Sensors sensors, MCU_1_Motors motors)
         {
             if (sensors == null)
                 return;
@@ -181,6 +201,8 @@ namespace RastoBot_ControlPanel
             ChangeCheckBoxValue(checkBox_powerOut2, sensors.powerOutputs[2]);
             ChangeCheckBoxValue(checkBox_powerOut3, sensors.powerOutputs[3]);
             ChangeCheckBoxValue(checkBox_powerOut4, sensors.powerOutputs[4]);
+
+            ChangeProgressBarValue(progressBar_mainMotor, motors.mainMotorSpeed);
         }
 
         public static void UiUpdater()

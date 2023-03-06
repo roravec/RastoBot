@@ -15,7 +15,56 @@ namespace RastoBot_ControlPanel
         public const UInt16 fixedPacketSizeFromMCU3 = 72;
         public const UInt16 fixedDataSizeToMCU3 = 8;
         public byte[] defaultDataMCU3 = { 0, 0, 0, 0, 0, 0, 0, 0, };
-        public enum MessageCommand { ECP_COMMAND_POSITION_STATUS = 124, ECP_COMMAND_SENSORSMOTORS_STATUS, ECP_COMMAND_MAPUPDATE };
+        public enum MessageCommand {
+            ECP_COMMAND_MOTORS_STATUS = 111,
+            ECP_COMMAND_POSITION_STATUS = 124,
+            ECP_COMMAND_SENSORSMOTORS_STATUS = 125,
+            ECP_COMMAND_MAPUPDATE = 126,
+            ECP_COMMAND_SENSORS_SET = 201,
+            ECP_COMMAND_MOTORS_SET = 211,
+            ECP_COMMAND_NAVIGATION_SET = 202
+        };
+
+        public enum ECP_COMMAND_SENSORS_SET
+        {
+            FAN_AUTO = 0,
+            FAN_MANUAL = 1,
+            TURN_ON_POWER_OUTPUT_0 = 10,
+            TURN_ON_POWER_OUTPUT_1 = 11,
+            TURN_ON_POWER_OUTPUT_2 = 12,
+            TURN_ON_POWER_OUTPUT_3 = 13,
+            TURN_ON_POWER_OUTPUT_4 = 14,
+            TURN_OFF_POWER_OUTPUT_0 = 20,
+            TURN_OFF_POWER_OUTPUT_1 = 21,
+            TURN_OFF_POWER_OUTPUT_2 = 22,
+            TURN_OFF_POWER_OUTPUT_3 = 23,
+            TURN_OFF_POWER_OUTPUT_4 = 24,
+            TURN_ON_LED_0 = 30,
+            TURN_ON_LED_1 = 31,
+            TURN_ON_LED_2 = 32,
+            TURN_OFF_LED_0 = 40,
+            TURN_OFF_LED_1 = 41,
+            TURN_OFF_LED_2 = 42,
+            TURN_ON_EXTERNAL_INPUT = 50,
+            TURN_OFF_EXTERNAL_INPUT = 51,
+            BUZZ_200MS = 100,
+            BUZZ_400MS = 101,
+            BUZZ_600MS = 102,
+            BUZZ_800MS = 103,
+            BUZZ_1000MS = 104,
+            BUZZ_1500MS = 105
+        };
+
+        public enum ECP_COMMAND_MOTORS_SET
+        {
+            SET_MAIN_MOTOR_SPEED = 90,
+            DISABLE_STEPPER_0 = 0,
+            DISABLE_STEPPER_1 = 10,
+            DISABLE_STEPPER_2 = 20,
+            ENABLE_STEPPER_0 = 1,
+            ENABLE_STEPPER_1 = 11,
+            ENABLE_STEPPER_2 = 21
+        };
 
         private SerialPortComm comPort = null;
         public MCU_0_Sensors sensors = new MCU_0_Sensors();
@@ -23,6 +72,8 @@ namespace RastoBot_ControlPanel
         public MCU_2_GyroData gyro = new MCU_2_GyroData();
         public MCU_2_GPSData gps = new MCU_2_GPSData();
         public MCU_2_LidarData lidar = new MCU_2_LidarData();
+
+        private bool[] mcu0Leds = { false, false, false };
 
         public RastoBot(SerialPortComm comPort)
         {
@@ -206,11 +257,86 @@ namespace RastoBot_ControlPanel
             gps.minutes = msg.data[62];
             gps.hours = msg.data[63];
         }
-
+        /**************************************************************/
+        public void Task_SetMainMotorSpeed(int speed)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.BUZZ_400MS;
+            var msg = CreateMessage(command, subCommand, Generate8ByteArray((byte)speed), 1);
+            SendMessage(msg, comPort);
+        }
+        /**************************************************************/
         public void Task_BeepBuzzer()
         {
-            byte command = 201;
-            byte subCommand = 102;
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.BUZZ_400MS;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+
+        public void Task_ToggleFanManualControl()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.FAN_AUTO;
+            if (sensors.fanManualControl)
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.FAN_MANUAL;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleEmergencyLight()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_POWER_OUTPUT_4;
+            if (sensors.powerOutputs[4])
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_POWER_OUTPUT_4;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleMCU0LED0()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_LED_0;
+            if (mcu0Leds[0])
+            {
+                mcu0Leds[0] = false;
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_LED_0;
+            }
+            else
+            {
+                mcu0Leds[0] = true;
+            }
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleMCU0LED1()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_LED_1;
+            if (mcu0Leds[1])
+            {
+                mcu0Leds[1] = false;
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_LED_1;
+            }
+            else
+            {
+                mcu0Leds[1] = true;
+            }
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleMCU0LED2()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_LED_2;
+            if (mcu0Leds[2])
+            {
+                mcu0Leds[2] = false;
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_LED_2;
+            }
+            else
+            {
+                mcu0Leds[2] = true;
+            }
             var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
             SendMessage(msg, comPort);
         }
@@ -224,6 +350,20 @@ namespace RastoBot_ControlPanel
             if (comPort == null) { return; }
             var packet = ErmaCommProtocol.ErmaCommProtocol.ECP_EncodeExtended(msg, (byte)fixedDataSizeToMCU3);
             comPort.SendData(packet, (uint)packet.Length);
+        }
+
+        public static byte[] Generate8ByteArray(byte B0=0, byte B1 = 0, byte B2 = 0, byte B3 = 0, byte B4 = 0, byte B5 = 0, byte B6 = 0, byte B7 = 0)
+        {
+            byte[] bytes= new byte[8];
+            bytes[0] = B0;
+            bytes[1] = B1;
+            bytes[2] = B2;
+            bytes[3] = B3;
+            bytes[4] = B4;
+            bytes[5] = B5;
+            bytes[6] = B6;
+            bytes[7] = B7;
+            return bytes;
         }
     }
     public class MCU_0_Sensors : CyclicDataPacket
