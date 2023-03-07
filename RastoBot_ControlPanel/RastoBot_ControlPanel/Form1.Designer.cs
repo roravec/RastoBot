@@ -154,11 +154,11 @@
             // 
             // textBox_Log
             // 
-            this.textBox_Log.Location = new System.Drawing.Point(805, 12);
+            this.textBox_Log.Location = new System.Drawing.Point(842, 12);
             this.textBox_Log.MaxLength = 10000;
             this.textBox_Log.Multiline = true;
             this.textBox_Log.Name = "textBox_Log";
-            this.textBox_Log.Size = new System.Drawing.Size(317, 328);
+            this.textBox_Log.Size = new System.Drawing.Size(317, 623);
             this.textBox_Log.TabIndex = 5;
             // 
             // button_Disconnect
@@ -413,6 +413,7 @@
             this.checkBox_powerOut0.TabIndex = 24;
             this.checkBox_powerOut0.Text = "Fan 0";
             this.checkBox_powerOut0.UseVisualStyleBackColor = true;
+            this.checkBox_powerOut0.CheckedChanged += new System.EventHandler(this.checkBox_powerOut0_CheckedChanged);
             // 
             // checkBox_powerOut1
             // 
@@ -424,6 +425,7 @@
             this.checkBox_powerOut1.TabIndex = 25;
             this.checkBox_powerOut1.Text = "Fan 1";
             this.checkBox_powerOut1.UseVisualStyleBackColor = true;
+            this.checkBox_powerOut1.CheckedChanged += new System.EventHandler(this.checkBox_powerOut1_CheckedChanged);
             // 
             // checkBox_powerOut2
             // 
@@ -435,6 +437,7 @@
             this.checkBox_powerOut2.TabIndex = 26;
             this.checkBox_powerOut2.Text = "Fan 2";
             this.checkBox_powerOut2.UseVisualStyleBackColor = true;
+            this.checkBox_powerOut2.CheckedChanged += new System.EventHandler(this.checkBox_powerOut2_CheckedChanged);
             // 
             // checkBox_powerOut3
             // 
@@ -446,6 +449,7 @@
             this.checkBox_powerOut3.TabIndex = 27;
             this.checkBox_powerOut3.Text = "Fan 3";
             this.checkBox_powerOut3.UseVisualStyleBackColor = true;
+            this.checkBox_powerOut3.CheckedChanged += new System.EventHandler(this.checkBox_powerOut3_CheckedChanged);
             // 
             // checkBox_powerOut4
             // 
@@ -705,7 +709,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1134, 647);
+            this.ClientSize = new System.Drawing.Size(1171, 650);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.groupBox6);
@@ -753,7 +757,7 @@
         private TextBox textBox_Log;
         private Button button_Disconnect;
 
-        private RastoBot rastoBot = new RastoBot(serialPort);
+        private RastoBot rastoBot;
         private GroupBox tempBox;
         private TextBox tb_temperature3;
         private TextBox tb_temperature2;

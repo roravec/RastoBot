@@ -26,7 +26,7 @@ void PWM_Init()
     // Set 1:64 prescale value to get slowest times
     CCP2CON1bits.TMRPS = 0b11;
     CCP2CON1bits.MOD = 0b0101; // Dual Edge PWM mode, buffered
-    PWM_Set(PWM_STATIC_FREQ, 20);
+    PWM_Set(PWM_STATIC_FREQ, 0);
     //PWM_SetDirect(62499, 10000);
     
     CCP2CON1bits.ON = 1;

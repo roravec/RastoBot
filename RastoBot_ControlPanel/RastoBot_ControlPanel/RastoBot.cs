@@ -74,10 +74,12 @@ namespace RastoBot_ControlPanel
         public MCU_2_LidarData lidar = new MCU_2_LidarData();
 
         private bool[] mcu0Leds = { false, false, false };
+        private Form1 mainForm = null;
 
-        public RastoBot(SerialPortComm comPort)
+        public RastoBot(SerialPortComm comPort, Form1 iform1)
         {
             this.comPort = comPort;
+            this.mainForm = iform1;
         }
 
         public void SerialMessageReceived(byte[] rawpacket, uint size)
@@ -261,7 +263,7 @@ namespace RastoBot_ControlPanel
         public void Task_SetMainMotorSpeed(int speed)
         {
             byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
-            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.BUZZ_400MS;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_MAIN_MOTOR_SPEED;
             var msg = CreateMessage(command, subCommand, Generate8ByteArray((byte)speed), 1);
             SendMessage(msg, comPort);
         }
@@ -278,8 +280,44 @@ namespace RastoBot_ControlPanel
         {
             byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
             byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.FAN_AUTO;
-            if (sensors.fanManualControl)
+            if (mainForm.GetCheckBoxManualControl().Checked)
                 subCommand = (byte)ECP_COMMAND_SENSORS_SET.FAN_MANUAL;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleFan0()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_POWER_OUTPUT_0;
+            if (!mainForm.GetCheckBoxFan0().Checked)
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_POWER_OUTPUT_0;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleFan1()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_POWER_OUTPUT_1;
+            if (!mainForm.GetCheckBoxFan1().Checked)
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_POWER_OUTPUT_1;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleFan2()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_POWER_OUTPUT_2;
+            if (!mainForm.GetCheckBoxFan2().Checked)
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_POWER_OUTPUT_2;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_ToggleFan3()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_POWER_OUTPUT_3;
+            if (!mainForm.GetCheckBoxFan3().Checked)
+                subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_POWER_OUTPUT_3;
             var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
             SendMessage(msg, comPort);
         }
@@ -287,7 +325,7 @@ namespace RastoBot_ControlPanel
         {
             byte command = (byte)MessageCommand.ECP_COMMAND_SENSORS_SET;
             byte subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_ON_POWER_OUTPUT_4;
-            if (sensors.powerOutputs[4])
+            if (mainForm.GetCheckBoxEmergencyLight().Checked)
                 subCommand = (byte)ECP_COMMAND_SENSORS_SET.TURN_OFF_POWER_OUTPUT_4;
             var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
             SendMessage(msg, comPort);

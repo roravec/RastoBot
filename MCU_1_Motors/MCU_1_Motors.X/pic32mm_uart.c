@@ -13,8 +13,10 @@
 void UART_Init(void)
 {
     ECP_RecvBufferInit();
+    U2MODEbits.CLKSEL = 0;
     U2MODEbits.BRGH = 0;
     U2BRG = ( (PER_FREQ / (16*UARTBAUDRATE))-1);//Baud rate generator register
+    //U2BRG = 13;//Baud rate generator register
     //UBBRG = 129;
     U2STAbits.URXEN = 1;             //Receiver enable bit
     U2STAbits.UTXEN = 1;             //Transmitter enable bit

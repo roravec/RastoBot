@@ -70,6 +70,11 @@ namespace RastoBot_ControlPanel
             //AddLogMessage(ByteArrayToHexString(Ncv.GetFrameTestData().GetArray(), Ncv.GetFrameTestData().Length));
             //Ncv.UART.SendMessage(message);
         }
+        public static string Truncate(string variable, int Length)
+        {
+            if (string.IsNullOrEmpty(variable)) return variable;
+            return variable.Length <= Length ? variable : variable.Substring(0, Length);
+        }
         delegate void AddMessageCallback(string message);
         private void AddLogMessage(string message)
         {
@@ -83,7 +88,7 @@ namespace RastoBot_ControlPanel
             }
             else
             {
-                textBox_Log.Text = message + "\r\n" + textBox_Log.Text;
+                textBox_Log.Text = message + "\r\n" + Truncate(textBox_Log.Text, 1000);
             }
         }
         delegate void ChangeTextBoxValueCallback(TextBox tb, string text);
@@ -154,13 +159,40 @@ namespace RastoBot_ControlPanel
             StringBuilder Result = new StringBuilder(length * 2);
             string HexAlphabet = "0123456789ABCDEF";
 
+            int i = 0;
             foreach (byte B in Bytes)
             {
+                Result.Append("["+i+"]");
                 Result.Append(HexAlphabet[(int)(B >> 4)]);
                 Result.Append(HexAlphabet[(int)(B & 0xF)]);
                 Result.Append(' ');
+                i++;
             }
             return Result.ToString();
+        }
+        public CheckBox GetCheckBoxManualControl()
+        {
+            return checkBox1;
+        }
+        public CheckBox GetCheckBoxFan0()
+        {
+            return checkBox_powerOut0;
+        }
+        public CheckBox GetCheckBoxFan1()
+        {
+            return checkBox_powerOut1;
+        }
+        public CheckBox GetCheckBoxFan2()
+        {
+            return checkBox_powerOut2;
+        }
+        public CheckBox GetCheckBoxFan3()
+        {
+            return checkBox_powerOut3;
+        }
+        public CheckBox GetCheckBoxEmergencyLight()
+        {
+            return checkBox_powerOut4;
         }
         public void RastoBotMsgDecoded(uint command)
         {
@@ -196,10 +228,14 @@ namespace RastoBot_ControlPanel
             ChangeTextBoxValue(textBox_current3, sensors.currentSensors[3].ToString());
 
             ChangeCheckBoxValue(checkBox_TiltSensor, sensors.tiltSensor);
-            ChangeCheckBoxValue(checkBox_powerOut0, sensors.powerOutputs[0]);
-            ChangeCheckBoxValue(checkBox_powerOut1, sensors.powerOutputs[1]);
-            ChangeCheckBoxValue(checkBox_powerOut2, sensors.powerOutputs[2]);
-            ChangeCheckBoxValue(checkBox_powerOut3, sensors.powerOutputs[3]);
+
+            if (!checkBox1.Checked) // auto check Fans only in automatic control
+            {
+                ChangeCheckBoxValue(checkBox_powerOut0, sensors.powerOutputs[0]);
+                ChangeCheckBoxValue(checkBox_powerOut1, sensors.powerOutputs[1]);
+                ChangeCheckBoxValue(checkBox_powerOut2, sensors.powerOutputs[2]);
+                ChangeCheckBoxValue(checkBox_powerOut3, sensors.powerOutputs[3]);
+            }
             ChangeCheckBoxValue(checkBox_powerOut4, sensors.powerOutputs[4]);
 
             ChangeProgressBarValue(progressBar_mainMotor, motors.mainMotorSpeed);

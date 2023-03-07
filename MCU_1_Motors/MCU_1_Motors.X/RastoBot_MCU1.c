@@ -29,7 +29,7 @@ static void MCU1_TaskCheckForNewReceivedData(void);
 void MCU1_Init(void)
 {
     RarrayCreate(&sendPacket, sendPacketArr, ECP_MAX_PACKET_LEN);
-    //PWM_Init();
+    PWM_Init();
     UART_Init();
     Stepper_Init(&steppers[0], STEPPER_LEFT_WHEEL,     STEPPER_QUARTER_STEP, STEPPER_CW);
     Stepper_Init(&steppers[1], STEPPER_RIGHT_WHEEL,      STEPPER_QUARTER_STEP, STEPPER_CCW);
@@ -53,6 +53,7 @@ void MCU1_Loop(void)
 
 void MCU1_SetMainMotorSpeed(uint8_t speed)
 {
+    statusData.mainMotorSpeed = speed;
     PWM_SetDuty(speed);
 }
 

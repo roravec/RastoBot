@@ -32,14 +32,13 @@
 #pragma config FWDTEN = OFF              // Watchdog Timer Enable bit (WDT is enabled)
 
 // FOSCSEL
-//#pragma config FNOSC = PLL            // Oscillator Selection bits (Primary or FRC oscillator with PLL)
+#pragma config FNOSC = PLL            // Oscillator Selection bits (Primary or FRC oscillator with PLL)
 //#pragma config FNOSC = FRCDIV           // Oscillator Selection bits (Primary or FRC oscillator with PLL)
 //#pragma config PLLSRC = PRI           // System PLL Input Clock Selection bit (FRC oscillator is selected as PLL reference input on device reset)
 #pragma config PLLSRC = FRC             // System PLL Input Clock Selection bit (FRC oscillator is selected as PLL reference input on device reset)
 #pragma config SOSCEN = OFF             // Secondary Oscillator Enable bit (Secondary oscillator is enabled)
 #pragma config IESO = OFF               // Two Speed Startup Enable bit (Two speed startup is enabled)
 #pragma config POSCMOD = OFF             // Primary Oscillator Selection bit (Primary oscillator is disabled)
-//#pragma config POSCMOD = OFF          // Primary Oscillator Selection bit (Primary oscillator is disabled)
 #pragma config OSCIOFNC = OFF           // System Clock on CLKO Pin Enable bit (OSCO pin operates as a normal I/O)
 #pragma config SOSCSEL = OFF            // Secondary Oscillator External Clock Enable bit (SOSC pins configured for Crystal mode)
 #pragma config FCKSM = CSECME           // Clock Switching and Fail-Safe Clock Monitor Enable bits (Clock switching is enabled; Fail-safe clock monitor is enabled)

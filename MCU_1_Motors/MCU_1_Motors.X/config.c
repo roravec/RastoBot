@@ -8,7 +8,7 @@
 #include "config.h"
 
 uint32_t __coretimer = 0; // used to calculate core ticks
-void Delay_us(unsigned long us)
+void Delay_us(uint32_t us)
 {
     // Convert microseconds us into how many clock ticks it will take
     us *= FCY / 1000000 / 2; // Core Timer updates every 2 ticks
@@ -41,14 +41,16 @@ void InitOscillator(void)
     SYS_UNLOCK;
 
     SPLLCONbits.PLLICLK = 1; // 1-FRC; 0-POSC
-    SPLLCONbits.PLLMULT = 0b0000101; // 12;  8*12 = 96
-    SPLLCONbits.PLLODIV = 0b010; // 96/4 = 16MHz
+    //SPLLCONbits.PLLMULT = 0b0000101; // 12;  8*12 = 96
+    SPLLCONbits.PLLMULT = 0b0000001; // 12;  8*3 = 24
+    //SPLLCONbits.PLLODIV = 0b010; // 96/4 = 16MHz
+    SPLLCONbits.PLLODIV = 0; // 24/1 = 24MHz
 
-    REFO1CONbits.DIVSWEN = 1;
-    REFO1CONbits.ROSEL = 0b0111; // pll out
-    REFO1CONbits.RODIV = 2; // 96/2 = 24MHz
-    REFO1TRIM = 0x0;
-    REFO1CONbits.ON = 1;
+//    REFO1CONbits.DIVSWEN = 1;
+//    REFO1CONbits.ROSEL = 0b0111; // pll out
+//    REFO1CONbits.RODIV = 2; // 96/2 = 24MHz
+//    REFO1TRIM = 0x0;
+//    REFO1CONbits.ON = 1;
     
     
     // SETUP PERIPRHERALS
@@ -57,7 +59,11 @@ void InitOscillator(void)
     RPOR1bits.RP8R = 6;     // OCM3, SCCP2 Output Compare
     // **********************************
 
-    OSCCON = OSCCON | 0x00000101;    //NOSC = SPLL, initiate clock switch (OSWEN = 1)
+//    OSCCON = OSCCON | 0x00000101;    //NOSC = SPLL, initiate clock switch (OSWEN = 1)
+    OSCCONbits.COSC = 1; // PLL
+    OSCCONbits.FRCDIV = 0; // div by 1
+    OSCCONbits.NOSC = 1; // PLL
+    OSCCONbits.OSWEN = 1;
     while (OSCCONbits.OSWEN); // optional wait
     SYS_LOCK;
 }

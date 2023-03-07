@@ -27,7 +27,7 @@
 #include "../../SW/libs/ermaCommProtocol.h"
 
 #define PER_FREQ                FCY        // CPU peripheral frequency
-#define UARTBAUDRATE                115200//19200//38400       // UART baudrate
+#define UARTBAUDRATE                115200UL//19200//38400       // UART baudrate
 
 extern Rarray uartBuffer;
 extern _Bool uartNewDataFlag;
