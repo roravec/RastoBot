@@ -12,8 +12,68 @@ namespace RastoBot_ControlPanel
 {
     public partial class Form1 : Form
     {
+        private void EnablePanelContents(Panel panel, bool enabled)
+        {
+            foreach (Control ctrl in panel.Controls)
+            {
+                ctrl.Enabled = enabled;
+            }
+        }
+        private void DisablePanelContents(Panel panel, bool enabled)
+        {
+            foreach (Control ctrl in panel.Controls)
+            {
+                ctrl.Enabled = enabled;
+            }
+        }
+        private void ButtonsDisable(Control ct)
+        {
+            foreach (Control c in ct.Controls)
+            {
+                if (c is Button)
+                {
+                    c.Enabled = false;
+                }
+            }
+            button_Open.Enabled = true;
+
+            button_initWheels.Enabled = false;
+            button_setMainMotorSpeed.Enabled = false;
+            button_StepperDisable.Enabled = false;
+            button_stepperEnable.Enabled = false;
+            button_stepperOperMode.Enabled = false;
+            button_stepperSpeed.Enabled = false;
+            button_stepperStepMode.Enabled = false;
+            button_wheelsApplySpeed.Enabled = false;
+            button_wheelsStepsToMakeApply.Enabled = false;
+            button_stepperDirMode.Enabled = false;
+            button_stepperStepsToMake.Enabled = false;
+        }
+        private void ButtonsEnable(Control ct)
+        {
+            foreach (Control c in ct.Controls)
+            {
+                if (c is Button)
+                {
+                    c.Enabled = true;
+                }
+            }
+
+            button_initWheels.Enabled = true;
+            button_setMainMotorSpeed.Enabled = true;
+            button_StepperDisable.Enabled = true;
+            button_stepperEnable.Enabled = true;
+            button_stepperOperMode.Enabled = true;
+            button_stepperSpeed.Enabled = true;
+            button_stepperStepMode.Enabled = true;
+            button_wheelsApplySpeed.Enabled = true;
+            button_wheelsStepsToMakeApply.Enabled = true;
+            button_stepperDirMode.Enabled = true;
+            button_stepperStepsToMake.Enabled = true;
+        }
         private void ReloadComPorts()
         {
+            ButtonsDisable(this);
             combo_Ports.Items.Clear();
             serialPort.ReloadComPorts();
             foreach (string comPort in serialPort.Ports)
@@ -22,6 +82,11 @@ namespace RastoBot_ControlPanel
             }
             if (combo_Ports.Items.Count > 0)
                 combo_Ports.SelectedIndex = 0;
+
+            comboBox_Stepper.SelectedIndex= 0;
+            comboBox_direction.SelectedIndex= 0;
+            comboBox_OperMode.SelectedIndex= 0;
+            comboBox_stepMode.SelectedIndex= 0;
         }
         /// <summary>
         /// Open serial port connection
@@ -36,6 +101,7 @@ namespace RastoBot_ControlPanel
                 AddLogMessage("Port " + comPort + " is open with baudrate " + iBaudRate + ".");
                 serialPort.eventMessageReceived += SerialMessageReceived;
                 serialPort.eventMessageReceived += rastoBot.SerialMessageReceived;
+                ButtonsEnable(this);
                 button_Open.Enabled = false;
                 combo_Speeds.Enabled = false;
                 combo_Ports.Enabled = false;
@@ -53,6 +119,7 @@ namespace RastoBot_ControlPanel
         /// </summary>
         private void ClosePort()
         {
+            ButtonsDisable(this);
             serialPort.ClosePort();
             AddLogMessage("Port " + serialPort.OpenedPort + " was closed.");
             serialPort.eventMessageReceived -= SerialMessageReceived;
@@ -170,6 +237,86 @@ namespace RastoBot_ControlPanel
             }
             return Result.ToString();
         }
+        public int GetStepperMotorIndex()
+        {
+           return comboBox_Stepper.SelectedIndex;
+        }
+        public int GetStepperOperModeIndex()
+        {
+            return comboBox_OperMode.SelectedIndex;
+        }
+        public int GetStepperStepModeIndex()
+        {
+            return comboBox_stepMode.SelectedIndex;
+        }
+        public int GetStepperDirIndex()
+        {
+            return comboBox_direction.SelectedIndex;
+        }
+        public int GetStepperSpeed()
+        {
+            String textboxValue = textBox_steperSpeed.Text;
+            Int32 i=0;
+            if (!String.IsNullOrWhiteSpace(textboxValue) && // Not empty
+                Int32.TryParse(textboxValue, out i))
+            { // Valid integer
+              // The textbox had a valid integer. i=1
+            }
+            else
+            {
+                // The texbox had a bogus value. i=default(Int32)=0
+                // You can also specify a different fallback value here.
+            }
+            return i;
+        }
+        public int GetStepperStepsToMake()
+        {
+            String textboxValue = textBox_stepperStepsToMake.Text;
+            Int32 i = 0;
+            if (!String.IsNullOrWhiteSpace(textboxValue) && // Not empty
+                Int32.TryParse(textboxValue, out i))
+            { // Valid integer
+              // The textbox had a valid integer. i=1
+            }
+            else
+            {
+                // The texbox had a bogus value. i=default(Int32)=0
+                // You can also specify a different fallback value here.
+            }
+            return i;
+        }
+        public int GetWheelsSpeed()
+        {
+            String textboxValue = textBox_wheelsSpeed.Text;
+            Int32 i = 0;
+            if (!String.IsNullOrWhiteSpace(textboxValue) && // Not empty
+                Int32.TryParse(textboxValue, out i))
+            { // Valid integer
+              // The textbox had a valid integer. i=1
+            }
+            else
+            {
+                // The texbox had a bogus value. i=default(Int32)=0
+                // You can also specify a different fallback value here.
+            }
+            return i;
+        }
+        public int GetWheelsStepsToMake()
+        {
+            String textboxValue = textBox_wheelsStepsToMake.Text;
+            Int32 i = 0;
+            if (!String.IsNullOrWhiteSpace(textboxValue) && // Not empty
+                Int32.TryParse(textboxValue, out i))
+            { // Valid integer
+              // The textbox had a valid integer. i=1
+            }
+            else
+            {
+                // The texbox had a bogus value. i=default(Int32)=0
+                // You can also specify a different fallback value here.
+            }
+            return i;
+        }
         public CheckBox GetCheckBoxManualControl()
         {
             return checkBox1;
@@ -216,16 +363,16 @@ namespace RastoBot_ControlPanel
             ChangeTextBoxValue(tb_humid2, sensors.humidities[2].ToString());
             ChangeTextBoxValue(tb_humid3, sensors.humidities[3].ToString());
 
-            ChangeTextBoxValue(textBox_battVoltage, sensors.batteryVoltage.ToString());
-            ChangeTextBoxValue(textBox_ExtVoltage, sensors.externalVoltage.ToString());
+            ChangeTextBoxValue(textBox_battVoltage, rastoBot.GetVoltage(sensors.batteryVoltage).ToString());
+            ChangeTextBoxValue(textBox_ExtVoltage, rastoBot.GetVoltage(sensors.externalVoltage).ToString());
 
             ChangeTextBoxValue(textBox_rain, sensors.rainSensor.ToString());
             ChangeTextBoxValue(textBox_light, sensors.lightSensor.ToString());
 
-            ChangeTextBoxValue(textBox_current0, sensors.currentSensors[0].ToString());
-            ChangeTextBoxValue(textBox_current1, sensors.currentSensors[1].ToString());
-            ChangeTextBoxValue(textBox_current2, sensors.currentSensors[2].ToString());
-            ChangeTextBoxValue(textBox_current3, sensors.currentSensors[3].ToString());
+            ChangeTextBoxValue(textBox_current0, rastoBot.GetCurrentValue(sensors.currentSensors[0]).ToString());
+            ChangeTextBoxValue(textBox_current1, rastoBot.GetCurrentValue(sensors.currentSensors[1]).ToString());
+            ChangeTextBoxValue(textBox_current2, rastoBot.GetCurrentValue(sensors.currentSensors[2]).ToString());
+            ChangeTextBoxValue(textBox_current3, rastoBot.GetCurrentValue(sensors.currentSensors[3]).ToString());
 
             ChangeCheckBoxValue(checkBox_TiltSensor, sensors.tiltSensor);
 

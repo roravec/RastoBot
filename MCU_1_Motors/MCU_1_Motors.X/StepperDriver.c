@@ -3,6 +3,7 @@
 void Stepper_Init(Stepper* stepper, uint8_t hwId, StepperStepMode mode, StepperDirection dir)
 {
     stepper->hwId = hwId;
+    Stepper_ChangeOperMode(stepper, STEPPER_STEPS_ON_DEMAND);
     Stepper_ChangeDirection(stepper, dir);
     Stepper_ChangeStepMode(stepper, mode);
     Stepper_ChangeSpeed(stepper, 1024);

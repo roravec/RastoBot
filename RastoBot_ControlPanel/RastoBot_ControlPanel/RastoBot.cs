@@ -1,4 +1,5 @@
 ﻿using ErmaCommProtocol;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace RastoBot_ControlPanel
 {
     public class RastoBot
     {
+        private const int CurrentSensorLimit = 70;
+
         public delegate void delMessageDecoded(uint command);
         public event delMessageDecoded? eventMessageDecoded = null;
         public const UInt16 fixedPacketSizeFromMCU3 = 72;
@@ -63,7 +66,56 @@ namespace RastoBot_ControlPanel
             DISABLE_STEPPER_2 = 20,
             ENABLE_STEPPER_0 = 1,
             ENABLE_STEPPER_1 = 11,
-            ENABLE_STEPPER_2 = 21
+            ENABLE_STEPPER_2 = 21,
+            SET_DIRECTION_CW_0 = 2,
+            SET_DIRECTION_CW_1 = 12,
+            SET_DIRECTION_CW_2 = 22,
+            SET_DIRECTION_CCW_0 = 3,
+            SET_DIRECTION_CCW_1 = 13,
+            SET_DIRECTION_CCW_2 = 23,
+            SET_STEP_MODE_FULL_0 = 4,
+            SET_STEP_MODE_FULL_1 = 14,
+            SET_STEP_MODE_FULL_2 = 24,
+            SET_STEP_MODE_HALF_0 = 5,
+            SET_STEP_MODE_HALF_1 = 15,
+            SET_STEP_MODE_HALF_2 = 25,
+            SET_STEP_MODE_QUARTER_0 = 6,
+            SET_STEP_MODE_QUARTER_1 = 16,
+            SET_STEP_MODE_QUARTER_2 = 26,
+            SET_STEP_MODE_EIGHTH_0 = 7,
+            SET_STEP_MODE_EIGHTH_1 = 17,
+            SET_STEP_MODE_EIGHTH_2 = 27,
+            SET_OPER_MODE_CONTINOUS_0 = 8,
+            SET_OPER_MODE_CONTINOUS_1 = 18,
+            SET_OPER_MODE_CONTINOUS_2 = 28,
+            SET_OPER_MODE_ON_DEMAND_0 = 9,
+            SET_OPER_MODE_ON_DEMAND_1 = 19,
+            SET_OPER_MODE_ON_DEMAND_2 = 29,
+            STOP_STEPPER_0 = 100,
+            STOP_STEPPER_1 = 101,
+            STOP_STEPPER_2 = 102,
+            SET_STEPPER_SPEED_0 = 120,
+            SET_STEPPER_SPEED_1 = 121,
+            SET_STEPPER_SPEED_2 = 122,
+            MAKE_STEPS_0 = 130,
+            MAKE_STEPS_1 = 131,
+            MAKE_STEPS_2 = 132,
+            MAKE_STEPS_WHEELS = 140,
+            LEVELING_REFERENCE_RUN = 30,
+            LEVELING_GO_TO = 31
+        };
+
+        public enum StepperDirection
+        {
+            CW=0, CCW=1
+        };
+        public enum StepperOperMode
+        {
+            Continous = 0, OnDemand = 1
+        };
+        public enum StepperStepMode
+        {
+            Full=0, Half, Quarter, Eighth
         };
 
         private SerialPortComm comPort = null;
@@ -258,6 +310,174 @@ namespace RastoBot_ControlPanel
             gps.seconds = msg.data[61];
             gps.minutes = msg.data[62];
             gps.hours = msg.data[63];
+        }
+
+        public int GetCurrentValue(int currentFromSensor)
+        {
+            int middleValue = 512;
+            int actualSensorValue = currentFromSensor - middleValue;
+            int actualCurrent = (CurrentSensorLimit / middleValue) * actualSensorValue;
+            return actualSensorValue;
+        }
+
+        public double GetVoltage(int sensorValue)
+        {
+            if (sensorValue == 0) return 0;
+            // 467 = 15
+            // 452 = 14.5
+            // 436 = 14
+            // 420 = 13.5
+            // 408 = 13
+            // 374 = 12
+
+            double value  = 0.032 * sensorValue;
+            return Math.Round(value, 1);
+        }
+
+        public void Task_SetMotorsInit(int stepperId)
+        {
+            Task_SetMotorsEnable(stepperId);
+            Task_SetMotorsStepMode(stepperId, 3); // eighth
+            Task_SetMotorsOperMode(stepperId, 1); // on demand
+            Task_SetMotorsSpeed(stepperId, 1023); // 1023 full
+        }
+        public void Task_SetMotorsInitWheels()
+        {
+            Task_SetMotorsEnable(0);
+            Task_SetMotorsStepMode(0,3); // eighth
+            Task_SetMotorsOperMode(0,1); // on demand
+            Task_SetMotorsDirection(0, 0); // CW
+            Task_SetMotorsSpeed(0,1023); // 1023 full
+
+            Task_SetMotorsEnable(1);
+            Task_SetMotorsStepMode(1, 3); // eighth
+            Task_SetMotorsOperMode(1, 1); // on demand
+            Task_SetMotorsDirection(1, 1); // CW
+            Task_SetMotorsSpeed(1, 1023); // 1023 full
+        }
+        public void Task_SetMotorsStop(int stepperId)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.STOP_STEPPER_0;
+            if (stepperId == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.STOP_STEPPER_1;
+            if (stepperId == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.STOP_STEPPER_2;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsEnable(int stepperId)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.ENABLE_STEPPER_0;
+            if (stepperId == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.ENABLE_STEPPER_1;
+            if (stepperId == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.ENABLE_STEPPER_2;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsDisable(int stepperId)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.DISABLE_STEPPER_0;
+            if (stepperId == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.DISABLE_STEPPER_1;
+            if (stepperId == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.DISABLE_STEPPER_2;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsStepMode(int stepperId, int stepMode)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_FULL_0;
+            if (stepperId == 0)
+            {
+                if (stepMode == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_FULL_0;
+                else if (stepMode == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_HALF_0;
+                else if (stepMode == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_QUARTER_0;
+                else if (stepMode == 3) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_EIGHTH_0;
+            }
+            if (stepperId == 1)
+            {
+                if (stepMode == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_FULL_1;
+                else if (stepMode == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_HALF_1;
+                else if (stepMode == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_QUARTER_1;
+                else if (stepMode == 3) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_EIGHTH_1;
+            }
+            if (stepperId == 2)
+            {
+                if (stepMode == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_FULL_2;
+                else if (stepMode == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_HALF_2;
+                else if (stepMode == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_QUARTER_2;
+                else if (stepMode == 3) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEP_MODE_EIGHTH_2;
+            }
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsOperMode(int stepperId, int operMode)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_CONTINOUS_0;
+            if (stepperId == 0)
+            {
+                if (operMode == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_CONTINOUS_0;
+                else if (operMode == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_ON_DEMAND_0;
+            }
+            if (stepperId == 1)
+            {
+                if (operMode == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_CONTINOUS_1;
+                else if (operMode == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_ON_DEMAND_1;
+            }
+            if (stepperId == 2)
+            {
+                if (operMode == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_CONTINOUS_2;
+                else if (operMode == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_OPER_MODE_ON_DEMAND_2;
+            }
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsDirection(int stepperId, int direction)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CW_0;
+            if (stepperId == 0)
+            {
+                if (direction == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CW_0;
+                else if (direction == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CCW_0;
+            }
+            if (stepperId == 1)
+            {
+                if (direction == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CW_1;
+                else if (direction == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CCW_1;
+            }
+            if (stepperId == 2)
+            {
+                if (direction == 0) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CW_2;
+                else if (direction == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_DIRECTION_CCW_2;
+            }
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsSpeed(int stepperId, int speed)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEPPER_SPEED_0;
+            if (stepperId == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEPPER_SPEED_1;
+            if (stepperId == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.SET_STEPPER_SPEED_2;
+            var msg = CreateMessage(command, subCommand, Generate8ByteArray((byte)speed, (byte)(speed>>8)), 2);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetMotorsStepsToMake(int stepperId, int steps)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.MAKE_STEPS_0;
+            if (stepperId == 1) subCommand = (byte)ECP_COMMAND_MOTORS_SET.MAKE_STEPS_1;
+            if (stepperId == 2) subCommand = (byte)ECP_COMMAND_MOTORS_SET.MAKE_STEPS_2;
+            var msg = CreateMessage(command, subCommand, Generate8ByteArray((byte)steps, (byte)(steps >> 8), (byte)(steps >> 16), (byte)(steps >> 24)), 4);
+            SendMessage(msg, comPort);
+        }
+        public void Task_SetWheelsStepsToMake(int steps)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.MAKE_STEPS_WHEELS;
+            var msg = CreateMessage(command, subCommand, Generate8ByteArray((byte)steps, (byte)(steps >> 8), (byte)(steps >> 16), (byte)(steps >> 24)), 4);
+            SendMessage(msg, comPort);
         }
         /**************************************************************/
         public void Task_SetMainMotorSpeed(int speed)

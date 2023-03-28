@@ -48020,7 +48020,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="RAIN_SENSOR" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2" value="RAIN SENSOR"/>
 <part name="R55" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="500k"/>
 <part name="GND58" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="MAIN_MOTOR" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2" value="BLADE MOTOR"/>
+<part name="MAIN_MOTOR" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2" value="MAIN MOTOR"/>
 <part name="R57" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="10R"/>
 <part name="FRAME12" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="A4L-LOC" device=""/>
 <part name="NMOS2" library="transistor-power" library_urn="urn:adsk.eagle:library:400" deviceset="BSC340N08NS3G" device="" package3d_urn="urn:adsk.eagle:package:29526/1"/>
@@ -54455,9 +54455,9 @@ Emergency light switch</text>
 <instance part="GND60" gate="1" x="27.94" y="116.84" smashed="yes" rot="R270">
 <attribute name="VALUE" x="25.4" y="119.38" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="MCU_2_I2C_EXTENDER" gate="A" x="172.72" y="38.1" smashed="yes">
-<attribute name="NAME" x="166.37" y="46.355" size="1.778" layer="95"/>
-<attribute name="VALUE" x="166.37" y="30.48" size="1.778" layer="96"/>
+<instance part="MCU_2_I2C_EXTENDER" gate="A" x="160.02" y="38.1" smashed="yes">
+<attribute name="NAME" x="153.67" y="46.355" size="1.778" layer="95"/>
+<attribute name="VALUE" x="153.67" y="30.48" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -54580,6 +54580,11 @@ Emergency light switch</text>
 <wire x1="35.56" y1="121.92" x2="35.56" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="35.56" y1="116.84" x2="30.48" y2="116.84" width="0.1524" layer="91"/>
 <pinref part="GND60" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="4"/>
+<wire x1="157.48" y1="35.56" x2="149.86" y2="35.56" width="0.1524" layer="91"/>
+<label x="149.86" y="35.56" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="GPS_TXD" class="0">
@@ -54763,6 +54768,11 @@ Emergency light switch</text>
 <label x="157.48" y="96.52" size="0.8128" layer="95" rot="R180" xref="yes"/>
 <label x="157.48" y="96.52" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
+<segment>
+<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="3"/>
+<wire x1="157.48" y1="38.1" x2="149.86" y2="38.1" width="0.1524" layer="91"/>
+<label x="149.86" y="38.1" size="0.8128" layer="95" rot="R180" xref="yes"/>
+</segment>
 </net>
 <net name="MCU_0_RAIN_SENSOR" class="0">
 <segment>
@@ -54819,8 +54829,10 @@ Emergency light switch</text>
 <segment>
 <wire x1="5.08" y1="73.66" x2="83.82" y2="73.66" width="0.1524" layer="91" style="longdash"/>
 <wire x1="83.82" y1="73.66" x2="137.16" y2="73.66" width="0.1524" layer="91" style="longdash"/>
-<wire x1="137.16" y1="73.66" x2="137.16" y2="5.08" width="0.1524" layer="91" style="longdash"/>
-<wire x1="185.42" y1="25.4" x2="185.42" y2="73.66" width="0.1524" layer="91" style="longdash"/>
+<wire x1="137.16" y1="73.66" x2="137.16" y2="53.34" width="0.1524" layer="91" style="longdash"/>
+<wire x1="137.16" y1="53.34" x2="137.16" y2="5.08" width="0.1524" layer="91" style="longdash"/>
+<wire x1="185.42" y1="25.4" x2="185.42" y2="53.34" width="0.1524" layer="91" style="longdash"/>
+<wire x1="185.42" y1="53.34" x2="185.42" y2="73.66" width="0.1524" layer="91" style="longdash"/>
 <wire x1="185.42" y1="73.66" x2="185.42" y2="96.52" width="0.1524" layer="91" style="longdash"/>
 <wire x1="185.42" y1="96.52" x2="254" y2="96.52" width="0.1524" layer="91" style="longdash"/>
 <wire x1="137.16" y1="73.66" x2="185.42" y2="73.66" width="0.1524" layer="91" style="longdash"/>
@@ -54835,6 +54847,9 @@ Emergency light switch</text>
 <wire x1="185.42" y1="142.24" x2="185.42" y2="175.26" width="0.1524" layer="91" style="longdash"/>
 <wire x1="83.82" y1="73.66" x2="83.82" y2="142.24" width="0.1524" layer="91" style="longdash"/>
 <wire x1="137.16" y1="109.22" x2="185.42" y2="109.22" width="0.1524" layer="91" style="longdash"/>
+<wire x1="185.42" y1="53.34" x2="137.16" y2="53.34" width="0.1524" layer="91" style="longdash"/>
+<junction x="185.42" y="53.34"/>
+<junction x="137.16" y="53.34"/>
 </segment>
 </net>
 <net name="LIDAR_RX" class="0">
@@ -54963,16 +54978,6 @@ Emergency light switch</text>
 <wire x1="38.1" y1="160.02" x2="30.48" y2="160.02" width="0.1524" layer="91"/>
 <label x="30.48" y="160.02" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
-<segment>
-<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="1"/>
-<wire x1="170.18" y1="43.18" x2="162.56" y2="43.18" width="0.1524" layer="91"/>
-<label x="162.56" y="43.18" size="0.8128" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
-<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="2"/>
-<wire x1="170.18" y1="40.64" x2="162.56" y2="40.64" width="0.1524" layer="91"/>
-<label x="162.56" y="40.64" size="0.8128" layer="95" rot="R180" xref="yes"/>
-</segment>
 </net>
 <net name="BLADE_MOTOR_NEG_EXT" class="0">
 <segment>
@@ -54984,16 +54989,6 @@ Emergency light switch</text>
 <pinref part="MAIN_MOTOR" gate="A" pin="4"/>
 <wire x1="38.1" y1="154.94" x2="30.48" y2="154.94" width="0.1524" layer="91"/>
 <label x="30.48" y="154.94" size="0.8128" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
-<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="3"/>
-<wire x1="170.18" y1="38.1" x2="162.56" y2="38.1" width="0.1524" layer="91"/>
-<label x="162.56" y="38.1" size="0.8128" layer="95" rot="R180" xref="yes"/>
-</segment>
-<segment>
-<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="4"/>
-<wire x1="170.18" y1="35.56" x2="162.56" y2="35.56" width="0.1524" layer="91"/>
-<label x="162.56" y="35.56" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="N$60" class="0">
@@ -55049,6 +55044,20 @@ Emergency light switch</text>
 <pinref part="NAVIGATION_UART" gate="G$1" pin="2"/>
 <wire x1="165.1" y1="63.5" x2="157.48" y2="63.5" width="0.1524" layer="91" style="longdash"/>
 <label x="157.48" y="63.5" size="0.8128" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="MCU_2_SDA" class="0">
+<segment>
+<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="1"/>
+<wire x1="157.48" y1="43.18" x2="149.86" y2="43.18" width="0.1524" layer="91"/>
+<label x="149.86" y="43.18" size="0.8128" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="MCU_2_SCL" class="0">
+<segment>
+<pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="2"/>
+<wire x1="157.48" y1="40.64" x2="149.86" y2="40.64" width="0.1524" layer="91"/>
+<label x="149.86" y="40.64" size="0.8128" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 </nets>

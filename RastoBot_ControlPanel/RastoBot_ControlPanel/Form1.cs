@@ -101,5 +101,66 @@ namespace RastoBot_ControlPanel
         {
             rastoBot.Task_ToggleFan3();
         }
+
+        private void button_stepperEnable_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsEnable(GetStepperMotorIndex());
+        }
+
+        private void button_StepperDisable_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsDisable(GetStepperMotorIndex());
+        }
+
+        private void button_StepperInit_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsInit(GetStepperMotorIndex());
+        }
+
+        private void button_stepperStop_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsStop(GetStepperMotorIndex());
+        }
+
+        private void button_stepperOperMode_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsOperMode(GetStepperMotorIndex(), GetStepperOperModeIndex());
+        }
+
+        private void button_stepperStepMode_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsStepMode(GetStepperMotorIndex(), GetStepperStepModeIndex());
+        }
+
+        private void button_stepperDirMode_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsDirection(GetStepperMotorIndex(), GetStepperDirIndex());
+        }
+
+        private void button_stepperSpeed_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsSpeed(GetStepperMotorIndex(), GetStepperSpeed());
+        }
+
+        private void button_stepperStepsToMake_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsStepsToMake(GetStepperMotorIndex(), GetStepperStepsToMake());
+        }
+
+        private void button_wheelsApplySpeed_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsStepsToMake(0, GetWheelsSpeed());
+            rastoBot.Task_SetMotorsStepsToMake(1, GetWheelsSpeed());
+        }
+
+        private void button_wheelsStepsToMakeApply_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetWheelsStepsToMake(GetWheelsStepsToMake());
+        }
+
+        private void button_initWheels_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_SetMotorsInitWheels();
+        }
     }
 }

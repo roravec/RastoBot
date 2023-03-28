@@ -48367,7 +48367,7 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 <text x="83.82" y="167.64" size="1.778" layer="91">Main input filter and protection</text>
 <text x="10.16" y="167.64" size="1.778" layer="91">Battery and charging connectors</text>
 <text x="10.16" y="116.84" size="1.778" layer="91">Main power switch</text>
-<text x="182.88" y="60.96" size="1.016" layer="91">5V (max 2A)
+<text x="119.38" y="60.96" size="1.016" layer="91">5V (max 2A)
 Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up to 2A</text>
 </plain>
 <instances>
@@ -48582,63 +48582,63 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 <attribute name="NAME" x="99.5426" y="82.677" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="94.4626" y="82.677" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="5V_REG0" gate="G$1" x="177.8" y="38.1" smashed="yes">
-<attribute name="NAME" x="167.64" y="45.72" size="1.778" layer="95" align="top-left"/>
-<attribute name="VALUE" x="167.64" y="30.48" size="1.778" layer="96"/>
+<instance part="5V_REG0" gate="G$1" x="114.3" y="38.1" smashed="yes">
+<attribute name="NAME" x="104.14" y="45.72" size="1.778" layer="95" align="top-left"/>
+<attribute name="VALUE" x="104.14" y="30.48" size="1.778" layer="96"/>
 </instance>
-<instance part="GND4" gate="1" x="195.58" y="30.48" smashed="yes">
-<attribute name="VALUE" x="193.04" y="27.94" size="1.778" layer="96"/>
+<instance part="GND4" gate="1" x="132.08" y="30.48" smashed="yes">
+<attribute name="VALUE" x="129.54" y="27.94" size="1.778" layer="96"/>
 </instance>
-<instance part="C84" gate="G$1" x="195.58" y="38.1" smashed="yes">
-<attribute name="NAME" x="197.104" y="38.481" size="1.778" layer="95"/>
-<attribute name="VALUE" x="197.104" y="33.401" size="1.778" layer="96"/>
+<instance part="C84" gate="G$1" x="132.08" y="38.1" smashed="yes">
+<attribute name="NAME" x="133.604" y="38.481" size="1.778" layer="95"/>
+<attribute name="VALUE" x="133.604" y="33.401" size="1.778" layer="96"/>
 </instance>
-<instance part="LED7" gate="G$1" x="182.88" y="50.8" smashed="yes" rot="R270">
-<attribute name="NAME" x="178.308" y="47.244" size="1.778" layer="95"/>
-<attribute name="VALUE" x="178.308" y="45.085" size="1.778" layer="96"/>
+<instance part="LED7" gate="G$1" x="119.38" y="50.8" smashed="yes" rot="R270">
+<attribute name="NAME" x="114.808" y="47.244" size="1.778" layer="95"/>
+<attribute name="VALUE" x="114.808" y="45.085" size="1.778" layer="96"/>
 </instance>
-<instance part="R61" gate="G$1" x="190.5" y="50.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="194.31" y="49.3014" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="194.31" y="54.102" size="1.778" layer="96" rot="R180"/>
+<instance part="R61" gate="G$1" x="127" y="50.8" smashed="yes" rot="R180">
+<attribute name="NAME" x="130.81" y="49.3014" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="130.81" y="54.102" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND62" gate="1" x="175.26" y="50.8" smashed="yes" rot="R270">
-<attribute name="VALUE" x="172.72" y="53.34" size="1.778" layer="96" rot="R270"/>
+<instance part="GND62" gate="1" x="111.76" y="50.8" smashed="yes" rot="R270">
+<attribute name="VALUE" x="109.22" y="53.34" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="C85" gate="G$1" x="162.56" y="38.1" smashed="yes">
-<attribute name="NAME" x="164.084" y="38.481" size="1.778" layer="95"/>
-<attribute name="VALUE" x="164.084" y="33.401" size="1.778" layer="96"/>
+<instance part="C85" gate="G$1" x="99.06" y="38.1" smashed="yes">
+<attribute name="NAME" x="100.584" y="38.481" size="1.778" layer="95"/>
+<attribute name="VALUE" x="100.584" y="33.401" size="1.778" layer="96"/>
 </instance>
-<instance part="GND64" gate="1" x="162.56" y="30.48" smashed="yes">
-<attribute name="VALUE" x="160.02" y="27.94" size="1.778" layer="96"/>
+<instance part="GND64" gate="1" x="99.06" y="30.48" smashed="yes">
+<attribute name="VALUE" x="96.52" y="27.94" size="1.778" layer="96"/>
 </instance>
-<instance part="5V_REG1" gate="G$1" x="231.14" y="38.1" smashed="yes">
-<attribute name="NAME" x="220.98" y="45.72" size="1.778" layer="95" align="top-left"/>
-<attribute name="VALUE" x="220.98" y="30.48" size="1.778" layer="96"/>
+<instance part="5V_REG1" gate="G$1" x="167.64" y="38.1" smashed="yes">
+<attribute name="NAME" x="157.48" y="45.72" size="1.778" layer="95" align="top-left"/>
+<attribute name="VALUE" x="157.48" y="30.48" size="1.778" layer="96"/>
 </instance>
-<instance part="GND66" gate="1" x="248.92" y="30.48" smashed="yes">
-<attribute name="VALUE" x="246.38" y="27.94" size="1.778" layer="96"/>
+<instance part="GND66" gate="1" x="185.42" y="30.48" smashed="yes">
+<attribute name="VALUE" x="182.88" y="27.94" size="1.778" layer="96"/>
 </instance>
-<instance part="C86" gate="G$1" x="248.92" y="38.1" smashed="yes">
-<attribute name="NAME" x="250.444" y="38.481" size="1.778" layer="95"/>
-<attribute name="VALUE" x="250.444" y="33.401" size="1.778" layer="96"/>
+<instance part="C86" gate="G$1" x="185.42" y="38.1" smashed="yes">
+<attribute name="NAME" x="186.944" y="38.481" size="1.778" layer="95"/>
+<attribute name="VALUE" x="186.944" y="33.401" size="1.778" layer="96"/>
 </instance>
-<instance part="LED8" gate="G$1" x="236.22" y="50.8" smashed="yes" rot="R270">
-<attribute name="NAME" x="231.648" y="47.244" size="1.778" layer="95"/>
-<attribute name="VALUE" x="231.648" y="45.085" size="1.778" layer="96"/>
+<instance part="LED8" gate="G$1" x="172.72" y="50.8" smashed="yes" rot="R270">
+<attribute name="NAME" x="168.148" y="47.244" size="1.778" layer="95"/>
+<attribute name="VALUE" x="168.148" y="45.085" size="1.778" layer="96"/>
 </instance>
-<instance part="R121" gate="G$1" x="243.84" y="50.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="247.65" y="49.3014" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="247.65" y="54.102" size="1.778" layer="96" rot="R180"/>
+<instance part="R121" gate="G$1" x="180.34" y="50.8" smashed="yes" rot="R180">
+<attribute name="NAME" x="184.15" y="49.3014" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="184.15" y="54.102" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND68" gate="1" x="228.6" y="50.8" smashed="yes" rot="R270">
-<attribute name="VALUE" x="226.06" y="53.34" size="1.778" layer="96" rot="R270"/>
+<instance part="GND68" gate="1" x="165.1" y="50.8" smashed="yes" rot="R270">
+<attribute name="VALUE" x="162.56" y="53.34" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="C87" gate="G$1" x="215.9" y="38.1" smashed="yes">
-<attribute name="NAME" x="217.424" y="38.481" size="1.778" layer="95"/>
-<attribute name="VALUE" x="217.424" y="33.401" size="1.778" layer="96"/>
+<instance part="C87" gate="G$1" x="152.4" y="38.1" smashed="yes">
+<attribute name="NAME" x="153.924" y="38.481" size="1.778" layer="95"/>
+<attribute name="VALUE" x="153.924" y="33.401" size="1.778" layer="96"/>
 </instance>
-<instance part="GND101" gate="1" x="215.9" y="30.48" smashed="yes">
-<attribute name="VALUE" x="213.36" y="27.94" size="1.778" layer="96"/>
+<instance part="GND101" gate="1" x="152.4" y="30.48" smashed="yes">
+<attribute name="VALUE" x="149.86" y="27.94" size="1.778" layer="96"/>
 </instance>
 <instance part="U13" gate="G$1" x="25.4" y="38.1" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.4" y="33.02" size="1.778" layer="95" rot="R180" align="bottom-center"/>
@@ -48802,9 +48802,9 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 <pinref part="C84" gate="G$1" pin="2"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 <pinref part="5V_REG0" gate="G$1" pin="GND"/>
-<wire x1="193.04" y1="35.56" x2="193.04" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="193.04" y1="33.02" x2="195.58" y2="33.02" width="0.1524" layer="91"/>
-<junction x="195.58" y="33.02"/>
+<wire x1="129.54" y1="35.56" x2="129.54" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="33.02" x2="132.08" y2="33.02" width="0.1524" layer="91"/>
+<junction x="132.08" y="33.02"/>
 </segment>
 <segment>
 <pinref part="LED7" gate="G$1" pin="C"/>
@@ -48818,9 +48818,9 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 <pinref part="C86" gate="G$1" pin="2"/>
 <pinref part="GND66" gate="1" pin="GND"/>
 <pinref part="5V_REG1" gate="G$1" pin="GND"/>
-<wire x1="246.38" y1="35.56" x2="246.38" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="246.38" y1="33.02" x2="248.92" y2="33.02" width="0.1524" layer="91"/>
-<junction x="248.92" y="33.02"/>
+<wire x1="182.88" y1="35.56" x2="182.88" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="33.02" x2="185.42" y2="33.02" width="0.1524" layer="91"/>
+<junction x="185.42" y="33.02"/>
 </segment>
 <segment>
 <pinref part="LED8" gate="G$1" pin="C"/>
@@ -48925,16 +48925,15 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 </net>
 <net name="N$38" class="0">
 <segment>
-<wire x1="5.08" y1="121.92" x2="60.96" y2="121.92" width="0.1524" layer="91" style="shortdash"/>
-<wire x1="60.96" y1="121.92" x2="60.96" y2="175.26" width="0.1524" layer="91" style="shortdash"/>
+<wire x1="5.08" y1="121.92" x2="73.66" y2="121.92" width="0.1524" layer="91" style="shortdash"/>
+<wire x1="73.66" y1="121.92" x2="73.66" y2="175.26" width="0.1524" layer="91" style="shortdash"/>
 <wire x1="149.86" y1="175.26" x2="149.86" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
 <wire x1="5.08" y1="71.12" x2="5.08" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
-<wire x1="5.08" y1="68.58" x2="60.96" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
-<wire x1="60.96" y1="68.58" x2="76.2" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
-<wire x1="76.2" y1="68.58" x2="149.86" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
-<wire x1="76.2" y1="68.58" x2="76.2" y2="5.08" width="0.1524" layer="91" style="shortdash"/>
+<wire x1="5.08" y1="68.58" x2="73.66" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
+<wire x1="73.66" y1="68.58" x2="149.86" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
+<wire x1="73.66" y1="68.58" x2="73.66" y2="5.08" width="0.1524" layer="91" style="shortdash"/>
 <wire x1="149.86" y1="68.58" x2="256.54" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
-<wire x1="60.96" y1="121.92" x2="60.96" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
+<wire x1="73.66" y1="121.92" x2="73.66" y2="68.58" width="0.1524" layer="91" style="shortdash"/>
 </segment>
 </net>
 <net name="BATT_POS_POLE" class="0">
@@ -49113,17 +49112,17 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 <net name="BATT_POS" class="0">
 <segment>
 <pinref part="5V_REG0" gate="G$1" pin="+VIN"/>
-<wire x1="162.56" y1="40.64" x2="157.48" y2="40.64" width="0.1524" layer="91"/>
-<label x="157.48" y="40.64" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="99.06" y1="40.64" x2="93.98" y2="40.64" width="0.1524" layer="91"/>
+<label x="93.98" y="40.64" size="1.778" layer="95" rot="R270" xref="yes"/>
 <pinref part="C85" gate="G$1" pin="1"/>
-<junction x="162.56" y="40.64"/>
+<junction x="99.06" y="40.64"/>
 </segment>
 <segment>
 <pinref part="5V_REG1" gate="G$1" pin="+VIN"/>
-<wire x1="215.9" y1="40.64" x2="210.82" y2="40.64" width="0.1524" layer="91"/>
-<label x="210.82" y="40.64" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="152.4" y1="40.64" x2="147.32" y2="40.64" width="0.1524" layer="91"/>
+<label x="147.32" y="40.64" size="1.778" layer="95" rot="R270" xref="yes"/>
 <pinref part="C87" gate="G$1" pin="1"/>
-<junction x="215.9" y="40.64"/>
+<junction x="152.4" y="40.64"/>
 </segment>
 <segment>
 <pinref part="3V3_REG2" gate="G$1" pin="+VIN"/>
@@ -49156,24 +49155,24 @@ Second DC-DC regulator does not have to be used if one DC-DC reg. can handle up 
 </net>
 <net name="5V" class="0">
 <segment>
-<wire x1="195.58" y1="40.64" x2="200.66" y2="40.64" width="0.1524" layer="91"/>
-<junction x="195.58" y="40.64"/>
-<label x="200.66" y="40.64" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="132.08" y1="40.64" x2="137.16" y2="40.64" width="0.1524" layer="91"/>
+<junction x="132.08" y="40.64"/>
+<label x="137.16" y="40.64" size="1.778" layer="95" rot="R90" xref="yes"/>
 <pinref part="C84" gate="G$1" pin="1"/>
 <pinref part="R61" gate="G$1" pin="1"/>
-<wire x1="195.58" y1="50.8" x2="195.58" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="132.08" y1="50.8" x2="132.08" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="5V_REG0" gate="G$1" pin="+VOUT"/>
-<wire x1="193.04" y1="40.64" x2="195.58" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="40.64" x2="132.08" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="248.92" y1="40.64" x2="254" y2="40.64" width="0.1524" layer="91"/>
-<junction x="248.92" y="40.64"/>
-<label x="254" y="40.64" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="185.42" y1="40.64" x2="190.5" y2="40.64" width="0.1524" layer="91"/>
+<junction x="185.42" y="40.64"/>
+<label x="190.5" y="40.64" size="1.778" layer="95" rot="R90" xref="yes"/>
 <pinref part="C86" gate="G$1" pin="1"/>
 <pinref part="R121" gate="G$1" pin="1"/>
-<wire x1="248.92" y1="50.8" x2="248.92" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="50.8" x2="185.42" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="5V_REG1" gate="G$1" pin="+VOUT"/>
-<wire x1="246.38" y1="40.64" x2="248.92" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="40.64" x2="185.42" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$122" class="0">

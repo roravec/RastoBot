@@ -54431,9 +54431,9 @@ Emergency light switch</text>
 <attribute name="NAME" x="102.87" y="113.2586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="102.87" y="108.458" size="1.778" layer="96"/>
 </instance>
-<instance part="D2" gate="G$1" x="99.06" y="109.22" smashed="yes" rot="R270">
-<attribute name="NAME" x="100.965" y="110.998" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="95.631" y="110.998" size="1.778" layer="96" rot="R270"/>
+<instance part="D2" gate="G$1" x="99.06" y="109.22" smashed="yes" rot="R90">
+<attribute name="NAME" x="97.155" y="107.442" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="102.489" y="107.442" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="LIGHT_SENSOR" gate="G$1" x="226.06" y="162.56" smashed="yes">
 <attribute name="NAME" x="219.71" y="168.275" size="1.778" layer="95"/>
@@ -54530,7 +54530,7 @@ Emergency light switch</text>
 <wire x1="119.38" y1="109.22" x2="111.76" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="111.76" y1="109.22" x2="111.76" y2="106.68" width="0.1524" layer="91"/>
 <junction x="111.76" y="106.68"/>
-<pinref part="D2" gate="G$1" pin="C"/>
+<pinref part="D2" gate="G$1" pin="A"/>
 <wire x1="99.06" y1="106.68" x2="111.76" y2="106.68" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -54959,16 +54959,6 @@ Emergency light switch</text>
 <label x="17.78" y="99.06" size="0.8128" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
-<net name="PERIMETER_WIRE_SENSE" class="0">
-<segment>
-<pinref part="R4" gate="G$1" pin="1"/>
-<pinref part="D2" gate="G$1" pin="A"/>
-<wire x1="99.06" y1="111.76" x2="101.6" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="111.76" x2="91.44" y2="111.76" width="0.1524" layer="91"/>
-<junction x="99.06" y="111.76"/>
-<label x="91.44" y="111.76" size="0.8128" layer="95" rot="R270" xref="yes"/>
-</segment>
-</net>
 <net name="MCU_0_LIGHT_SENSOR" class="0">
 <segment>
 <pinref part="R66" gate="G$1" pin="1"/>
@@ -55067,6 +55057,16 @@ Emergency light switch</text>
 <pinref part="MCU_2_I2C_EXTENDER" gate="A" pin="2"/>
 <wire x1="165.1" y1="40.64" x2="157.48" y2="40.64" width="0.1524" layer="91"/>
 <label x="157.48" y="40.64" size="0.8128" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="PERIMETER_WIRE_SENSE" class="0">
+<segment>
+<pinref part="D2" gate="G$1" pin="C"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="99.06" y1="111.76" x2="101.6" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="111.76" x2="93.98" y2="111.76" width="0.1524" layer="91"/>
+<junction x="99.06" y="111.76"/>
+<label x="93.98" y="111.76" size="0.4064" layer="95" rot="R270" xref="yes"/>
 </segment>
 </net>
 </nets>

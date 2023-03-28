@@ -36,13 +36,11 @@ void MCU1_Init(void);
 void MCU1_Loop(void);
 
 
-
 /* Getters */
-
+Stepper * MCU1_GetStepperByHwId(uint8_t id);
 
 /* Setters */
 void MCU1_SetMainMotorSpeed(uint8_t);
-Stepper * MCU1_GetStepperByHwId(uint8_t id);
 void MCU1_SetStepperDirection(uint8_t id, StepperDirection dir);
 void MCU1_SetStepperSpeed(uint8_t id, uint16_t speed);
 void MCU1_SetStepperMakeSteps(uint8_t stepperHwId, uint32_t steps);

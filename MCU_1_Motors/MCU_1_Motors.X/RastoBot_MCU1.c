@@ -30,23 +30,22 @@ void MCU1_Init(void)
 {
     RarrayCreate(&sendPacket, sendPacketArr, ECP_MAX_PACKET_LEN);
     PWM_Init();
-    UART_Init();
-    Stepper_Init(&steppers[0], STEPPER_LEFT_WHEEL,     STEPPER_QUARTER_STEP, STEPPER_CW);
-    Stepper_Init(&steppers[1], STEPPER_RIGHT_WHEEL,      STEPPER_QUARTER_STEP, STEPPER_CCW);
-    Stepper_Init(&steppers[2], STEPPER_LEVELING,        STEPPER_QUARTER_STEP, STEPPER_CW);
+    Stepper_Init(&steppers[0], STEPPER_LEFT_WHEEL,  STEPPER_QUARTER_STEP, STEPPER_CW);
+    Stepper_Init(&steppers[1], STEPPER_RIGHT_WHEEL, STEPPER_QUARTER_STEP, STEPPER_CCW);
+    Stepper_Init(&steppers[2], STEPPER_LEVELING,    STEPPER_QUARTER_STEP, STEPPER_CW);
     MCU1_SetStepperEnable(STEPPER_LEFT_WHEEL);
     MCU1_SetStepperEnable(STEPPER_RIGHT_WHEEL);
-    //MCU1_SetStepperEnable(STEPPER_LEVELING);
+    MCU1_SetStepperEnable(STEPPER_LEVELING);
     
     //Stepper_MakeSteps(&steppers[0],100);
-    
+    UART_Init();
 }
 uint16_t loopCounter = 0;
 
 // Main MCU loop - should be called every 10ms
 void MCU1_Loop(void)
 {
-    MAIN_MOTOR_LAT = ~MAIN_MOTOR_LAT;
+    //MAIN_MOTOR_LAT = ~MAIN_MOTOR_LAT;
     MCU1_DoTasks();
     loopCounter++;
 }
@@ -169,6 +168,7 @@ static void MCU1_TaskSendStatusData(void)
     RastoBot_Encode_Motors_1(&sendMessage, &statusData);
     ECP_EncodeExtended(&sendMessage, &sendPacket,ECP_DATA_SIZE_MCU1_TO_MCU2);
     UART_WriteData(sendPacket.data, sendPacket.size);
+    
     RastoBot_Encode_Motors_2(&sendMessage, &statusData);
     ECP_EncodeExtended(&sendMessage, &sendPacket,ECP_DATA_SIZE_MCU1_TO_MCU2);
     UART_WriteData(sendPacket.data, sendPacket.size);
@@ -231,9 +231,9 @@ static void MCU1_DoMessageAction(ECP_Message * msg)
             case 101: MCU1_SetStepperStop(1); break;
             case 102: MCU1_SetStepperStop(2); break;
             
-            case 110: MCU1_SetStepperOperMode(0,STEPPER_CONTINOUS); break;
-            case 111: MCU1_SetStepperOperMode(1,STEPPER_CONTINOUS); break;
-            case 112: MCU1_SetStepperOperMode(2,STEPPER_CONTINOUS); break;
+//            case 110: MCU1_SetStepperOperMode(0,STEPPER_CONTINOUS); break;
+//            case 111: MCU1_SetStepperOperMode(1,STEPPER_CONTINOUS); break;
+//            case 112: MCU1_SetStepperOperMode(2,STEPPER_CONTINOUS); break;
             
             case 120: MCU1_SetStepperSpeed(0,(msg->data[1]<<8|msg->data[0])); break;
             case 121: MCU1_SetStepperSpeed(1,(msg->data[1]<<8|msg->data[0])); break;
@@ -254,6 +254,18 @@ static void MCU1_DoMessageAction(ECP_Message * msg)
                     msg->data[2]<<16 |
                     msg->data[1]<<8  |
                     msg->data[0])); break;
+                    
+             case 140: MCU1_SetStepperMakeSteps(0,(
+                    msg->data[3]<<24 |
+                    msg->data[2]<<16 |
+                    msg->data[1]<<8  |
+                    msg->data[0])); 
+                    MCU1_SetStepperMakeSteps(1,(
+                    msg->data[3]<<24 |
+                    msg->data[2]<<16 |
+                    msg->data[1]<<8  |
+                    msg->data[0]));
+                    break;
             
             case 30: MCU1_LevelingReferenceRun(); break;
             case 31: MCU1_LevelingGoToPosition(msg->data[0]); break;
