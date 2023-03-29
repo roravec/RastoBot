@@ -1,5 +1,6 @@
 #include "RastoBot_MCU1.h"
 /* GLOBALS */
+uint32_t loopCounter = 0;
 MCU_1_Motors statusData;
 MCU_1_WheelsMotorControl wheelsSetting;
 
@@ -8,6 +9,10 @@ Rarray sendPacket;
 ECP_Message sendMessage;
 
 static Stepper steppers[MCU1_STEPPERS];
+
+static uint16_t levelingPosition = 0;
+static uint32_t levelingPauseUntil = 0; // pause until loop counter
+static _Bool referenceRunRunning = 0;
 
 /* STATIC FUNCTIONS ***********************************************************/
 static void MCU1_DoTasks(void);
@@ -38,9 +43,11 @@ void MCU1_Init(void)
     MCU1_SetStepperEnable(STEPPER_LEVELING);
     
     //Stepper_MakeSteps(&steppers[0],100);
+    //STEPDRV_1_ENABLE_LAT = 1;
+    //STEPDRV_1_STEP_LAT = 1;
     UART_Init();
+    MCU1_LevelingReferenceRun();
 }
-uint16_t loopCounter = 0;
 
 // Main MCU loop - should be called every 10ms
 void MCU1_Loop(void)
@@ -48,6 +55,15 @@ void MCU1_Loop(void)
     //MAIN_MOTOR_LAT = ~MAIN_MOTOR_LAT;
     MCU1_DoTasks();
     loopCounter++;
+    if (loopCounter > levelingPauseUntil)
+    {
+        levelingPauseUntil = 0;
+        if (referenceRunRunning)
+        {
+            referenceRunRunning = 0;
+            MCU1_LevelingGoToPosition(MCU1_LEVELING_TOTAL_POSITIONS / 2);
+        }
+    }
 }
 
 void MCU1_SetMainMotorSpeed(uint8_t speed)
@@ -114,11 +130,43 @@ void MCU1_SetStepperDisable(uint8_t stepperHwId)
     Stepper_Disable(stepper);
     statusData.stepperEnabled[stepperHwId] = 0;
 }
+
+_Bool MCU1_LevelingIsWaiting()
+{
+    if (loopCounter >= levelingPauseUntil)
+        return 0;
+    else return 1;
+}
+
 void MCU1_LevelingReferenceRun(void)
 {
+    if (MCU1_LevelingIsWaiting())
+        return;
+    referenceRunRunning = 1;
+    levelingPauseUntil = loopCounter + MCU1_LEVELING_REFRUN_LOOP_TICKS;
+    MCU1_SetStepperDirection(2,STEPPER_CW);
+    MCU1_SetStepperMakeSteps(2,MCU1_LEVELING_REFRUN_STEPS);
+    levelingPosition = 0;
 }
+
 void MCU1_LevelingGoToPosition(uint8_t position)
 {
+    if (MCU1_LevelingIsWaiting() || position > MCU1_LEVELING_TOTAL_POSITIONS)
+        return;
+    uint8_t diff = 0;
+    if (position > levelingPosition)
+    {
+        MCU1_SetStepperDirection(2,STEPPER_CCW);
+        diff = position - levelingPosition;
+    }
+    else
+    {
+        MCU1_SetStepperDirection(2,STEPPER_CW);
+        diff = levelingPosition - position;
+    }
+    MCU1_SetStepperMakeSteps(2,MCU1_LEVELING_STEPS_PER_POS * diff);
+    levelingPauseUntil = loopCounter + (MCU1_LEVELING_TIME_PER_STEP * (MCU1_LEVELING_STEPS_PER_POS * diff));
+    levelingPosition = position;
 }
 void MCU1_SetWheelSteppersByStruct()
 {

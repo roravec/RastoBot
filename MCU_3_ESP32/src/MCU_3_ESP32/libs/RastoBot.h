@@ -26,12 +26,14 @@ extern "C" {
 #define ECP_COMMAND_MOTORS_STATUS           111
 #define ECP_COMMAND_MOTORS_STATUS_DLC       12
 #define ECP_COMMAND_MOTORS_SET              211
+#define ECP_COMMAND_NAVIGATION_SET          202
     
 #define ECP_COMMAND_GYRO_STATUS             121
 #define ECP_COMMAND_GPS_STATUS              122
 #define ECP_COMMAND_LIDAR_STATUS            123
 #define ECP_COMMAND_POSITION_STATUS         124     // combined position data LIDAR, compass, gyro
 #define ECP_COMMAND_SENSORSMOTORS_STATUS    125     // combined sensors and motors status data
+#define ECP_COMMAND_MAPUPDATE               126     // maps update
 
 #define ECP_COMMAND_WHEELS_SET_DLC          14
     
@@ -174,7 +176,7 @@ void RastoBot_Decode_Position(
         MCU_2_GPSData * gps, 
         ECP_Message * in);
 ECP_Message * RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors * sensors, MCU_1_Motors * motors);
-MCU_0_Sensors * RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in);
+void RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in);
 void Lidar_ParseData(MCU_2_LidarData * lidarDataOut, uint8_t * data, uint8_t size);
 
 #ifdef	__cplusplus

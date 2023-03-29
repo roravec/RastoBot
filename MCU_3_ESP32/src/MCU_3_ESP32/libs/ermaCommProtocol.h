@@ -64,6 +64,7 @@ extern "C" {
 #endif
 
 #include "rarray.h"
+    
 #define ECP_MAX_DATA_BYTES  255
 #ifdef PIC18F47J13         // PIC18F47J13
     #undef ECP_MAX_DATA_BYTES
@@ -139,7 +140,7 @@ ECP_Message *   ECP_CreateMessageCommand(ECP_Message * messOut, uint8_t command,
 ECP_Message *   ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
 ECP_Message *   ECP_DecodeRarray(ECP_Message * messOut, Rarray * ecpRaw); // calls ECP_Decode(ECP_Message * messOut, uint8_t * ecpRaw, uint16_t ecpRawLen);
 Rarray *        ECP_Encode(ECP_Message * message, Rarray * out);
-Rarray *        ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minDataLen);
+Rarray *        ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint16_t minDataLen);
 int8_t          ECP_FindECPPacket(Rarray * in, Rarray * out);
 
 void            ECP_RecvBufferInit(void);

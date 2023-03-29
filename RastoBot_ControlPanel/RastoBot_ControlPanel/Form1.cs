@@ -162,5 +162,25 @@ namespace RastoBot_ControlPanel
         {
             rastoBot.Task_SetMotorsInitWheels();
         }
+
+        private void button_levelingRefRun_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_LevelingReferenceRun();
+        }
+
+        private void button_levelingGoTo_Click(object sender, EventArgs e)
+        {
+            rastoBot.Task_LevelingGoTo(GetLevelingPosition());
+        }
+
+        private void button_demo1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_demo2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

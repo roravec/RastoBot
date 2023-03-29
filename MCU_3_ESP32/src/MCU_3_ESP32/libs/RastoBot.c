@@ -562,6 +562,73 @@ ECP_Message * RastoBot_Encode_Position(
     out->data[63] = gps->hours;
     out->dlc = 64;
     
+//        // Lidar
+//    out->data[0] = 0;
+//    out->data[1] = 0;
+//    out->data[2] = 0;
+//    out->data[3] = 0;
+//    out->data[4] = 0;
+//    out->data[5] = 0;
+//    out->data[6] = 0;
+//    out->data[7] = 0;
+//    out->data[8] = 0;
+//    out->data[9] = 0;
+//    out->data[10] = 0;
+//    out->data[11] = 0;
+//    out->data[12] = 0;
+//    out->data[13] = 0;
+//    out->data[14] = 0;
+//    out->data[15] = 0;
+//    out->data[16] = 0;
+//    out->data[17] = 0;
+//    out->data[18] = 0;
+//    out->data[19] = 0;
+//    out->data[20] = 0;
+//    out->data[21] = 0;
+//    out->data[22] = 0;
+//    out->data[23] = 0;
+//    out->data[24] = 0;
+//    out->data[25] = 0;
+//    out->data[26] = 0;
+//    out->data[27] = 0;
+//    out->data[28] = 0;
+//    out->data[29] = 0;
+//    out->data[30] = 0;
+//    out->data[31] = 0;
+//    out->data[32] = 0;
+//    out->data[33] = 0;
+//    out->data[34] = 0;
+//    out->data[35] = 0;
+//    out->data[36] = 0;
+//    out->data[37] = 0;
+//    out->data[38] = 0;
+//    out->data[39] = 0;
+//    out->data[40] = 0;
+//    out->data[41] = 0;
+//    out->data[42] = 0;
+//    out->data[43] = 0;
+//    out->data[44] = 0;
+//    out->data[45] = 0;
+//    out->data[46] = 0;
+//    out->data[47] = 0;
+//    out->data[48] = 0;
+//    out->data[49] = 0;
+//    out->data[50] = 0;
+//    out->data[51] = 0;
+//    out->data[52] = 0;
+//    out->data[53] = 0;
+//    out->data[54] = 0;
+//    out->data[55] = 0;
+//    out->data[56] = 0;
+//    out->data[57] = 0;
+//    out->data[58] = 0;
+//    out->data[59] = 0;
+//    out->data[60] = 0;
+//    out->data[61] = 0;
+//    out->data[62] = 0;
+//    out->data[63] = 0;
+//    out->dlc = 64;
+    
     return out;
 }
 
@@ -628,10 +695,10 @@ ECP_Message *   RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors *
     out->data[1] = (uint8_t)sensors->batteryVoltage;
     out->data[2] = (uint8_t)(sensors->externalVoltage>>8);
     out->data[3] = (uint8_t)sensors->externalVoltage;
-    out->data[4] = (uint8_t)sensors->temperatures[0];
-    out->data[5] = (uint8_t)sensors->temperatures[1];
-    out->data[6] = (uint8_t)sensors->temperatures[2];
-    out->data[7] = (uint8_t)sensors->temperatures[3];
+    out->data[4] = (int8_t)sensors->temperatures[0];
+    out->data[5] = (int8_t)sensors->temperatures[1];
+    out->data[6] = (int8_t)sensors->temperatures[2];
+    out->data[7] = (int8_t)sensors->temperatures[3];
     out->data[8] = (uint8_t)sensors->humidities[0];
     out->data[9] = (uint8_t)sensors->humidities[1];
     out->data[10] = (uint8_t)sensors->humidities[2];
@@ -693,7 +760,7 @@ ECP_Message *   RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors *
     return out;
 }
 
-MCU_0_Sensors * RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in)
+void RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * motorsOut, ECP_Message * in)
 {
     uint8_t index = 0;
     // sensors

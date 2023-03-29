@@ -40,7 +40,7 @@
 #pragma config IESO = OFF               // Two Speed Startup Enable bit (Two speed startup is enabled)
 #pragma config POSCMOD = OFF             // Primary Oscillator Selection bit (Primary oscillator is disabled)
 #pragma config OSCIOFNC = OFF           // System Clock on CLKO Pin Enable bit (OSCO pin operates as a normal I/O)
-#pragma config SOSCSEL = OFF            // Secondary Oscillator External Clock Enable bit (SOSC pins configured for Crystal mode)
+#pragma config SOSCSEL = ON            // Secondary Oscillator External Clock Enable bit (SOSC pins configured for Crystal mode)
 #pragma config FCKSM = CSECME           // Clock Switching and Fail-Safe Clock Monitor Enable bits (Clock switching is enabled; Fail-safe clock monitor is enabled)
 
 // FSEC

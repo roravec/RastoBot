@@ -334,6 +334,22 @@ namespace RastoBot_ControlPanel
             return Math.Round(value, 1);
         }
 
+        public void Task_LevelingReferenceRun()
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.LEVELING_REFERENCE_RUN;
+            var msg = CreateMessage(command, subCommand, defaultDataMCU3, 0);
+            SendMessage(msg, comPort);
+        }
+
+        public void Task_LevelingGoTo(int position)
+        {
+            byte command = (byte)MessageCommand.ECP_COMMAND_MOTORS_SET;
+            byte subCommand = (byte)ECP_COMMAND_MOTORS_SET.LEVELING_GO_TO;
+            var msg = CreateMessage(command, subCommand, Generate8ByteArray((byte)position), 1);
+            SendMessage(msg, comPort);
+        }
+
         public void Task_SetMotorsInit(int stepperId)
         {
             Task_SetMotorsEnable(stepperId);

@@ -48,6 +48,10 @@ namespace RastoBot_ControlPanel
             button_wheelsStepsToMakeApply.Enabled = false;
             button_stepperDirMode.Enabled = false;
             button_stepperStepsToMake.Enabled = false;
+            button_demo1.Enabled= false;
+            button_demo2.Enabled= false;
+            button_levelingGoTo.Enabled = false;
+            button_levelingRefRun.Enabled = false;
         }
         private void ButtonsEnable(Control ct)
         {
@@ -70,6 +74,10 @@ namespace RastoBot_ControlPanel
             button_wheelsStepsToMakeApply.Enabled = true;
             button_stepperDirMode.Enabled = true;
             button_stepperStepsToMake.Enabled = true;
+            button_demo1.Enabled = true;
+            button_demo2.Enabled = true;
+            button_levelingGoTo.Enabled = true;
+            button_levelingRefRun.Enabled = true;
         }
         private void ReloadComPorts()
         {
@@ -252,6 +260,22 @@ namespace RastoBot_ControlPanel
         public int GetStepperDirIndex()
         {
             return comboBox_direction.SelectedIndex;
+        }
+        public int GetLevelingPosition()
+        {
+            String textboxValue = textBox_levelingGoToPos.Text;
+            Int32 i = 0;
+            if (!String.IsNullOrWhiteSpace(textboxValue) && // Not empty
+                Int32.TryParse(textboxValue, out i))
+            { // Valid integer
+              // The textbox had a valid integer. i=1
+            }
+            else
+            {
+                // The texbox had a bogus value. i=default(Int32)=0
+                // You can also specify a different fallback value here.
+            }
+            return i;
         }
         public int GetStepperSpeed()
         {

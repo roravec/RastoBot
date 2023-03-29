@@ -56,7 +56,7 @@ Rarray * ECP_Encode(ECP_Message * message, Rarray * out)
 {
     return ECP_EncodeExtended(message, out, 0);
 }
-Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minDataLen)
+Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint16_t minDataLen)
 {
     uint16_t currentIndex = 0;
     out->data[currentIndex++] = ECP_START_BYTE;
@@ -65,8 +65,8 @@ Rarray * ECP_EncodeExtended(ECP_Message * message, Rarray * out, uint8_t minData
     out->data[currentIndex++] = message->subCommand;
     out->data[currentIndex++] = ~out->data[(currentIndex-1)];
     out->data[currentIndex++] = message->dlc > minDataLen ? message->dlc : minDataLen;
-    uint8_t dataIndex = 0;
-    for (uint8_t j=currentIndex; dataIndex < message->dlc && dataIndex < ECP_MAX_DATA_BYTES;dataIndex++)
+    uint16_t dataIndex = 0;
+    for (uint16_t j=currentIndex; dataIndex < message->dlc && dataIndex < ECP_MAX_DATA_BYTES;dataIndex++)
         out->data[currentIndex++] = message->data[dataIndex];
     for (; dataIndex < minDataLen; dataIndex++)
         out->data[currentIndex++] = ECP_EMPTY_DATA;
@@ -139,10 +139,8 @@ void ECP_ReceivedByte(uint8_t data)
     ECP_ReceivedByteCust(data, &ecpRecvBuffer);
 }
 
-uint8_t * arrRasto;
 ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer)
 {
-    arrRasto = ecpBuffer->buffer.data;
     if (!ecpBuffer->buffer.created) // if array wasn't initialized then exit
         return ECP_UNKNOWN;
     if (!ecpBuffer->startByteDetected && data == ECP_START_BYTE) // waiting for start byte
@@ -222,13 +220,16 @@ ECP_PacketValidity ECP_ReceivedByteCust(uint8_t data, ECP_Buffer * ecpBuffer)
 }
 ECP_PacketValidity ECP_ParseEnqueueRawDataBlock(uint8_t * packet, uint8_t len)
 {
-    uint8_t data[ECP_MAX_DATA_BYTES];
+    if (len < 6) // invalid packet size
+        return ECP_INVALID_PACKET_SIZE;
+    uint8_t data[packet[5]];
     if (packet[5] > 0) // if data is more than 0 then get data from raw packet
     {
         for (uint8_t i=0; i < packet[5] && i<ECP_MAX_DATA_BYTES ;i++)
-            data[i] = packet[i];
+            data[i] = packet[ECP_PATTERN_LEN+i];
     }
     ECP_EnqueueData(packet[1], packet[3], packet[5], data);
+    return ECP_VALID;
 }
 
 ECP_PacketValidity ECP_CheckPacketValidity(uint8_t * packet, uint8_t len)
@@ -347,8 +348,8 @@ static void ECP_BufferMessageEnqueue(ECP_Buffer * ecpRecvBuffer)
     uint8_t data[ECP_MAX_DATA_BYTES];
     if (ecpRecvBuffer->dlc > 0)
     {
-        for (uint8_t i=0,j=ECP_PATTERN_LEN; i < ecpRecvBuffer->dlc ;i++)
-            data[i] = ecpRecvBuffer->buffer.data[j+i];
+        for (uint16_t i=0; i < ecpRecvBuffer->dlc ;i++)
+            data[i] = ecpRecvBuffer->buffer.data[ECP_PATTERN_LEN+i];
     }
     ECP_EnqueueData(
             ecpRecvBuffer->command,
@@ -371,14 +372,16 @@ void ECP_EnqueueData(uint8_t command, uint8_t subComm, uint8_t dlc, uint8_t * da
     int8_t index = ECP_GetFreeQueueIndex();
     if (index > -1) // queue is not full
     {
+        memset(ecpMessagesQueue[index].data,0x00,ECP_MAX_DATA_BYTES);// clear data
         //ECP_QueueShiftRight(); // shift all current messages to right to free the first index
         ecpMessagesQueue[index].command = command;
         ecpMessagesQueue[index].subCommand = subComm;
         ecpMessagesQueue[index].dlc = dlc;
         if (ecpMessagesQueue[index].dlc > 0)
         {
-            for (uint8_t i=0; i<ecpMessagesQueue[0].dlc ;i++)
-                ecpMessagesQueue[index].data[i] = data[i];
+            memcpy(ecpMessagesQueue[index].data, data, dlc);
+//            for (uint16_t i=0; i<ecpMessagesQueue[index].dlc ;i++)
+//                ecpMessagesQueue[index].data[i] = data[i];
             ecpMessagesQueue[index].msgType = ECP_COMDATA;
         }
         else

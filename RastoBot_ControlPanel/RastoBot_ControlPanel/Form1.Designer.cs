@@ -127,6 +127,13 @@
             this.label24 = new System.Windows.Forms.Label();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.button_levelingGoTo = new System.Windows.Forms.Button();
+            this.button_levelingRefRun = new System.Windows.Forms.Button();
+            this.textBox_levelingGoToPos = new System.Windows.Forms.TextBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.button_demo1 = new System.Windows.Forms.Button();
+            this.button_demo2 = new System.Windows.Forms.Button();
             this.tempBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -140,6 +147,7 @@
             this.groupBox9.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox11.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -707,7 +715,7 @@
             this.groupBox5.Controls.Add(this.checkBox_powerOut0);
             this.groupBox5.Controls.Add(this.checkBox_powerOut2);
             this.groupBox5.Controls.Add(this.checkBox_powerOut3);
-            this.groupBox5.Location = new System.Drawing.Point(471, 184);
+            this.groupBox5.Location = new System.Drawing.Point(486, 78);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(136, 160);
             this.groupBox5.TabIndex = 39;
@@ -754,7 +762,7 @@
             this.groupBox6.Controls.Add(this.checkBox_led1);
             this.groupBox6.Controls.Add(this.checkBox_led0);
             this.groupBox6.Controls.Add(this.checkBox_led2);
-            this.groupBox6.Location = new System.Drawing.Point(622, 184);
+            this.groupBox6.Location = new System.Drawing.Point(631, 78);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(71, 100);
             this.groupBox6.TabIndex = 43;
@@ -1151,11 +1159,86 @@
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Raw inbound data";
             // 
+            // groupBox12
+            // 
+            this.groupBox12.Controls.Add(this.button_levelingGoTo);
+            this.groupBox12.Controls.Add(this.button_levelingRefRun);
+            this.groupBox12.Controls.Add(this.textBox_levelingGoToPos);
+            this.groupBox12.Controls.Add(this.label31);
+            this.groupBox12.Location = new System.Drawing.Point(486, 256);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(208, 100);
+            this.groupBox12.TabIndex = 53;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Leveling";
+            // 
+            // button_levelingGoTo
+            // 
+            this.button_levelingGoTo.Location = new System.Drawing.Point(111, 55);
+            this.button_levelingGoTo.Name = "button_levelingGoTo";
+            this.button_levelingGoTo.Size = new System.Drawing.Size(67, 23);
+            this.button_levelingGoTo.TabIndex = 72;
+            this.button_levelingGoTo.Text = "Go";
+            this.button_levelingGoTo.UseVisualStyleBackColor = true;
+            this.button_levelingGoTo.Click += new System.EventHandler(this.button_levelingGoTo_Click);
+            // 
+            // button_levelingRefRun
+            // 
+            this.button_levelingRefRun.Location = new System.Drawing.Point(90, 0);
+            this.button_levelingRefRun.Name = "button_levelingRefRun";
+            this.button_levelingRefRun.Size = new System.Drawing.Size(101, 23);
+            this.button_levelingRefRun.TabIndex = 73;
+            this.button_levelingRefRun.Text = "Reference run";
+            this.button_levelingRefRun.UseVisualStyleBackColor = true;
+            this.button_levelingRefRun.Click += new System.EventHandler(this.button_levelingRefRun_Click);
+            // 
+            // textBox_levelingGoToPos
+            // 
+            this.textBox_levelingGoToPos.Location = new System.Drawing.Point(13, 56);
+            this.textBox_levelingGoToPos.MaxLength = 4;
+            this.textBox_levelingGoToPos.Name = "textBox_levelingGoToPos";
+            this.textBox_levelingGoToPos.PlaceholderText = "Number";
+            this.textBox_levelingGoToPos.Size = new System.Drawing.Size(65, 23);
+            this.textBox_levelingGoToPos.TabIndex = 70;
+            this.textBox_levelingGoToPos.Text = "20";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(13, 38);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(125, 15);
+            this.label31.TabIndex = 71;
+            this.label31.Text = "Go to position (0 - 20):";
+            // 
+            // button_demo1
+            // 
+            this.button_demo1.Location = new System.Drawing.Point(568, 24);
+            this.button_demo1.Name = "button_demo1";
+            this.button_demo1.Size = new System.Drawing.Size(60, 43);
+            this.button_demo1.TabIndex = 54;
+            this.button_demo1.Text = "Demo 1";
+            this.button_demo1.UseVisualStyleBackColor = true;
+            this.button_demo1.Click += new System.EventHandler(this.button_demo1_Click);
+            // 
+            // button_demo2
+            // 
+            this.button_demo2.Location = new System.Drawing.Point(642, 24);
+            this.button_demo2.Name = "button_demo2";
+            this.button_demo2.Size = new System.Drawing.Size(60, 43);
+            this.button_demo2.TabIndex = 55;
+            this.button_demo2.Text = "Demo 2";
+            this.button_demo2.UseVisualStyleBackColor = true;
+            this.button_demo2.Click += new System.EventHandler(this.button_demo2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1135, 623);
+            this.Controls.Add(this.button_demo2);
+            this.Controls.Add(this.button_demo1);
+            this.Controls.Add(this.groupBox12);
             this.Controls.Add(this.groupBox11);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox9);
@@ -1196,6 +1279,8 @@
             this.groupBox10.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1303,5 +1388,12 @@
         private Label label29;
         private GroupBox groupBox10;
         private GroupBox groupBox11;
+        private GroupBox groupBox12;
+        private Button button_levelingGoTo;
+        private Button button_levelingRefRun;
+        private TextBox textBox_levelingGoToPos;
+        private Label label31;
+        private Button button_demo1;
+        private Button button_demo2;
     }
 }

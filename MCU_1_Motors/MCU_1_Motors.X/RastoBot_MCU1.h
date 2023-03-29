@@ -18,6 +18,13 @@
 #define MCU1_MOTOR_CONTROL_EVERY        1
 #define MCU1_SEND_STATUS_DATA_EVERY     1000
 
+#define MCU1_LEVELING_REFRUN_STEPS      10000UL
+#define MCU1_LEVELING_REFRUN_LOOP_TICKS 10500UL        // for ho many tick it will be impossible to control leveling
+#define MCU1_LEVELING_TOTAL_STEPS       10000UL
+#define MCU1_LEVELING_TOTAL_POSITIONS   20
+#define MCU1_LEVELING_STEPS_PER_POS     (MCU1_LEVELING_TOTAL_STEPS / MCU1_LEVELING_TOTAL_POSITIONS)
+#define MCU1_LEVELING_TIME_PER_STEP     (MCU1_LEVELING_REFRUN_LOOP_TICKS / 10000UL)
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
@@ -49,6 +56,7 @@ void MCU1_SetStepperOperMode(uint8_t stepperHwId, StepperOperMode mode);
 void MCU1_SetStepperStop(uint8_t stepperHwId);
 void MCU1_SetStepperEnable(uint8_t id);
 void MCU1_SetStepperDisable(uint8_t id);
+_Bool MCU1_LevelingIsWaiting();
 void MCU1_LevelingReferenceRun(void);
 void MCU1_LevelingGoToPosition(uint8_t position);
 
