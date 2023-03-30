@@ -240,7 +240,7 @@ static void MCU1_DoMessageAction(ECP_Message * msg)
     {
         switch (msg->subCommand)
         {
-            case 90: MCU1_SetMainMotorSpeed(msg->data[0]);
+            case 90: MCU1_SetMainMotorSpeed(msg->data[0]); break;
             case 0: MCU1_SetStepperDisable(0); break;
             case 10: MCU1_SetStepperDisable(1); break;
             case 20: MCU1_SetStepperDisable(2); break;

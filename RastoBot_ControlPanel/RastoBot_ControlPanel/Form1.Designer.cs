@@ -134,6 +134,60 @@
             this.label31 = new System.Windows.Forms.Label();
             this.button_demo1 = new System.Windows.Forms.Button();
             this.button_demo2 = new System.Windows.Forms.Button();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.textBox_azimuth = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
+            this.textBox_perimWire = new System.Windows.Forms.TextBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.textBox_accel_Y = new System.Windows.Forms.TextBox();
+            this.label42 = new System.Windows.Forms.Label();
+            this.textBox_accel_Z = new System.Windows.Forms.TextBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.textBox_accel_X = new System.Windows.Forms.TextBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.textBox_gyro_Y = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.textBox_gyro_Z = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.textBox_gyro_X = new System.Windows.Forms.TextBox();
+            this.label41 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.textBox_compass_Y = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.textBox_compass_Z = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.textBox_compass_X = new System.Windows.Forms.TextBox();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.label47 = new System.Windows.Forms.Label();
+            this.textBox_gpsSatellites = new System.Windows.Forms.TextBox();
+            this.textBox_gpsHour = new System.Windows.Forms.TextBox();
+            this.label61 = new System.Windows.Forms.Label();
+            this.textBox_gpsLat = new System.Windows.Forms.TextBox();
+            this.textBox_gpsSec = new System.Windows.Forms.TextBox();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label60 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.textBox_gpsAlt = new System.Windows.Forms.TextBox();
+            this.textBox_gpsMin = new System.Windows.Forms.TextBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.textBox_gpsLong = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
+            this.label58 = new System.Windows.Forms.Label();
+            this.textBox_gpsSpeed = new System.Windows.Forms.TextBox();
+            this.textBox_gpsDay = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
+            this.textBox_gpsCourse = new System.Windows.Forms.TextBox();
+            this.textBox_gpsYear = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label56 = new System.Windows.Forms.Label();
+            this.textBox_gpsMonth = new System.Windows.Forms.TextBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
             this.tempBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -148,6 +202,9 @@
             this.groupBox10.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox12.SuspendLayout();
+            this.groupBox13.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            this.groupBox15.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -208,7 +265,7 @@
             this.textBox_Log.MaxLength = 10000;
             this.textBox_Log.Multiline = true;
             this.textBox_Log.Name = "textBox_Log";
-            this.textBox_Log.Size = new System.Drawing.Size(376, 567);
+            this.textBox_Log.Size = new System.Drawing.Size(366, 800);
             this.textBox_Log.TabIndex = 5;
             // 
             // button_Disconnect
@@ -238,7 +295,7 @@
             this.tempBox.Controls.Add(this.tb_temperature2);
             this.tempBox.Controls.Add(this.tb_temperature1);
             this.tempBox.Controls.Add(this.tb_temperature0);
-            this.tempBox.Location = new System.Drawing.Point(192, 184);
+            this.tempBox.Location = new System.Drawing.Point(12, 194);
             this.tempBox.Name = "tempBox";
             this.tempBox.Size = new System.Drawing.Size(258, 172);
             this.tempBox.TabIndex = 7;
@@ -514,9 +571,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(585, 526);
+            this.button1.Location = new System.Drawing.Point(604, 20);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(108, 91);
+            this.button1.Size = new System.Drawing.Size(98, 51);
             this.button1.TabIndex = 29;
             this.button1.Text = "Beep";
             this.button1.UseVisualStyleBackColor = true;
@@ -548,7 +605,7 @@
             this.groupBox2.Controls.Add(this.textBox_battVoltage);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.textBox_ExtVoltage);
-            this.groupBox2.Location = new System.Drawing.Point(12, 78);
+            this.groupBox2.Location = new System.Drawing.Point(12, 88);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(133, 90);
             this.groupBox2.TabIndex = 31;
@@ -587,7 +644,7 @@
             this.groupBox3.Controls.Add(this.textBox_current0);
             this.groupBox3.Controls.Add(this.textBox_current1);
             this.groupBox3.Controls.Add(this.textBox_current2);
-            this.groupBox3.Location = new System.Drawing.Point(12, 184);
+            this.groupBox3.Location = new System.Drawing.Point(339, 635);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(162, 143);
             this.groupBox3.TabIndex = 32;
@@ -690,7 +747,7 @@
             this.groupBox4.Controls.Add(this.label16);
             this.groupBox4.Controls.Add(this.textBox_rain);
             this.groupBox4.Controls.Add(this.textBox_light);
-            this.groupBox4.Location = new System.Drawing.Point(161, 78);
+            this.groupBox4.Location = new System.Drawing.Point(542, 88);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(160, 90);
             this.groupBox4.TabIndex = 37;
@@ -702,9 +759,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(17, 22);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(107, 19);
+            this.checkBox1.Size = new System.Drawing.Size(66, 19);
             this.checkBox1.TabIndex = 38;
-            this.checkBox1.Text = "Manual control";
+            this.checkBox1.Text = "Manual";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -715,9 +772,9 @@
             this.groupBox5.Controls.Add(this.checkBox_powerOut0);
             this.groupBox5.Controls.Add(this.checkBox_powerOut2);
             this.groupBox5.Controls.Add(this.checkBox_powerOut3);
-            this.groupBox5.Location = new System.Drawing.Point(486, 78);
+            this.groupBox5.Location = new System.Drawing.Point(614, 194);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(136, 160);
+            this.groupBox5.Size = new System.Drawing.Size(88, 172);
             this.groupBox5.TabIndex = 39;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Fans";
@@ -762,7 +819,7 @@
             this.groupBox6.Controls.Add(this.checkBox_led1);
             this.groupBox6.Controls.Add(this.checkBox_led0);
             this.groupBox6.Controls.Add(this.checkBox_led2);
-            this.groupBox6.Location = new System.Drawing.Point(631, 78);
+            this.groupBox6.Location = new System.Drawing.Point(584, 517);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(71, 100);
             this.groupBox6.TabIndex = 43;
@@ -790,7 +847,7 @@
             // 
             this.progressBar_mainMotor.Location = new System.Drawing.Point(13, 62);
             this.progressBar_mainMotor.Name = "progressBar_mainMotor";
-            this.progressBar_mainMotor.Size = new System.Drawing.Size(201, 32);
+            this.progressBar_mainMotor.Size = new System.Drawing.Size(201, 28);
             this.progressBar_mainMotor.Step = 1;
             this.progressBar_mainMotor.TabIndex = 45;
             // 
@@ -1066,7 +1123,7 @@
             this.groupBox9.Controls.Add(this.label24);
             this.groupBox9.Location = new System.Drawing.Point(339, 381);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(354, 120);
+            this.groupBox9.Size = new System.Drawing.Size(363, 120);
             this.groupBox9.TabIndex = 50;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Wheels control";
@@ -1142,7 +1199,7 @@
             // 
             this.groupBox10.Controls.Add(this.checkBox_powerOut4);
             this.groupBox10.Controls.Add(this.checkBox_TiltSensor);
-            this.groupBox10.Location = new System.Drawing.Point(339, 78);
+            this.groupBox10.Location = new System.Drawing.Point(392, 88);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(131, 90);
             this.groupBox10.TabIndex = 51;
@@ -1152,9 +1209,9 @@
             // groupBox11
             // 
             this.groupBox11.Controls.Add(this.textBox_Log);
-            this.groupBox11.Location = new System.Drawing.Point(717, 12);
+            this.groupBox11.Location = new System.Drawing.Point(729, 12);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(408, 605);
+            this.groupBox11.Size = new System.Drawing.Size(396, 838);
             this.groupBox11.TabIndex = 52;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Raw inbound data";
@@ -1165,9 +1222,9 @@
             this.groupBox12.Controls.Add(this.button_levelingRefRun);
             this.groupBox12.Controls.Add(this.textBox_levelingGoToPos);
             this.groupBox12.Controls.Add(this.label31);
-            this.groupBox12.Location = new System.Drawing.Point(486, 256);
+            this.groupBox12.Location = new System.Drawing.Point(166, 88);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(208, 100);
+            this.groupBox12.Size = new System.Drawing.Size(208, 90);
             this.groupBox12.TabIndex = 53;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Leveling";
@@ -1213,9 +1270,9 @@
             // 
             // button_demo1
             // 
-            this.button_demo1.Location = new System.Drawing.Point(568, 24);
+            this.button_demo1.Location = new System.Drawing.Point(13, 22);
             this.button_demo1.Name = "button_demo1";
-            this.button_demo1.Size = new System.Drawing.Size(60, 43);
+            this.button_demo1.Size = new System.Drawing.Size(60, 29);
             this.button_demo1.TabIndex = 54;
             this.button_demo1.Text = "Demo 1";
             this.button_demo1.UseVisualStyleBackColor = true;
@@ -1223,21 +1280,538 @@
             // 
             // button_demo2
             // 
-            this.button_demo2.Location = new System.Drawing.Point(642, 24);
+            this.button_demo2.Location = new System.Drawing.Point(91, 23);
             this.button_demo2.Name = "button_demo2";
-            this.button_demo2.Size = new System.Drawing.Size(60, 43);
+            this.button_demo2.Size = new System.Drawing.Size(60, 28);
             this.button_demo2.TabIndex = 55;
             this.button_demo2.Text = "Demo 2";
             this.button_demo2.UseVisualStyleBackColor = true;
             this.button_demo2.Click += new System.EventHandler(this.button_demo2_Click);
             // 
+            // groupBox13
+            // 
+            this.groupBox13.Controls.Add(this.label45);
+            this.groupBox13.Controls.Add(this.textBox_azimuth);
+            this.groupBox13.Controls.Add(this.label46);
+            this.groupBox13.Controls.Add(this.textBox_perimWire);
+            this.groupBox13.Controls.Add(this.label37);
+            this.groupBox13.Controls.Add(this.label38);
+            this.groupBox13.Controls.Add(this.textBox_accel_Y);
+            this.groupBox13.Controls.Add(this.label42);
+            this.groupBox13.Controls.Add(this.textBox_accel_Z);
+            this.groupBox13.Controls.Add(this.label43);
+            this.groupBox13.Controls.Add(this.textBox_accel_X);
+            this.groupBox13.Controls.Add(this.label33);
+            this.groupBox13.Controls.Add(this.label34);
+            this.groupBox13.Controls.Add(this.textBox_gyro_Y);
+            this.groupBox13.Controls.Add(this.label35);
+            this.groupBox13.Controls.Add(this.textBox_gyro_Z);
+            this.groupBox13.Controls.Add(this.label36);
+            this.groupBox13.Controls.Add(this.textBox_gyro_X);
+            this.groupBox13.Controls.Add(this.label41);
+            this.groupBox13.Controls.Add(this.label40);
+            this.groupBox13.Controls.Add(this.textBox_compass_Y);
+            this.groupBox13.Controls.Add(this.label39);
+            this.groupBox13.Controls.Add(this.textBox_compass_Z);
+            this.groupBox13.Controls.Add(this.label32);
+            this.groupBox13.Controls.Add(this.textBox_compass_X);
+            this.groupBox13.Location = new System.Drawing.Point(288, 194);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(306, 172);
+            this.groupBox13.TabIndex = 56;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "Gyroscope data";
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(165, 136);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(52, 15);
+            this.label45.TabIndex = 67;
+            this.label45.Text = "Azimuth";
+            // 
+            // textBox_azimuth
+            // 
+            this.textBox_azimuth.Location = new System.Drawing.Point(228, 133);
+            this.textBox_azimuth.Name = "textBox_azimuth";
+            this.textBox_azimuth.ReadOnly = true;
+            this.textBox_azimuth.Size = new System.Drawing.Size(42, 23);
+            this.textBox_azimuth.TabIndex = 66;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(23, 136);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(66, 15);
+            this.label46.TabIndex = 65;
+            this.label46.Text = "Perim. wire";
+            // 
+            // textBox_perimWire
+            // 
+            this.textBox_perimWire.Location = new System.Drawing.Point(100, 133);
+            this.textBox_perimWire.Name = "textBox_perimWire";
+            this.textBox_perimWire.ReadOnly = true;
+            this.textBox_perimWire.Size = new System.Drawing.Size(42, 23);
+            this.textBox_perimWire.TabIndex = 64;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(23, 100);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(39, 15);
+            this.label37.TabIndex = 59;
+            this.label37.Text = "Accel.";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(151, 100);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(14, 15);
+            this.label38.TabIndex = 63;
+            this.label38.Text = "Y";
+            // 
+            // textBox_accel_Y
+            // 
+            this.textBox_accel_Y.Location = new System.Drawing.Point(171, 97);
+            this.textBox_accel_Y.Name = "textBox_accel_Y";
+            this.textBox_accel_Y.ReadOnly = true;
+            this.textBox_accel_Y.Size = new System.Drawing.Size(42, 23);
+            this.textBox_accel_Y.TabIndex = 62;
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(228, 100);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(14, 15);
+            this.label42.TabIndex = 61;
+            this.label42.Text = "Z";
+            // 
+            // textBox_accel_Z
+            // 
+            this.textBox_accel_Z.Location = new System.Drawing.Point(248, 97);
+            this.textBox_accel_Z.Name = "textBox_accel_Z";
+            this.textBox_accel_Z.ReadOnly = true;
+            this.textBox_accel_Z.Size = new System.Drawing.Size(42, 23);
+            this.textBox_accel_Z.TabIndex = 60;
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(80, 100);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(14, 15);
+            this.label43.TabIndex = 58;
+            this.label43.Text = "X";
+            // 
+            // textBox_accel_X
+            // 
+            this.textBox_accel_X.Location = new System.Drawing.Point(100, 97);
+            this.textBox_accel_X.Name = "textBox_accel_X";
+            this.textBox_accel_X.ReadOnly = true;
+            this.textBox_accel_X.Size = new System.Drawing.Size(42, 23);
+            this.textBox_accel_X.TabIndex = 57;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(30, 66);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(32, 15);
+            this.label33.TabIndex = 52;
+            this.label33.Text = "Gyro";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(151, 66);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(14, 15);
+            this.label34.TabIndex = 56;
+            this.label34.Text = "Y";
+            // 
+            // textBox_gyro_Y
+            // 
+            this.textBox_gyro_Y.Location = new System.Drawing.Point(171, 63);
+            this.textBox_gyro_Y.Name = "textBox_gyro_Y";
+            this.textBox_gyro_Y.ReadOnly = true;
+            this.textBox_gyro_Y.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gyro_Y.TabIndex = 55;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(228, 66);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(14, 15);
+            this.label35.TabIndex = 54;
+            this.label35.Text = "Z";
+            // 
+            // textBox_gyro_Z
+            // 
+            this.textBox_gyro_Z.Location = new System.Drawing.Point(248, 63);
+            this.textBox_gyro_Z.Name = "textBox_gyro_Z";
+            this.textBox_gyro_Z.ReadOnly = true;
+            this.textBox_gyro_Z.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gyro_Z.TabIndex = 53;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(80, 66);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(14, 15);
+            this.label36.TabIndex = 51;
+            this.label36.Text = "X";
+            // 
+            // textBox_gyro_X
+            // 
+            this.textBox_gyro_X.Location = new System.Drawing.Point(100, 63);
+            this.textBox_gyro_X.Name = "textBox_gyro_X";
+            this.textBox_gyro_X.ReadOnly = true;
+            this.textBox_gyro_X.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gyro_X.TabIndex = 50;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(6, 30);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(56, 15);
+            this.label41.TabIndex = 39;
+            this.label41.Text = "Compass";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(151, 30);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(14, 15);
+            this.label40.TabIndex = 49;
+            this.label40.Text = "Y";
+            // 
+            // textBox_compass_Y
+            // 
+            this.textBox_compass_Y.Location = new System.Drawing.Point(171, 27);
+            this.textBox_compass_Y.Name = "textBox_compass_Y";
+            this.textBox_compass_Y.ReadOnly = true;
+            this.textBox_compass_Y.Size = new System.Drawing.Size(42, 23);
+            this.textBox_compass_Y.TabIndex = 48;
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(228, 30);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(14, 15);
+            this.label39.TabIndex = 47;
+            this.label39.Text = "Z";
+            // 
+            // textBox_compass_Z
+            // 
+            this.textBox_compass_Z.Location = new System.Drawing.Point(248, 27);
+            this.textBox_compass_Z.Name = "textBox_compass_Z";
+            this.textBox_compass_Z.ReadOnly = true;
+            this.textBox_compass_Z.Size = new System.Drawing.Size(42, 23);
+            this.textBox_compass_Z.TabIndex = 46;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(80, 30);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(14, 15);
+            this.label32.TabIndex = 33;
+            this.label32.Text = "X";
+            // 
+            // textBox_compass_X
+            // 
+            this.textBox_compass_X.Location = new System.Drawing.Point(100, 27);
+            this.textBox_compass_X.Name = "textBox_compass_X";
+            this.textBox_compass_X.ReadOnly = true;
+            this.textBox_compass_X.Size = new System.Drawing.Size(42, 23);
+            this.textBox_compass_X.TabIndex = 32;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.label47);
+            this.groupBox14.Controls.Add(this.textBox_gpsSatellites);
+            this.groupBox14.Controls.Add(this.textBox_gpsHour);
+            this.groupBox14.Controls.Add(this.label61);
+            this.groupBox14.Controls.Add(this.textBox_gpsLat);
+            this.groupBox14.Controls.Add(this.textBox_gpsSec);
+            this.groupBox14.Controls.Add(this.label49);
+            this.groupBox14.Controls.Add(this.label60);
+            this.groupBox14.Controls.Add(this.label48);
+            this.groupBox14.Controls.Add(this.textBox_gpsAlt);
+            this.groupBox14.Controls.Add(this.textBox_gpsMin);
+            this.groupBox14.Controls.Add(this.label59);
+            this.groupBox14.Controls.Add(this.textBox_gpsLong);
+            this.groupBox14.Controls.Add(this.label51);
+            this.groupBox14.Controls.Add(this.label58);
+            this.groupBox14.Controls.Add(this.textBox_gpsSpeed);
+            this.groupBox14.Controls.Add(this.textBox_gpsDay);
+            this.groupBox14.Controls.Add(this.label52);
+            this.groupBox14.Controls.Add(this.label57);
+            this.groupBox14.Controls.Add(this.textBox_gpsCourse);
+            this.groupBox14.Controls.Add(this.textBox_gpsYear);
+            this.groupBox14.Controls.Add(this.label53);
+            this.groupBox14.Controls.Add(this.label56);
+            this.groupBox14.Controls.Add(this.textBox_gpsMonth);
+            this.groupBox14.Controls.Add(this.label54);
+            this.groupBox14.Controls.Add(this.label55);
+            this.groupBox14.Location = new System.Drawing.Point(12, 635);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(315, 215);
+            this.groupBox14.TabIndex = 57;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "GPS";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(28, 59);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(26, 15);
+            this.label47.TabIndex = 96;
+            this.label47.Text = "Lat.";
+            // 
+            // textBox_gpsSatellites
+            // 
+            this.textBox_gpsSatellites.Location = new System.Drawing.Point(80, 22);
+            this.textBox_gpsSatellites.Name = "textBox_gpsSatellites";
+            this.textBox_gpsSatellites.ReadOnly = true;
+            this.textBox_gpsSatellites.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsSatellites.TabIndex = 84;
+            // 
+            // textBox_gpsHour
+            // 
+            this.textBox_gpsHour.Location = new System.Drawing.Point(68, 141);
+            this.textBox_gpsHour.Name = "textBox_gpsHour";
+            this.textBox_gpsHour.ReadOnly = true;
+            this.textBox_gpsHour.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsHour.TabIndex = 70;
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(48, 144);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(16, 15);
+            this.label61.TabIndex = 71;
+            this.label61.Text = "H";
+            // 
+            // textBox_gpsLat
+            // 
+            this.textBox_gpsLat.Location = new System.Drawing.Point(60, 55);
+            this.textBox_gpsLat.Name = "textBox_gpsLat";
+            this.textBox_gpsLat.ReadOnly = true;
+            this.textBox_gpsLat.Size = new System.Drawing.Size(95, 23);
+            this.textBox_gpsLat.TabIndex = 95;
+            // 
+            // textBox_gpsSec
+            // 
+            this.textBox_gpsSec.Location = new System.Drawing.Point(216, 141);
+            this.textBox_gpsSec.Name = "textBox_gpsSec";
+            this.textBox_gpsSec.ReadOnly = true;
+            this.textBox_gpsSec.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsSec.TabIndex = 73;
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(161, 26);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(49, 15);
+            this.label49.TabIndex = 92;
+            this.label49.Text = "Altitude";
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(196, 144);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(12, 15);
+            this.label60.TabIndex = 74;
+            this.label60.Text = "s";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(17, 87);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(37, 15);
+            this.label48.TabIndex = 94;
+            this.label48.Text = "Long.";
+            // 
+            // textBox_gpsAlt
+            // 
+            this.textBox_gpsAlt.Location = new System.Drawing.Point(216, 22);
+            this.textBox_gpsAlt.Name = "textBox_gpsAlt";
+            this.textBox_gpsAlt.ReadOnly = true;
+            this.textBox_gpsAlt.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsAlt.TabIndex = 91;
+            // 
+            // textBox_gpsMin
+            // 
+            this.textBox_gpsMin.Location = new System.Drawing.Point(139, 141);
+            this.textBox_gpsMin.Name = "textBox_gpsMin";
+            this.textBox_gpsMin.ReadOnly = true;
+            this.textBox_gpsMin.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsMin.TabIndex = 75;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(119, 144);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(18, 15);
+            this.label59.TabIndex = 76;
+            this.label59.Text = "M";
+            // 
+            // textBox_gpsLong
+            // 
+            this.textBox_gpsLong.Location = new System.Drawing.Point(60, 84);
+            this.textBox_gpsLong.Name = "textBox_gpsLong";
+            this.textBox_gpsLong.ReadOnly = true;
+            this.textBox_gpsLong.Size = new System.Drawing.Size(95, 23);
+            this.textBox_gpsLong.TabIndex = 93;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(169, 88);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(39, 15);
+            this.label51.TabIndex = 90;
+            this.label51.Text = "Speed";
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(8, 144);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(33, 15);
+            this.label58.TabIndex = 72;
+            this.label58.Text = "Time";
+            // 
+            // textBox_gpsSpeed
+            // 
+            this.textBox_gpsSpeed.Location = new System.Drawing.Point(216, 84);
+            this.textBox_gpsSpeed.Name = "textBox_gpsSpeed";
+            this.textBox_gpsSpeed.ReadOnly = true;
+            this.textBox_gpsSpeed.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsSpeed.TabIndex = 89;
+            // 
+            // textBox_gpsDay
+            // 
+            this.textBox_gpsDay.Location = new System.Drawing.Point(68, 177);
+            this.textBox_gpsDay.Name = "textBox_gpsDay";
+            this.textBox_gpsDay.ReadOnly = true;
+            this.textBox_gpsDay.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsDay.TabIndex = 77;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(166, 55);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(44, 15);
+            this.label52.TabIndex = 88;
+            this.label52.Text = "Course";
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(48, 180);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(15, 15);
+            this.label57.TabIndex = 78;
+            this.label57.Text = "D";
+            // 
+            // textBox_gpsCourse
+            // 
+            this.textBox_gpsCourse.Location = new System.Drawing.Point(216, 55);
+            this.textBox_gpsCourse.Name = "textBox_gpsCourse";
+            this.textBox_gpsCourse.ReadOnly = true;
+            this.textBox_gpsCourse.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsCourse.TabIndex = 87;
+            // 
+            // textBox_gpsYear
+            // 
+            this.textBox_gpsYear.Location = new System.Drawing.Point(216, 177);
+            this.textBox_gpsYear.Name = "textBox_gpsYear";
+            this.textBox_gpsYear.ReadOnly = true;
+            this.textBox_gpsYear.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsYear.TabIndex = 80;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(13, 27);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(53, 15);
+            this.label53.TabIndex = 85;
+            this.label53.Text = "Satellites";
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(196, 180);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(14, 15);
+            this.label56.TabIndex = 81;
+            this.label56.Text = "Y";
+            // 
+            // textBox_gpsMonth
+            // 
+            this.textBox_gpsMonth.Location = new System.Drawing.Point(139, 177);
+            this.textBox_gpsMonth.Name = "textBox_gpsMonth";
+            this.textBox_gpsMonth.ReadOnly = true;
+            this.textBox_gpsMonth.Size = new System.Drawing.Size(42, 23);
+            this.textBox_gpsMonth.TabIndex = 82;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(10, 180);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(31, 15);
+            this.label54.TabIndex = 79;
+            this.label54.Text = "Date";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(119, 180);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(18, 15);
+            this.label55.TabIndex = 83;
+            this.label55.Text = "M";
+            // 
+            // groupBox15
+            // 
+            this.groupBox15.Controls.Add(this.button_demo2);
+            this.groupBox15.Controls.Add(this.button_demo1);
+            this.groupBox15.Location = new System.Drawing.Point(339, 784);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(363, 66);
+            this.groupBox15.TabIndex = 58;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Demo runs";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1135, 623);
-            this.Controls.Add(this.button_demo2);
-            this.Controls.Add(this.button_demo1);
+            this.ClientSize = new System.Drawing.Size(1137, 862);
+            this.Controls.Add(this.groupBox15);
+            this.Controls.Add(this.groupBox14);
+            this.Controls.Add(this.groupBox13);
             this.Controls.Add(this.groupBox12);
             this.Controls.Add(this.groupBox11);
             this.Controls.Add(this.groupBox10);
@@ -1281,6 +1855,11 @@
             this.groupBox11.PerformLayout();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            this.groupBox15.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1395,5 +1974,59 @@
         private Label label31;
         private Button button_demo1;
         private Button button_demo2;
+        private GroupBox groupBox13;
+        private Label label40;
+        private TextBox textBox_compass_Y;
+        private Label label39;
+        private TextBox textBox_compass_Z;
+        private Label label32;
+        private TextBox textBox_compass_X;
+        private Label label37;
+        private Label label38;
+        private TextBox textBox_accel_Y;
+        private Label label42;
+        private TextBox textBox_accel_Z;
+        private Label label43;
+        private TextBox textBox_accel_X;
+        private Label label33;
+        private Label label34;
+        private TextBox textBox_gyro_Y;
+        private Label label35;
+        private TextBox textBox_gyro_Z;
+        private Label label36;
+        private TextBox textBox_gyro_X;
+        private Label label41;
+        private Label label45;
+        private TextBox textBox_azimuth;
+        private Label label46;
+        private TextBox textBox_perimWire;
+        private GroupBox groupBox14;
+        private Label label47;
+        private TextBox textBox_gpsSatellites;
+        private TextBox textBox_gpsLat;
+        private TextBox textBox_gpsHour;
+        private Label label48;
+        private Label label61;
+        private TextBox textBox_gpsLong;
+        private TextBox textBox_gpsSec;
+        private Label label49;
+        private Label label60;
+        private TextBox textBox_gpsAlt;
+        private TextBox textBox_gpsMin;
+        private Label label59;
+        private Label label51;
+        private Label label58;
+        private TextBox textBox_gpsSpeed;
+        private TextBox textBox_gpsDay;
+        private Label label52;
+        private Label label57;
+        private TextBox textBox_gpsCourse;
+        private TextBox textBox_gpsYear;
+        private Label label53;
+        private Label label56;
+        private TextBox textBox_gpsMonth;
+        private Label label54;
+        private Label label55;
+        private GroupBox groupBox15;
     }
 }

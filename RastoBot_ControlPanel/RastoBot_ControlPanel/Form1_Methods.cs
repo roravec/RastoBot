@@ -410,6 +410,40 @@ namespace RastoBot_ControlPanel
             ChangeCheckBoxValue(checkBox_powerOut4, sensors.powerOutputs[4]);
 
             ChangeProgressBarValue(progressBar_mainMotor, motors.mainMotorSpeed);
+
+            ChangeTextBoxValue(textBox_accel_X, rastoBot.gyro.accelX.ToString());
+            ChangeTextBoxValue(textBox_accel_Y, rastoBot.gyro.accelY.ToString());
+            ChangeTextBoxValue(textBox_accel_Z, rastoBot.gyro.accelZ.ToString());
+            ChangeTextBoxValue(textBox_gyro_X, rastoBot.gyro.gyroX.ToString());
+            ChangeTextBoxValue(textBox_gyro_Y, rastoBot.gyro.gyroY.ToString());
+            ChangeTextBoxValue(textBox_gyro_Z, rastoBot.gyro.gyroZ.ToString());
+            ChangeTextBoxValue(textBox_compass_X, rastoBot.gyro.magnetX.ToString());
+            ChangeTextBoxValue(textBox_compass_Y, rastoBot.gyro.magnetY.ToString());
+            ChangeTextBoxValue(textBox_compass_Z, rastoBot.gyro.magnetZ.ToString());
+            ChangeTextBoxValue(textBox_perimWire, rastoBot.gyro.perimeterWire.ToString());
+            ChangeTextBoxValue(textBox_azimuth, rastoBot.gyro.azimuth.ToString());
+            //ChangeTextBoxValue(textBox_compassTemp, rastoBot.gyro.temperature.ToString());
+
+            ChangeTextBoxValue(textBox_gpsAlt, rastoBot.gps.altitude.ToString());
+            ChangeTextBoxValue(textBox_gpsCourse, rastoBot.gps.course.ToString());
+            ChangeTextBoxValue(textBox_gpsSatellites, rastoBot.gps.satellites.ToString());
+            ChangeTextBoxValue(textBox_gpsSpeed, rastoBot.gps.speed.ToString());
+            String latString = "";
+            if (rastoBot.gps.latDir)
+                latString = "-";
+            String longString = "";
+            if (rastoBot.gps.lonDir)
+                longString = "-";
+            latString += rastoBot.gps.latitude.ToString();
+            longString += rastoBot.gps.longitude.ToString();
+            ChangeTextBoxValue(textBox_gpsLat, latString);
+            ChangeTextBoxValue(textBox_gpsLong, longString);
+            ChangeTextBoxValue(textBox_gpsHour, rastoBot.gps.hours.ToString());
+            ChangeTextBoxValue(textBox_gpsSec, rastoBot.gps.seconds.ToString());
+            ChangeTextBoxValue(textBox_gpsMin, rastoBot.gps.minutes.ToString());
+            ChangeTextBoxValue(textBox_gpsDay, rastoBot.gps.day.ToString());
+            ChangeTextBoxValue(textBox_gpsMonth, rastoBot.gps.month.ToString());
+            ChangeTextBoxValue(textBox_gpsYear, rastoBot.gps.year.ToString());
         }
 
         public static void UiUpdater()

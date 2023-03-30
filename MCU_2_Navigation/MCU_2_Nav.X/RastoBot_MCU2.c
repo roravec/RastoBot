@@ -471,8 +471,8 @@ static void MCU2_DoTasks(void)
         MCU2_TaskCheckForNewReceivedData();
     if (loopCounter % MCU2_SEND_STATUS_DATA_EVERY == 0)
         MCU2_TaskSendStatusData();
-//    if (loopCounter % MCU2_SEND_POSITION_DATA_EVERY == 0)
-//        MCU2_TaskSendPositionData();
+    if (loopCounter % MCU2_SEND_POSITION_DATA_EVERY == 0)
+        MCU2_TaskSendPositionData();
     if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
         MCU2_TaskReadPerimeterWire();
     if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
