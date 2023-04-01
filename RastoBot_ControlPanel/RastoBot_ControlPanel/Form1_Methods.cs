@@ -444,6 +444,10 @@ namespace RastoBot_ControlPanel
             ChangeTextBoxValue(textBox_gpsDay, rastoBot.gps.day.ToString());
             ChangeTextBoxValue(textBox_gpsMonth, rastoBot.gps.month.ToString());
             ChangeTextBoxValue(textBox_gpsYear, rastoBot.gps.year.ToString());
+
+            ChangeCheckBoxValue(checkBox_s0move, motors.stepperInMove[0]);
+            ChangeCheckBoxValue(checkBox_s1move, motors.stepperInMove[1]);
+            ChangeCheckBoxValue(checkBox_s2move, motors.stepperInMove[2]);
         }
 
         public static void UiUpdater()

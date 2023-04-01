@@ -118,8 +118,11 @@
             this.label17 = new System.Windows.Forms.Label();
             this.comboBox_OperMode = new System.Windows.Forms.ComboBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.checkBox_s2move = new System.Windows.Forms.CheckBox();
+            this.checkBox_s1move = new System.Windows.Forms.CheckBox();
             this.button_initWheels = new System.Windows.Forms.Button();
             this.button_wheelsStepsToMakeApply = new System.Windows.Forms.Button();
+            this.checkBox_s0move = new System.Windows.Forms.CheckBox();
             this.button_wheelsApplySpeed = new System.Windows.Forms.Button();
             this.textBox_wheelsSpeed = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
@@ -188,6 +191,7 @@
             this.label54 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.label44 = new System.Windows.Forms.Label();
             this.tempBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1114,12 +1118,16 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.label44);
             this.groupBox9.Controls.Add(this.button_initWheels);
+            this.groupBox9.Controls.Add(this.checkBox_s2move);
             this.groupBox9.Controls.Add(this.button_wheelsStepsToMakeApply);
+            this.groupBox9.Controls.Add(this.checkBox_s1move);
             this.groupBox9.Controls.Add(this.button_wheelsApplySpeed);
             this.groupBox9.Controls.Add(this.textBox_wheelsSpeed);
             this.groupBox9.Controls.Add(this.label23);
             this.groupBox9.Controls.Add(this.textBox_wheelsStepsToMake);
+            this.groupBox9.Controls.Add(this.checkBox_s0move);
             this.groupBox9.Controls.Add(this.label24);
             this.groupBox9.Location = new System.Drawing.Point(339, 381);
             this.groupBox9.Name = "groupBox9";
@@ -1127,6 +1135,28 @@
             this.groupBox9.TabIndex = 50;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Wheels control";
+            // 
+            // checkBox_s2move
+            // 
+            this.checkBox_s2move.AutoSize = true;
+            this.checkBox_s2move.Enabled = false;
+            this.checkBox_s2move.Location = new System.Drawing.Point(201, 54);
+            this.checkBox_s2move.Name = "checkBox_s2move";
+            this.checkBox_s2move.Size = new System.Drawing.Size(38, 19);
+            this.checkBox_s2move.TabIndex = 60;
+            this.checkBox_s2move.Text = "S2";
+            this.checkBox_s2move.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_s1move
+            // 
+            this.checkBox_s1move.AutoSize = true;
+            this.checkBox_s1move.Enabled = false;
+            this.checkBox_s1move.Location = new System.Drawing.Point(157, 54);
+            this.checkBox_s1move.Name = "checkBox_s1move";
+            this.checkBox_s1move.Size = new System.Drawing.Size(38, 19);
+            this.checkBox_s1move.TabIndex = 61;
+            this.checkBox_s1move.Text = "S1";
+            this.checkBox_s1move.UseVisualStyleBackColor = true;
             // 
             // button_initWheels
             // 
@@ -1140,13 +1170,24 @@
             // 
             // button_wheelsStepsToMakeApply
             // 
-            this.button_wheelsStepsToMakeApply.Location = new System.Drawing.Point(233, 66);
+            this.button_wheelsStepsToMakeApply.Location = new System.Drawing.Point(233, 79);
             this.button_wheelsStepsToMakeApply.Name = "button_wheelsStepsToMakeApply";
-            this.button_wheelsStepsToMakeApply.Size = new System.Drawing.Size(112, 42);
+            this.button_wheelsStepsToMakeApply.Size = new System.Drawing.Size(112, 31);
             this.button_wheelsStepsToMakeApply.TabIndex = 68;
             this.button_wheelsStepsToMakeApply.Text = "Apply";
             this.button_wheelsStepsToMakeApply.UseVisualStyleBackColor = true;
             this.button_wheelsStepsToMakeApply.Click += new System.EventHandler(this.button_wheelsStepsToMakeApply_Click);
+            // 
+            // checkBox_s0move
+            // 
+            this.checkBox_s0move.AutoSize = true;
+            this.checkBox_s0move.Enabled = false;
+            this.checkBox_s0move.Location = new System.Drawing.Point(113, 54);
+            this.checkBox_s0move.Name = "checkBox_s0move";
+            this.checkBox_s0move.Size = new System.Drawing.Size(38, 19);
+            this.checkBox_s0move.TabIndex = 59;
+            this.checkBox_s0move.Text = "S0";
+            this.checkBox_s0move.UseVisualStyleBackColor = true;
             // 
             // button_wheelsApplySpeed
             // 
@@ -1160,18 +1201,18 @@
             // 
             // textBox_wheelsSpeed
             // 
-            this.textBox_wheelsSpeed.Location = new System.Drawing.Point(150, 23);
+            this.textBox_wheelsSpeed.Location = new System.Drawing.Point(214, 23);
             this.textBox_wheelsSpeed.MaxLength = 4;
             this.textBox_wheelsSpeed.Name = "textBox_wheelsSpeed";
             this.textBox_wheelsSpeed.PlaceholderText = "Number";
-            this.textBox_wheelsSpeed.Size = new System.Drawing.Size(121, 23);
+            this.textBox_wheelsSpeed.Size = new System.Drawing.Size(58, 23);
             this.textBox_wheelsSpeed.TabIndex = 63;
             this.textBox_wheelsSpeed.Text = "1023";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(33, 80);
+            this.label23.Location = new System.Drawing.Point(73, 87);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(81, 15);
             this.label23.TabIndex = 66;
@@ -1179,17 +1220,17 @@
             // 
             // textBox_wheelsStepsToMake
             // 
-            this.textBox_wheelsStepsToMake.Location = new System.Drawing.Point(120, 77);
+            this.textBox_wheelsStepsToMake.Location = new System.Drawing.Point(160, 84);
             this.textBox_wheelsStepsToMake.Name = "textBox_wheelsStepsToMake";
             this.textBox_wheelsStepsToMake.PlaceholderText = "Number";
-            this.textBox_wheelsStepsToMake.Size = new System.Drawing.Size(107, 23);
+            this.textBox_wheelsStepsToMake.Size = new System.Drawing.Size(59, 23);
             this.textBox_wheelsStepsToMake.TabIndex = 64;
             this.textBox_wheelsStepsToMake.Text = "1000";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(105, 26);
+            this.label24.Location = new System.Drawing.Point(169, 26);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(39, 15);
             this.label24.TabIndex = 65;
@@ -1804,6 +1845,15 @@
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Demo runs";
             // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(6, 55);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(101, 15);
+            this.label44.TabIndex = 70;
+            this.label44.Text = "Steppers in move:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -2028,5 +2078,9 @@
         private Label label54;
         private Label label55;
         private GroupBox groupBox15;
+        private CheckBox checkBox_s2move;
+        private CheckBox checkBox_s1move;
+        private CheckBox checkBox_s0move;
+        private Label label44;
     }
 }

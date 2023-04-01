@@ -202,6 +202,20 @@ static void MCU1_DoTasks(void)
 
 static void MCU1_TaskMotorControl(void)
 {
+    if (steppers[STEPPER_LEFT_WHEEL].stepsToMake > 0) 
+        statusData.stepperInMove[STEPPER_LEFT_WHEEL] = 1;
+    else 
+        statusData.stepperInMove[STEPPER_LEFT_WHEEL] = 0;
+    
+    if (steppers[STEPPER_RIGHT_WHEEL].stepsToMake > 0) 
+        statusData.stepperInMove[STEPPER_RIGHT_WHEEL] = 1;
+    else 
+        statusData.stepperInMove[STEPPER_RIGHT_WHEEL] = 0;
+    
+    if (steppers[STEPPER_LEVELING].stepsToMake > 0) 
+        statusData.stepperInMove[STEPPER_LEVELING] = 1;
+    else 
+        statusData.stepperInMove[STEPPER_LEVELING] = 0;
     Stepper_Step(&steppers[STEPPER_LEFT_WHEEL]);
     Stepper_Step(&steppers[STEPPER_RIGHT_WHEEL]);
     Stepper_Step(&steppers[STEPPER_LEVELING]);

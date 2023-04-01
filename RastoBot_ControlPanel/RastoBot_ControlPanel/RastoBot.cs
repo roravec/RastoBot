@@ -241,19 +241,22 @@ namespace RastoBot_ControlPanel
             motorsOut.stepperDirection[0] = Convert.ToBoolean(msg.data[index + 3] >> 1);
             motorsOut.stepperStepMode[0] = (byte)(msg.data[index + 3] >> 2);
             motorsOut.stepperOperMode[0] = (byte)(msg.data[index + 3] >> 4);
+            motorsOut.stepperInMove[0] = Convert.ToBoolean(msg.data[index + 3] >> 6);
             motorsOut.stepperSpeed[0] = (ushort)(msg.data[index + 5] | (msg.data[index + 4] << 8));
 
-            if (msg.subCommand == 0) index = 32;
+            if (msg.subCommand == 0) index = 33;
             motorsOut.stepperEnabled[1] = Convert.ToBoolean(msg.data[index + 0]);
             motorsOut.stepperDirection[1] = Convert.ToBoolean(msg.data[index + 0] >> 1);
             motorsOut.stepperStepMode[1] = (byte)(msg.data[index + 0] >> 2);
             motorsOut.stepperOperMode[1] = (byte)(msg.data[index + 0] >> 4);
+            motorsOut.stepperInMove[1] = Convert.ToBoolean(msg.data[index + 0] >> 6);
             motorsOut.stepperSpeed[1] = (ushort)(msg.data[index + 2] | (msg.data[index + 1] << 8));
 
             motorsOut.stepperEnabled[2] = Convert.ToBoolean(msg.data[index + 3]);
             motorsOut.stepperDirection[2] = Convert.ToBoolean(msg.data[index + 3] >> 1);
             motorsOut.stepperStepMode[2] = (byte)(msg.data[index + 3] >> 2);
             motorsOut.stepperOperMode[2] = (byte)(msg.data[index + 3] >> 4);
+            motorsOut.stepperInMove[2] = Convert.ToBoolean(msg.data[index + 3] >> 6);
             motorsOut.stepperSpeed[2] = (ushort)(msg.data[index + 5] | (msg.data[index + 4] << 8));
         }
 
@@ -664,6 +667,7 @@ namespace RastoBot_ControlPanel
         public bool[] stepperDirection =    new bool[3];
         public byte[] stepperStepMode =     new byte[3];
         public byte[] stepperOperMode =     new byte[3];
+        public bool[] stepperInMove =       new bool[3];
         public UInt16[] stepperSpeed =      new UInt16[3];
         public UInt16 levelingPosition;
     }

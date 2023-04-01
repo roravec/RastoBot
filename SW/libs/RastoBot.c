@@ -191,23 +191,26 @@ ECP_Message *   RastoBot_Encode_Motors(ECP_Message * out, MCU_1_Motors * motors)
     out->data[3] = (motors->stepperEnabled[0]) | 
             (motors->stepperDirection[0] << 1) | 
             (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
+            (motors->stepperOperMode[0] << 4) |
+            (motors->stepperInMove[0] << 6);
     out->data[4] = (uint8_t)(motors->stepperSpeed[0]>>8);
     out->data[5] = (uint8_t)motors->stepperSpeed[0];
     
-    out->data[6] = (motors->stepperEnabled[0]) | 
-            (motors->stepperDirection[0] << 1) | 
-            (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
-    out->data[7] = (uint8_t)(motors->stepperSpeed[0]>>8);
-    out->data[8] = (uint8_t)motors->stepperSpeed[0];
+    out->data[6] = (motors->stepperEnabled[1]) | 
+            (motors->stepperDirection[1] << 1) | 
+            (motors->stepperStepMode[1] << 2) | 
+            (motors->stepperOperMode[1] << 4) |
+            (motors->stepperInMove[1] << 6);
+    out->data[7] = (uint8_t)(motors->stepperSpeed[1]>>8);
+    out->data[8] = (uint8_t)motors->stepperSpeed[1];
     
-    out->data[9] = (motors->stepperEnabled[0]) | 
-            (motors->stepperDirection[0] << 1) | 
-            (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
-    out->data[10] = (uint8_t)(motors->stepperSpeed[0]>>8);
-    out->data[11] = (uint8_t)motors->stepperSpeed[0];
+    out->data[9] = (motors->stepperEnabled[2]) | 
+            (motors->stepperDirection[2] << 1) | 
+            (motors->stepperStepMode[2] << 2) | 
+            (motors->stepperOperMode[2] << 4) |
+            (motors->stepperInMove[2] << 6);
+    out->data[10] = (uint8_t)(motors->stepperSpeed[2]>>8);
+    out->data[11] = (uint8_t)motors->stepperSpeed[2];
     
     out->dlc = ECP_COMMAND_MOTORS_STATUS_DLC;
     return out;
@@ -225,7 +228,8 @@ ECP_Message *   RastoBot_Encode_Motors_1(ECP_Message * out, MCU_1_Motors * motor
     out->data[3] = (motors->stepperEnabled[0]) | 
             (motors->stepperDirection[0] << 1) | 
             (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
+            (motors->stepperOperMode[0] << 4) |
+            (motors->stepperInMove[0] << 6);
     out->data[4] = (uint8_t)(motors->stepperSpeed[0]>>8);
     out->data[5] = (uint8_t)motors->stepperSpeed[0];
     
@@ -237,19 +241,21 @@ ECP_Message *   RastoBot_Encode_Motors_2(ECP_Message * out, MCU_1_Motors * motor
     out->command = ECP_COMMAND_MOTORS_STATUS;
     out->subCommand = 2;
     
-    out->data[1] = (motors->stepperEnabled[0]) | 
-            (motors->stepperDirection[0] << 1) | 
-            (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
-    out->data[2] = (uint8_t)(motors->stepperSpeed[0]>>8);
-    out->data[3] = (uint8_t)motors->stepperSpeed[0];
+    out->data[1] = (motors->stepperEnabled[1]) | 
+            (motors->stepperDirection[1] << 1) | 
+            (motors->stepperStepMode[1] << 2) | 
+            (motors->stepperOperMode[1] << 4) |
+            (motors->stepperInMove[1] << 6);
+    out->data[2] = (uint8_t)(motors->stepperSpeed[1]>>8);
+    out->data[3] = (uint8_t)motors->stepperSpeed[1];
     
-    out->data[4] = (motors->stepperEnabled[0]) | 
-            (motors->stepperDirection[0] << 1) | 
-            (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
-    out->data[5] = (uint8_t)(motors->stepperSpeed[0]>>8);
-    out->data[6] = (uint8_t)motors->stepperSpeed[0];
+    out->data[4] = (motors->stepperEnabled[2]) | 
+            (motors->stepperDirection[2] << 1) | 
+            (motors->stepperStepMode[2] << 2) | 
+            (motors->stepperOperMode[2] << 4) |
+            (motors->stepperInMove[2] << 6);
+    out->data[5] = (uint8_t)(motors->stepperSpeed[2]>>8);
+    out->data[6] = (uint8_t)motors->stepperSpeed[2];
     
     out->dlc = 7;
     return out;
@@ -265,26 +271,29 @@ MCU_1_Motors * RastoBot_Decode_Motors(MCU_1_Motors * motorsOut, ECP_Message * in
         motorsOut->mainMotorSpeed = in->data[0];
         motorsOut->levelingPosition = in->data[2] | (in->data[1] << 8);
 
-        motorsOut->stepperEnabled[0] = (_Bool)in->data[3];
-        motorsOut->stepperDirection[0] = (_Bool)(in->data[3] >> 1);
-        motorsOut->stepperStepMode[0] = (_Bool)(in->data[3] >> 2);
-        motorsOut->stepperOperMode[0] = (_Bool)(in->data[3] >> 4);
-        motorsOut->stepperSpeed[0] = in->data[5] | (in->data[4] << 8);
+        motorsOut->stepperEnabled[0] =      (_Bool)in->data[3];
+        motorsOut->stepperDirection[0] =    (_Bool)(in->data[3] >> 1);
+        motorsOut->stepperStepMode[0] =     (_Bool)(in->data[3] >> 2);
+        motorsOut->stepperOperMode[0] =     (_Bool)(in->data[3] >> 4);
+        motorsOut->stepperInMove[0] =       (_Bool)(in->data[3] >> 6);
+        motorsOut->stepperSpeed[0] =        in->data[5] | (in->data[4] << 8);
     }
     if (in->subCommand == 0 || in->subCommand == 2)
     {
         if (in->subCommand == 0) index = 6;
-        motorsOut->stepperEnabled[1] = (_Bool)in->data[index+0];
-        motorsOut->stepperDirection[1] = (_Bool)(in->data[index+0] >> 1);
-        motorsOut->stepperStepMode[1] = (_Bool)(in->data[index+0] >> 2);
-        motorsOut->stepperOperMode[1] = (_Bool)(in->data[index+0] >> 4);
-        motorsOut->stepperSpeed[1] = in->data[index+2] | (in->data[index+1] << 8);
+        motorsOut->stepperEnabled[1] =      (_Bool)in->data[index+0];
+        motorsOut->stepperDirection[1] =    (_Bool)(in->data[index+0] >> 1);
+        motorsOut->stepperStepMode[1] =     (_Bool)(in->data[index+0] >> 2);
+        motorsOut->stepperOperMode[1] =     (_Bool)(in->data[index+0] >> 4);
+        motorsOut->stepperInMove[1] =       (_Bool)(in->data[index+0] >> 6);
+        motorsOut->stepperSpeed[1] =        in->data[index+2] | (in->data[index+1] << 8);
 
-        motorsOut->stepperEnabled[2] = (_Bool)in->data[index+3];
-        motorsOut->stepperDirection[2] = (_Bool)(in->data[index+3] >> 1);
-        motorsOut->stepperStepMode[2] = (_Bool)(in->data[index+3] >> 2);
-        motorsOut->stepperOperMode[2] = (_Bool)(in->data[index+3] >> 4);
-        motorsOut->stepperSpeed[2] = in->data[index+5] | (in->data[index+4] << 8);
+        motorsOut->stepperEnabled[2] =      (_Bool)in->data[index+3];
+        motorsOut->stepperDirection[2] =    (_Bool)(in->data[index+3] >> 1);
+        motorsOut->stepperStepMode[2] =     (_Bool)(in->data[index+3] >> 2);
+        motorsOut->stepperOperMode[2] =     (_Bool)(in->data[index+3] >> 4);
+        motorsOut->stepperInMove[2] =       (_Bool)(in->data[index+3] >> 6);
+        motorsOut->stepperSpeed[2] =        in->data[index+5] | (in->data[index+4] << 8);
     }
     
     return motorsOut;
@@ -738,23 +747,26 @@ ECP_Message *   RastoBot_Encode_SensorsMotors(ECP_Message * out, MCU_0_Sensors *
     out->data[29] = (motors->stepperEnabled[0]) | 
             (motors->stepperDirection[0] << 1) | 
             (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
+            (motors->stepperOperMode[0] << 4) |
+            (motors->stepperInMove[0] << 6);
     out->data[30] = (uint8_t)(motors->stepperSpeed[0]>>8);
     out->data[31] = (uint8_t)motors->stepperSpeed[0];
     
-    out->data[32] = (motors->stepperEnabled[0]) | 
-            (motors->stepperDirection[0] << 1) | 
-            (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
-    out->data[33] = (uint8_t)(motors->stepperSpeed[0]>>8);
-    out->data[34] = (uint8_t)motors->stepperSpeed[0];
+    out->data[32] = (motors->stepperEnabled[1]) | 
+            (motors->stepperDirection[1] << 1) | 
+            (motors->stepperStepMode[1] << 2) | 
+            (motors->stepperOperMode[1] << 4) |
+            (motors->stepperInMove[1] << 6);
+    out->data[33] = (uint8_t)(motors->stepperSpeed[1]>>8);
+    out->data[34] = (uint8_t)motors->stepperSpeed[1];
     
-    out->data[35] = (motors->stepperEnabled[0]) | 
-            (motors->stepperDirection[0] << 1) | 
-            (motors->stepperStepMode[0] << 2) | 
-            (motors->stepperOperMode[0] << 4);
-    out->data[36] = (uint8_t)(motors->stepperSpeed[0]>>8);
-    out->data[37] = (uint8_t)motors->stepperSpeed[0];
+    out->data[35] = (motors->stepperEnabled[2]) | 
+            (motors->stepperDirection[2] << 1) | 
+            (motors->stepperStepMode[2] << 2) | 
+            (motors->stepperOperMode[2] << 4) |
+            (motors->stepperInMove[2] << 6);
+    out->data[36] = (uint8_t)(motors->stepperSpeed[2]>>8);
+    out->data[37] = (uint8_t)motors->stepperSpeed[2];
     
     out->dlc = 38;
     return out;
@@ -810,19 +822,22 @@ void RastoBot_Decode_SensorsMotors(MCU_0_Sensors * sensorsOut, MCU_1_Motors * mo
     motorsOut->stepperDirection[0] = (_Bool)(in->data[index+3] >> 1);
     motorsOut->stepperStepMode[0] = (_Bool)(in->data[index+3] >> 2);
     motorsOut->stepperOperMode[0] = (_Bool)(in->data[index+3] >> 4);
+    motorsOut->stepperInMove[0] = (_Bool)(in->data[index+3] >> 6);
     motorsOut->stepperSpeed[0] = in->data[index+5] | (in->data[index+4] << 8);
 
-    if (in->subCommand == 0) index = 32;
+    if (in->subCommand == 0) index = 33;
     motorsOut->stepperEnabled[1] = (_Bool)in->data[index+0];
     motorsOut->stepperDirection[1] = (_Bool)(in->data[index+0] >> 1);
     motorsOut->stepperStepMode[1] = (_Bool)(in->data[index+0] >> 2);
     motorsOut->stepperOperMode[1] = (_Bool)(in->data[index+0] >> 4);
+    motorsOut->stepperInMove[1] = (_Bool)(in->data[index+0] >> 6);
     motorsOut->stepperSpeed[1] = in->data[index+2] | (in->data[index+1] << 8);
 
     motorsOut->stepperEnabled[2] = (_Bool)in->data[index+3];
     motorsOut->stepperDirection[2] = (_Bool)(in->data[index+3] >> 1);
     motorsOut->stepperStepMode[2] = (_Bool)(in->data[index+3] >> 2);
     motorsOut->stepperOperMode[2] = (_Bool)(in->data[index+3] >> 4);
+    motorsOut->stepperInMove[2] = (_Bool)(in->data[index+3] >> 6);
     motorsOut->stepperSpeed[2] = in->data[index+5] | (in->data[index+4] << 8);
 }
 

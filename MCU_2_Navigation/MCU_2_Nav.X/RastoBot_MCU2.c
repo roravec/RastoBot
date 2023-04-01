@@ -467,16 +467,16 @@ static void MCU2_DoTasks(void)
 {
     if (loopCounter % MCU2_LOG_DATA_TO_STRUCT_EVERY == 0)
         MCU2_TaskLogData();
+    if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
+        MCU2_TaskReadPerimeterWire();
+    if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
+        MCU2_TaskReadGyro();
     if (loopCounter % MCU2_CHECK_NEW_MESSAGES_EVERY == 0)
         MCU2_TaskCheckForNewReceivedData();
     if (loopCounter % MCU2_SEND_STATUS_DATA_EVERY == 0)
         MCU2_TaskSendStatusData();
     if (loopCounter % MCU2_SEND_POSITION_DATA_EVERY == 0)
         MCU2_TaskSendPositionData();
-    if (loopCounter % MCU2_READ_PERIMETER_WIRE_EVERY == 0)
-        MCU2_TaskReadPerimeterWire();
-    if (loopCounter % MCU2_READ_GYRO_DATA_EVERY == 0)
-        MCU2_TaskReadGyro();
 }
 
 static void MCU2_TaskReadGyro(void)
@@ -517,7 +517,7 @@ static void MCU2_TaskSendStatusData(void)
         //UART_SendData(&uartMCU3,uartMCU3_OUT.data, uartMCU3_OUT.size);
         MCU2_DMATransferToMCU3(uartMCU3_OUT.data, uartMCU3_OUT.size, 0);
     }
-    MCU2_TaskSendPositionData();
+    //MCU2_TaskSendPositionData();
 }
 static void MCU2_TaskSendPositionData(void)
 {

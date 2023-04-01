@@ -87,6 +87,7 @@ typedef struct
     uint8_t     mainMotorSpeed; // percent
     _Bool       stepperEnabled[MCU1_STEPPERS];
     _Bool       stepperDirection[MCU1_STEPPERS];
+    _Bool       stepperInMove[MCU1_STEPPERS];
     uint8_t     stepperStepMode[MCU1_STEPPERS];
     uint8_t     stepperOperMode[MCU1_STEPPERS];
     uint16_t    stepperSpeed[MCU1_STEPPERS];
